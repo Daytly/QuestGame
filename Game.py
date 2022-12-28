@@ -1,7 +1,7 @@
 import sys
 import pygame
 from Camera import Camera
-from Tile import Tile
+from Floor import Floor
 import Functions
 
 
@@ -27,8 +27,8 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
-        self.level = Functions.load_level('map.txt')
-        self.player, self.level_x, self.level_y = Functions.generate_level(self.level, self)
+        level_list = Functions.load_level('map.txt')
+        self.level, self.player, self.level_x, self.level_y = Functions.generate_level(level_list, self)
 
     def run(self):
         while True:

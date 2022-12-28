@@ -1,7 +1,8 @@
 import os
 import pygame
-from Tile import Tile
 from Player import Player
+from Wall import Wall
+from Floor import Floor
 
 
 def load_image(name, colorKey=None):
@@ -31,16 +32,19 @@ def load_level(filename):
 
 def generate_level(level, game):
     new_player, x, y = None, None, None
+    new_level = []
     for y in range(len(level)):
+        new_level.append([])
+        new_level[-1] = [0] * len(level[y])
         for x in range(len(level[y])):
             if level[y][x] == '.':
-                Tile('empty', x, y, game)
+                new_level[y][x] = Floor('empty', x, y, game)
             elif level[y][x] == '#':
-                Tile('wall', x, y, game)
+                new_level[y][x] = Wall('wall', x, y, game)
     for y in range(len(level)):
         for x in range(len(level[y])):
             if level[y][x] == '@':
-                Tile('empty', x, y, game)
+                new_level[y][x] = Floor('empty', x, y, game)
                 new_player = Player(x, y, game)
     # вернем игрока, а также размер поля в клетках
-    return new_player, x, y
+    return new_level, new_player, x, y
