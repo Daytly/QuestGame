@@ -88,7 +88,7 @@ class Game:
                 elif event.type == pygame.KEYDOWN or \
                         event.type == pygame.MOUSEBUTTONDOWN:
                     return  # начинаем игру
-            play_btn.draw('hi', (100, 100, 100), ())
+            play_btn.draw(self.screen, 'hi', (100, 100, 100), (150, 150, 150))
             pygame.display.flip()
             self.clock.tick(self.fps)
 

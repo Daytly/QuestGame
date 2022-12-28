@@ -49,3 +49,9 @@ def generate_level(level, game):
                 new_player = Player(x, y, game)
     # вернем игрока, а также размер поля в клетках
     return new_level, new_player, x, y
+
+
+def print_text(screen, x, y, size, _str, color):
+    text = pygame.font.SysFont("monospace", size)
+    string = text.render(str(_str), 0, color)
+    screen.blit(string, (x, y))
