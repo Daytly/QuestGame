@@ -1,8 +1,5 @@
 import sys
-
 import pygame
-from Ufo import Ufo
-
 from Camera import Camera
 
 
