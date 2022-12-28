@@ -7,3 +7,6 @@ class Tile(pygame.sprite.Sprite):
         self.image = game.tile_images[tile_type]
         self.rect = self.image.get_rect().move(
             game.tile_width * pos_x, game.tile_height * pos_y)
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)

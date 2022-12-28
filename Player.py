@@ -36,3 +36,6 @@ class Player(pygame.sprite.Sprite):
             if self.game.level[x][y] != '#':
                 return False
         return True
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)

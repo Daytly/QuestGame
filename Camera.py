@@ -15,3 +15,4 @@ class Camera:
     def update(self, target):
         self.dx = -(target.rect.x + target.rect.w // 2 - self.game.width // 2)
         self.dy = -(target.rect.y + target.rect.h // 2 - self.game.height // 2)
+
