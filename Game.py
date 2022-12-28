@@ -1,7 +1,7 @@
 import sys
 import pygame
 from Camera import Camera
-import Functions
+import FUNCTIONS
 
 
 class Game:
@@ -14,7 +14,7 @@ class Game:
         self.tile_height = 50
         self.tile_width = 50
         self.player = None
-        self.level = Functions.load_level('map.txt')
+        self.level = FUNCTIONS.load_level('map.txt')
         self.player, self.level_x, self.level_y = generate_level(level, self)
         self.camera = Camera()
         # группы спрайтов
