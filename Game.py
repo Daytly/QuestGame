@@ -1,6 +1,7 @@
 import sys
 import pygame
 from Camera import Camera
+import Functions
 
 
 class Game:
@@ -11,6 +12,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.player = None
+        self.level = Functions.load_level('map.txt')
+        self.player, self.level_x, self.level_y = generate_level(level, self)
         self.camera = Camera()
         # группы спрайтов
         self.all_sprites = pygame.sprite.Group()

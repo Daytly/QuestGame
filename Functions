@@ -27,7 +27,7 @@ def load_level(filename):
     return level_map
 
 
-def generate_level(level):
+def generate_level(level, game):
     new_player, x, y = None, None, None
     for y in range(len(level)):
         for x in range(len(level[y])):
@@ -39,6 +39,6 @@ def generate_level(level):
         for x in range(len(level[y])):
             if level[y][x] == '@':
                 Tile('empty', x, y)
-                new_player = Player(x, y, )
+                new_player = Player(x, y, game)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
