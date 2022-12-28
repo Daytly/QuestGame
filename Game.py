@@ -2,6 +2,7 @@ import sys
 import pygame
 from Camera import Camera
 from Floor import Floor
+from Button import Button
 import Functions
 
 
@@ -47,6 +48,52 @@ class Game:
                 sprite.draw(self.screen)
             self.display.flip()
 
+    def start_screen(self):
+        intro_text = ["ЗАСТАВКА", "",
+                      "Правила игры",
+                      "Если в правилах несколько строк,",
+                      "приходится выводить их построчно"]
+
+        fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
+        self.screen.blit(fon, (0, 0))
+        font = pygame.font.Font(None, 30)
+        text_coord = 50
+        for line in intro_text:
+            string_rendered = font.render(line, 1, pygame.Color('white'))
+            intro_rect = string_rendered.get_rect()
+            text_coord += 10
+            intro_rect.top = text_coord
+            intro_rect.x = 10
+            text_coord += intro_rect.height
+            self.screen.blit(string_rendered, intro_rect)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.KEYDOWN or \
+                        event.type == pygame.MOUSEBUTTONDOWN:
+                    return  # начинаем игру
+            pygame.display.flip()
+            self.clock.tick(self.fps)
+
+    def menu(self):
+        fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
+        self.screen.blit(fon, (0, 0))
+        play_btn = Button(200, 40, 0, 0)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.KEYDOWN or \
+                        event.type == pygame.MOUSEBUTTONDOWN:
+                    return  # начинаем игру
+            play_btn.draw('hi', (100, 100, 100), ())
+            pygame.display.flip()
+            self.clock.tick(self.fps)
+
 
 game = Game()
+game.start_screen()
+game.menu()
 game.run()

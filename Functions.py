@@ -3,6 +3,7 @@ import pygame
 from Player import Player
 from Wall import Wall
 from Floor import Floor
+import sys
 
 
 def load_image(name, colorKey=None):
