@@ -3,10 +3,10 @@ import pygame
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y, game):
-        super().__init__(player_group, all_sprites)
-        self.image = player_image
+        super().__init__(game.player_group, game.all_sprites)
+        self.image = game.player_image
         self.rect = self.image.get_rect().move(
-            tile_width * pos_x + 15, tile_height * pos_y + 5)
+            game.tile_width * pos_x + 15, game.tile_height * pos_y + 5)
         self.coord = [pos_x, pos_y]
         self.game = game
 

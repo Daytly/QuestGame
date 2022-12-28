@@ -1,26 +1,34 @@
 import sys
 import pygame
 from Camera import Camera
-import FUNCTIONS
+from Tile import Tile
+import Functions
 
 
 class Game:
     def __init__(self):
         pygame.init()
         self.display = pygame.display
-        self.screen = self.display.set_mode((700, 700))
+        self.width = 700
+        self.height = 700
+        self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.tile_height = 50
         self.tile_width = 50
+        self.player_image = Functions.load_image('mar.png')
+        self.tile_images = {
+            'wall': Functions.load_image('box.png'),
+            'empty': Functions.load_image('grass.png')
+        }
         self.player = None
-        self.level = FUNCTIONS.load_level('map.txt')
-        self.player, self.level_x, self.level_y = generate_level(level, self)
-        self.camera = Camera()
+        self.camera = Camera(self)
         # группы спрайтов
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
+        self.level = Functions.load_level('map.txt')
+        self.player, self.level_x, self.level_y = Functions.generate_level(self.level, self)
 
     def run(self):
         while True:
@@ -32,7 +40,7 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     self.all_sprites.update(event)
             # изменяем ракурс камеры
-            self.camera.update(player)
+            self.camera.update(self.player)
             # обновляем положение всех спрайтов
             for sprite in self.all_sprites:
                 self.camera.apply(sprite)
