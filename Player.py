@@ -18,23 +18,24 @@ class Player(pygame.sprite.Sprite):
                         self.rect.y -= 50
                         self.coord[1] -= 1
             if args[0].key == pygame.K_DOWN:
-                if self.coord[1] >= 1:
-                    if not self.isWall(self.coord[0], self.coord[1] + 1):
-                        self.rect.y += 50
-                        self.coord[1] += 1
+                if not self.isWall(self.coord[0], self.coord[1] + 1):
+                    self.rect.y += 50
+                    self.coord[1] += 1
             if args[0].key == pygame.K_RIGHT:
-                if self.isWall(self.coord[0] + 1, self.coord[1]):
+                if not self.isWall(self.coord[0] + 1, self.coord[1]):
                     self.rect.x += 50
                     self.coord[0] += 1
             if args[0].key == pygame.K_LEFT:
-                if self.isWall(self.coord[0] - 1, self.coord[1]):
+                if not self.isWall(self.coord[0] - 1, self.coord[1]):
                     self.rect.x -= 50
                     self.coord[0] -= 1
 
     def isWall(self, x, y):
-        if len(self.game.level) > y >= 0 and len(self.game.level[0]) > x >= 0:
-            if self.game.level[x][y] != '#':
+        try:
+            if self.game.level[y][x] != '#':
                 return False
+        except IndexError:
+            return True
         return True
 
     def draw(self, screen):

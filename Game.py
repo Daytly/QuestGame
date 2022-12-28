@@ -44,6 +44,7 @@ class Game:
             # обновляем положение всех спрайтов
             for sprite in self.all_sprites:
                 self.camera.apply(sprite)
+                sprite.draw(self.screen)
             self.display.flip()
 
 
