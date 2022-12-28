@@ -1,4 +1,6 @@
 import sys
+import time
+
 import pygame
 from Camera import Camera
 from Floor import Floor
@@ -31,7 +33,13 @@ class Game:
         level_list = Functions.load_level('map.txt')
         self.level, self.player, self.level_x, self.level_y = Functions.generate_level(level_list, self)
 
-    def run(self):
+    def run(self, name_level):
+        self.camera = Camera(self)
+        self.all_sprites = pygame.sprite.Group()
+        self.tiles_group = pygame.sprite.Group()
+        self.player_group = pygame.sprite.Group()
+        level_list = Functions.load_level(f'{name_level}.txt')
+        self.level, self.player, self.level_x, self.level_y = Functions.generate_level(level_list, self)
         while True:
             self.screen.fill(pygame.Color('white'))
             self.clock.tick(self.fps)
@@ -73,6 +81,7 @@ class Game:
                     terminate()
                 elif event.type == pygame.KEYDOWN or \
                         event.type == pygame.MOUSEBUTTONDOWN:
+                    time.sleep(0.5)
                     return  # начинаем игру
             pygame.display.flip()
             self.clock.tick(self.fps)
@@ -80,12 +89,28 @@ class Game:
     def menu(self):
         fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(200, 40, 0, 0)
+        play_btn = Button(400, 70, 150, 250)
+        exit_btn = Button(200, 40, 250, 350)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    terminate()
-            play_btn.draw(self.screen, 'hi', (100, 100, 100), (150, 150, 150))
+                    sys.exit()
+            play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150), action=self.menu_levels)
+            exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit)
+            pygame.display.flip()
+            self.clock.tick(self.fps)
+
+    def menu_levels(self):
+        fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
+        self.screen.blit(fon, (0, 0))
+        play_btn = Button(200, 40, 0, 0)
+        exit_btn = Button(200, 40, 0, 0)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+            play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150))
+            exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit())
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -93,4 +118,3 @@ class Game:
 game = Game()
 game.start_screen()
 game.menu()
-game.run()
