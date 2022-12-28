@@ -12,31 +12,27 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, *args):
         if args and args[0].type == pygame.KEYDOWN:
-            if self.coord[1] + 1 < len(level[self.coord[0]]):
-                if args[0].key == pygame.K_UP and \
-                        self.coord[1] >= 1 and \
-                        level[self.coord[0]][self.coord[1] - 1] != '#':
-                    if self.rect.y >= tile_height:
+            if args[0].key == pygame.K_UP:
+                if not self.isWall(self.coord[0], self.coord[1] - 1):
+                    if self.rect.y >= self.game.tile_height:
                         self.rect.y -= 50
                         self.coord[1] -= 1
             if args[0].key == pygame.K_DOWN:
                 if self.coord[1] >= 1:
-                    if self.rect.y <= height - tile_height and \
-                            self.coord[1] < size_board and \
-                            level[self.coord[0]][self.coord[1] + 1] != '#':
+                    if not self.isWall(self.coord[0], self.coord[1] + 1):
                         self.rect.y += 50
                         self.coord[1] += 1
             if args[0].key == pygame.K_RIGHT:
-                if self.coord[0] + 1 < len(level):
-                    if self.rect.x <= width - tile_width and \
-                            self.coord[0] < size_board and \
-                            level[self.coord[0] + 1][self.coord[1]] != '#':
-                        self.rect.x += 50
-                        self.coord[0] += 1
+                if self.isWall(self.coord[0] + 1, self.coord[1]):
+                    self.rect.x += 50
+                    self.coord[0] += 1
             if args[0].key == pygame.K_LEFT:
-                if self.coord[0] >= 1:
-                    if self.rect.x <= width and \
-                            self.coord[0] >= 1 and \
-                            level[self.coord[0] - 1][self.coord[1]] != '#':
-                        self.rect.x -= 50
-                        self.coord[0] -= 1
+                if self.isWall(self.coord[0] - 1, self.coord[1]):
+                    self.rect.x -= 50
+                    self.coord[0] -= 1
+
+    def isWall(self, x, y):
+        if len(self.game.level) > y >= 0 and len(self.game.level[0]) > x >= 0:
+            if self.game.level[x][y] != '#':
+                return False
+        return True
