@@ -23,7 +23,8 @@ class Game:
         self.player_image = Functions.load_image('mar.png')
         self.tile_images = {
             'wall': Functions.load_image('box.png'),
-            'empty': Functions.load_image('grass.png')
+            'empty': Functions.load_image('grass.png'),
+            'door': Functions.load_image('door.png')
         }
         self.player = None
         self.camera = Camera(self)
@@ -96,6 +97,10 @@ class Game:
         self.screen.blit(fon, (0, 0))
         play_btn = Button(400, 70, 150, 250)
         exit_btn = Button(200, 40, 250, 350)
+        play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150), action=self.menu_levels)
+        exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit)
+        pygame.display.flip()
+        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -106,7 +111,6 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu_levels(self):
-        time.sleep(0.5)
         fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         # play_btn = Button(200, 40, 0, 0)
@@ -117,6 +121,11 @@ class Game:
             for j in range(10):
                 if dirLevels:
                     buttons.append(ButtonLevel(50, 50, j * 60 + 10, i * 60 + 10, dirLevels.pop(0)))
+        for level in buttons:
+            level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150),
+                       action=self.run)
+        pygame.display.flip()
+        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -143,6 +152,17 @@ class Game:
             intro_rect.x = 10
             text_coord += intro_rect.height
             self.screen.blit(string_rendered, intro_rect)
+        pygame.display.flip()
+        time.sleep(0.5)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.KEYDOWN or \
+                        event.type == pygame.MOUSEBUTTONDOWN:
+                    return self.menu()
+            pygame.display.flip()
+            self.clock.tick(self.fps)
 
 
 game = Game()

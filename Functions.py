@@ -3,6 +3,7 @@ import pygame
 from Player import Player
 from Wall import Wall
 from Floor import Floor
+from Door import Door
 import sys
 
 
@@ -42,6 +43,8 @@ def generate_level(level, game):
                 new_level[y][x] = Floor('empty', x, y, game)
             elif level[y][x] == '#':
                 new_level[y][x] = Wall('wall', x, y, game)
+            elif level[y][x] == '%':
+                new_level[y][x] = Door('door', x, y, game)
     for y in range(len(level)):
         for x in range(len(level[y])):
             if level[y][x] == '@':
