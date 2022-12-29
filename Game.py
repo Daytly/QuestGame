@@ -4,7 +4,7 @@ import time
 import pygame
 from Camera import Camera
 from Floor import Floor
-from Button import Button
+from Button import Button, ButtonLevel
 import Functions
 from os import listdir
 
@@ -107,14 +107,18 @@ class Game:
         # play_btn = Button(200, 40, 0, 0)
         # exit_btn = Button(200, 40, 0, 0)
         buttons = []
+        dirLevels = listdir('Data/levels')
         for i in range(10):
             for j in range(10):
-                buttons.append()
+                if dirLevels:
+                    buttons.append(ButtonLevel(50, 50, j * 60 + 10, i * 60 + 10, dirLevels.pop(0)))
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-            # play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150))
+            for level in buttons:
+                level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150),
+                           lambda x: print(x))
             # exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit())
             pygame.display.flip()
             self.clock.tick(self.fps)
