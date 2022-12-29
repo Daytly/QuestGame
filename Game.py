@@ -39,7 +39,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
-        level_list = Functions.load_level(f'{name_level}.txt')
+        level_list = Functions.load_level(name_level)
         self.level, self.player, self.level_x, self.level_y = Functions.generate_level(level_list, self)
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -118,7 +118,7 @@ class Game:
                     sys.exit()
             for level in buttons:
                 level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150),
-                           lambda x: print(x))
+                           action=self.run)
             # exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit())
             pygame.display.flip()
             self.clock.tick(self.fps)
