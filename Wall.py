@@ -12,3 +12,7 @@ class Wall(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+    def stepOn(self):
+        return self.solid
+

@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
 
     def check(self, x, y):
         try:
-            return self.game.level[y][x].solid
+            return self.game.level[y][x].stepOn()
         except IndexError:
             return False
 
