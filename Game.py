@@ -80,7 +80,8 @@ class Game:
             intro_rect.x = 10
             text_coord += intro_rect.height
             self.screen.blit(string_rendered, intro_rect)
-
+        pygame.display.flip()
+        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -97,8 +98,8 @@ class Game:
         self.screen.blit(fon, (0, 0))
         play_btn = Button(400, 70, 150, 250)
         exit_btn = Button(200, 40, 250, 350)
-        play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150), action=self.menu_levels)
-        exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit)
+        play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150))
+        exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150))
         pygame.display.flip()
         time.sleep(0.5)
         while True:
@@ -122,8 +123,7 @@ class Game:
                 if dirLevels:
                     buttons.append(ButtonLevel(50, 50, j * 60 + 10, i * 60 + 10, dirLevels.pop(0)))
         for level in buttons:
-            level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150),
-                       action=self.run)
+            level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150))
         pygame.display.flip()
         time.sleep(0.5)
         while True:
