@@ -34,8 +34,7 @@ class Player(pygame.sprite.Sprite):
         try:
             return self.game.level[y][x].solid
         except IndexError:
-            return True
-        return True
+            return False
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

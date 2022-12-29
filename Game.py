@@ -41,6 +41,8 @@ class Game:
         self.player_group = pygame.sprite.Group()
         level_list = Functions.load_level(name_level)
         self.level, self.player, self.level_x, self.level_y = Functions.generate_level(level_list, self)
+        reset_btn = ButtonLevel(40, 40, 295, 650, name_level)
+        menu_btn = Button(40, 40, 345, 650)
         while True:
             self.screen.fill(pygame.Color('white'))
             self.clock.tick(self.fps)
@@ -55,6 +57,8 @@ class Game:
             for sprite in self.all_sprites:
                 self.camera.apply(sprite)
                 sprite.draw(self.screen)
+            reset_btn.draw(self.screen, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
+            menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
             self.display.flip()
 
     def start_screen(self):
@@ -102,6 +106,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu_levels(self):
+        time.sleep(0.5)
         fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         # play_btn = Button(200, 40, 0, 0)

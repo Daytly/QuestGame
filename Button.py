@@ -24,7 +24,8 @@ class Button:
                 pygame.draw.rect(screen, activeColor, (self.x, self.y, self.width, self.height))
         else:
             pygame.draw.rect(screen, activeColor, (self.x, self.y, self.width, self.height))
-        print_text(screen, self.x + (self.width - len(massage) * 20) // 2, self.y + 7, 30, massage, (200, 0, 0))
+        print_text(screen, self.x + (self.width - len(massage) * 20) // 2, self.y + (self.height - 20) // 2,
+                   30, massage, (200, 0, 0))
 
 
 class ButtonLevel(Button):
@@ -48,4 +49,4 @@ class ButtonLevel(Button):
                 pygame.draw.rect(screen, activeColor, (self.x, self.y, self.width, self.height))
         else:
             pygame.draw.rect(screen, activeColor, (self.x, self.y, self.width, self.height))
-        print_text(screen, self.x + (self.width - len(massage) * 10) // 2, self.y + 7, 20, massage, (200, 0, 0))
+        print_text(screen, self.x + (self.width - len(massage) * 10) // 2, self.y + 10, 20, massage, (200, 0, 0))
