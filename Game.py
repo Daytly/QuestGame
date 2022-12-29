@@ -6,6 +6,7 @@ from Camera import Camera
 from Floor import Floor
 from Button import Button
 import Functions
+from os import listdir
 
 
 class Game:
@@ -103,14 +104,18 @@ class Game:
     def menu_levels(self):
         fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(200, 40, 0, 0)
-        exit_btn = Button(200, 40, 0, 0)
+        # play_btn = Button(200, 40, 0, 0)
+        # exit_btn = Button(200, 40, 0, 0)
+        buttons = []
+        for i in range(10):
+            for j in range(10):
+                buttons.append()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-            play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150))
-            exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit())
+            # play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150))
+            # exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit())
             pygame.display.flip()
             self.clock.tick(self.fps)
 
