@@ -1,5 +1,5 @@
 import pygame
-from DynamicGameObject import DynamicGameObject
+from dynamicGameObject import DynamicGameObject
 
 
 class Player(DynamicGameObject):

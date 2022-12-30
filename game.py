@@ -2,24 +2,20 @@ import sys
 import time
 
 import pygame
-from Camera import Camera
-from Floor import Floor
-from Button import Button, ButtonLevel
-import Functions
+from camera import Camera
+from floor import Floor
+from button import Button, ButtonLevel
+import functions
 from os import listdir
+import constants
 
 
 class Game:
     def __init__(self):
         pygame.init()
         self.display = pygame.display
-        self.width = 700
-        self.height = 700
-        self.screen = self.display.set_mode((self.width, self.height))
+        self.screen = self.display.set_mode((Constants.width, Constants.height))
         self.clock = pygame.time.Clock()
-        self.fps = 60
-        self.tile_height = 50
-        self.tile_width = 50
         self.tile_images = {
             'wall': Functions.load_image('box.png'),
             'empty': Functions.load_image('grass.png'),

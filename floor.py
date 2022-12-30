@@ -1,5 +1,5 @@
 import pygame
-from StaticGameObject import StaticGameObject
+from staticGameObject import StaticGameObject
 
 
 class Floor(StaticGameObject):

@@ -1,9 +1,9 @@
 import os
 import pygame
-from Player import Player
-from Wall import Wall
-from Floor import Floor
-from Door import Door
+from player import Player
+from wall import Wall
+from floor import Floor
+from door import Door
 import sys
 
 

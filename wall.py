@@ -1,6 +1,6 @@
 import pygame
-from Player import Player
-from StaticGameObject import StaticGameObject
+from player import Player
+from staticGameObject import StaticGameObject
 
 
 class Wall(StaticGameObject):

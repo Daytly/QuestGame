@@ -1,5 +1,5 @@
 import pygame
-from Functions import print_text
+from functions import print_text
 
 
 class Button:
