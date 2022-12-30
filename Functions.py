@@ -49,7 +49,7 @@ def generate_level(level, game):
         for x in range(len(level[y])):
             if level[y][x] == '@':
                 new_level[y][x] = Floor('empty', x, y, game)
-                new_player = Player(x, y, game)
+                new_player = Player('player', x, y, game)
     # вернем игрока, а также размер поля в клетках
     return new_level, new_player, x, y
 

@@ -20,11 +20,11 @@ class Game:
         self.fps = 60
         self.tile_height = 50
         self.tile_width = 50
-        self.player_image = Functions.load_image('mar.png')
         self.tile_images = {
             'wall': Functions.load_image('box.png'),
             'empty': Functions.load_image('grass.png'),
-            'door': Functions.load_image('door.png')
+            'door': Functions.load_image('door.png'),
+            'player': Functions.load_image('mar.png')
         }
         self.player = None
         self.camera = Camera(self)
