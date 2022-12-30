@@ -1,26 +1,29 @@
 import sys
 import time
-
 import pygame
 from camera import Camera
 from floor import Floor
 from button import Button, ButtonLevel
 import functions
 from os import listdir
-import constants
 
 
 class Game:
     def __init__(self):
         pygame.init()
         self.display = pygame.display
-        self.screen = self.display.set_mode((Constants.width, Constants.height))
+        self.width = 700
+        self.height = 700
+        self.fps = 60
+        self.tile_height = 50
+        self.tile_width = 50
+        self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.tile_images = {
-            'wall': Functions.load_image('box.png'),
-            'empty': Functions.load_image('grass.png'),
-            'door': Functions.load_image('door.png'),
-            'player': Functions.load_image('mar.png')
+            'wall': functions.load_image('box.png'),
+            'empty': functions.load_image('grass.png'),
+            'door': functions.load_image('door.png'),
+            'player': functions.load_image('mar.png')
         }
         self.player = None
         self.camera = Camera(self)
@@ -28,16 +31,16 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
-        level_list = Functions.load_level('map.txt')
-        self.level, self.player, self.level_x, self.level_y = Functions.generate_level(level_list, self)
+        level_list = functions.load_level('map.txt')
+        self.level, self.player, self.level_x, self.level_y = functions.generate_level(level_list, self)
 
     def run(self, name_level):
         self.camera = Camera(self)
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
-        level_list = Functions.load_level(name_level)
-        self.level, self.player, self.level_x, self.level_y = Functions.generate_level(level_list, self)
+        level_list = functions.load_level(name_level)
+        self.level, self.player, self.level_x, self.level_y = functions.generate_level(level_list, self)
         reset_btn = ButtonLevel(40, 40, 295, 650, name_level)
         menu_btn = Button(40, 40, 345, 650)
         while True:
@@ -64,7 +67,7 @@ class Game:
                       "Если в правилах несколько строк,",
                       "приходится выводить их построчно"]
 
-        fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
+        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         font = pygame.font.Font(None, 30)
         text_coord = 50
@@ -90,7 +93,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
-        fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
+        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         play_btn = Button(400, 70, 150, 250)
         exit_btn = Button(200, 40, 250, 350)
@@ -108,7 +111,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu_levels(self):
-        fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
+        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         # play_btn = Button(200, 40, 0, 0)
         # exit_btn = Button(200, 40, 0, 0)
@@ -136,7 +139,7 @@ class Game:
     def end_screen(self, win):
         intro_text = ["Ты победил" if win else "Ты проиграл"]
 
-        fon = pygame.transform.scale(Functions.load_image('fon.png'), (self.width, self.height))
+        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         font = pygame.font.Font(None, 30)
         text_coord = 50

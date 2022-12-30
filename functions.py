@@ -1,7 +1,7 @@
 import os
 import pygame
 from player import Player
-from wall import Wall
+from Wall import Wall
 from floor import Floor
 from door import Door
 import sys
