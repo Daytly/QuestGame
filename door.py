@@ -18,5 +18,7 @@ class Door(pygame.sprite.Sprite):
         self.lock = False
 
     def stepOn(self):
-        self.game.end_screen(True)
-        return self.solid
+        if not self.lock:
+            self.game.end_screen(True)
+            return self.solid
+        return False

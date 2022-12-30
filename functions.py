@@ -4,6 +4,7 @@ from player import Player
 from wall import Wall
 from floor import Floor
 from door import Door
+from key import Key
 import sys
 
 
@@ -44,7 +45,9 @@ def generate_level(level, game):
             elif level[y][x] == '#':
                 new_level[y][x] = Wall('wall', x, y, game)
             elif level[y][x] == '%':
-                new_level[y][x] = Door('door', x, y, game)
+                new_level[y][x] = Door('door', x, y, game, True)
+            elif level[y][x] == 'K':
+                new_level[y][x] = Key('key', x, y, game)
     for y in range(len(level)):
         for x in range(len(level[y])):
             if level[y][x] == '@':

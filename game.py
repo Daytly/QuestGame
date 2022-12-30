@@ -23,7 +23,8 @@ class Game:
             'wall': functions.load_image('box.png'),
             'empty': functions.load_image('grass.png'),
             'door': functions.load_image('door.png'),
-            'player': functions.load_image('mar.png')
+            'player': functions.load_image('mar.png'),
+            'key': functions.load_image('key.png'),
         }
         self.player = None
         self.camera = Camera(self)
