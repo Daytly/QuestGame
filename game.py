@@ -118,12 +118,14 @@ class Game:
         # exit_btn = Button(200, 40, 0, 0)
         buttons = []
         dirLevels = listdir('Data/levels')
-        for i in range(10):
-            for j in range(10):
+        for i in range(9):
+            for j in range(9):
                 if dirLevels:
-                    buttons.append(ButtonLevel(50, 50, j * 60 + 10, i * 60 + 10, dirLevels.pop(0)))
+                    buttons.append(ButtonLevel(60, 60, j * 70 + 40, i * 70 + 6, dirLevels.pop(0)))
+        menu_btn = Button(60, 60, 5, 635)
         for level in buttons:
             level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150))
+        menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150))
         pygame.display.flip()
         time.sleep(0.5)
         while True:
@@ -133,7 +135,7 @@ class Game:
             for level in buttons:
                 level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150),
                            action=self.run)
-            # exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit())
+            menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
