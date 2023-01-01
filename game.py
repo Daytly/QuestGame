@@ -25,7 +25,9 @@ class Game:
             'door': functions.load_image('door.png'),
             'player': functions.load_image('mar.png'),
             'key': functions.load_image('key.png'),
+            'slime': functions.load_image('slime.png')
         }
+        self.enemies = []
         self.player = None
         self.camera = Camera(self)
         # группы спрайтов
@@ -33,15 +35,18 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         level_list = functions.load_level('map.txt')
-        self.level, self.player, self.level_x, self.level_y = functions.generate_level(level_list, self)
+        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_level(level_list, self)
 
     def run(self, name_level):
+        self.enemies = []
         self.camera = Camera(self)
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         level_list = functions.load_level(name_level)
-        self.level, self.player, self.level_x, self.level_y = functions.generate_level(level_list, self)
+        enemyEventType = pygame.USEREVENT + 1
+        pygame.time.set_timer(enemyEventType, 500)
+        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_level(level_list, self)
         reset_btn = ButtonLevel(40, 40, 295, 650, name_level)
         menu_btn = Button(40, 40, 345, 650)
         while True:
@@ -52,6 +57,9 @@ class Game:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     self.all_sprites.update(event)
+                if event.type == enemyEventType:
+                    for enemy in self.enemies:
+                        enemy.update(event)
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов

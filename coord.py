@@ -7,5 +7,4 @@ class Coord:
         return [self.x, self.y]
 
     def __iadd__(self, other):
-        self.x += other[0]
-        self.y += other[1]
+        return Coord(self.x + other[0], self.y + other[1])

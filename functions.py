@@ -5,6 +5,7 @@ from wall import Wall
 from floor import Floor
 from door import Door
 from key import Key
+from slime import Slime
 import sys
 
 
@@ -36,6 +37,7 @@ def load_level(filename):
 def generate_level(level, game):
     new_player, x, y = None, None, None
     new_level = []
+    enemy = []
     for y in range(len(level)):
         new_level.append([])
         new_level[-1] = [0] * len(level[y])
@@ -53,8 +55,12 @@ def generate_level(level, game):
             if level[y][x] == '@':
                 new_level[y][x] = Floor('empty', x, y, game)
                 new_player = Player('player', x, y, game)
+            elif level[y][x] == '-':
+                new_level[y][x] = Floor('empty', x, y, game)
+                enemy.append(Slime('slime', x, y, game, True))
+
     # вернем игрока, а также размер поля в клетках
-    return new_level, new_player, x, y
+    return new_level, new_player, enemy, x, y
 
 
 def print_text(screen, x, y, size, _str, color):
