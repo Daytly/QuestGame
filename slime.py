@@ -13,6 +13,5 @@ class Slime(DynamicGameObject):
             self.speedY = o
 
     def update(self, *args):
-        if self.check(self.coord)
-        self.rect.x -= 50
-        self.coord[0] -= 1
+        if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):
+            self.coord += [self.speedX, self.speedY]

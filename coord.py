@@ -5,3 +5,7 @@ class Coord:
 
     def get(self):
         return [self.x, self.y]
+
+    def __iadd__(self, other):
+        self.x += other[0]
+        self.y += other[1]

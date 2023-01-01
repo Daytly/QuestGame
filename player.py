@@ -7,6 +7,7 @@ from door import Door
 class Player(DynamicGameObject):
     def __init__(self, tile_type, pos_x, pos_y, game):
         super().__init__(tile_type, pos_x, pos_y, game)
+        self.rect = self.image.get_rect().move(game.tile_width * pos_x + 15, game.tile_height * pos_y + 5)
         self.key = False
 
     def update(self, *args):
