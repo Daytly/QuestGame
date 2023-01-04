@@ -3,8 +3,8 @@ from dynamicGameObject import DynamicGameObject
 
 
 class Slime(DynamicGameObject):
-    def __init__(self, tile_type, pos_x, pos_y, game, isVertically):
-        super().__init__(tile_type, pos_x, pos_y, game)
+    def __init__(self, sheet, pos_x, pos_y, game, isVertically, cols, rows):
+        super().__init__(sheet, pos_x, pos_y, game, cols, rows)
         self.speedX = 1
         self.speedY = 1
         if isVertically:

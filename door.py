@@ -1,13 +1,10 @@
 import pygame
+from staticGameObject import StaticGameObject
 
 
-class Door(pygame.sprite.Sprite):
-    def __init__(self, tile_type, pos_x, pos_y, game, lock=False):
-        super().__init__(game.tiles_group, game.all_sprites)
-        self.image = game.tile_images[tile_type]
-        self.rect = self.image.get_rect().move(
-            game.tile_width * pos_x, game.tile_height * pos_y)
-        self.game = game
+class Door(StaticGameObject):
+    def __init__(self, sheet, pos_x, pos_y, game, cols, rows, lock=False):
+        super().__init__(sheet, pos_x, pos_y, game, cols, rows)
         self.solid = True
         self.lock = lock
 

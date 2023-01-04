@@ -4,9 +4,8 @@ from coord import Coord
 
 
 class DynamicGameObject(GameObject):
-    def __init__(self, tile_type, pos_x, pos_y, game):
-        super().__init__(tile_type, pos_x, pos_y, game)
-        self.image = game.tile_images[tile_type]
+    def __init__(self, sheet, pos_x, pos_y, game, cols, rows):
+        super().__init__(sheet, pos_x, pos_y, game, cols, rows)
         self.coord = Coord(pos_x, pos_y)
 
     def check(self, x, y):
