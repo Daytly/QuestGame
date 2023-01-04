@@ -55,11 +55,11 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    self.all_sprites.update(event)
                 if event.type == enemyEventType:
                     for enemy in self.enemies:
-                        enemy.update(event)
+                        enemy.move(event)
+                if event.type == pygame.KEYDOWN:
+                    self.all_sprites.update(event)
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов

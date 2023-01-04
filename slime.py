@@ -12,7 +12,7 @@ class Slime(DynamicGameObject):
         else:
             self.speedY = 0
 
-    def update(self, *args):
+    def move(self, *args):
         if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):
             self.coord += [self.speedX, self.speedY]
             self.rect.x += self.speedX * self.game.tile_width

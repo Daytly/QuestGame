@@ -8,6 +8,3 @@ class Wall(StaticGameObject):
         super().__init__(tile_type, pos_x, pos_y, game)
         self.solid = False
 
-    def stepOn(self):
-        return self.solid
-
