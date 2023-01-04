@@ -23,7 +23,7 @@ class Game:
             'wall': functions.load_image('box.png'),
             'empty': functions.load_image('grass.png'),
             'door': functions.load_image('door.png'),
-            'player': functions.load_image('mar.png'),
+            'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
             'key': functions.load_image('key.png'),
             'slime': functions.load_image('slime.png')
         }
