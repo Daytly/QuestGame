@@ -26,3 +26,7 @@ class GameObject(pygame.sprite.Sprite):
                 frame_location = (self.rect.w * i, self.rect.h * j)
                 self.frames.append(sheet.subsurface(pygame.Rect(
                     frame_location, self.rect.size)))
+
+    def update_sprite(self, numSprite):
+        self.cur_frame = numSprite
+        self.image = self.frames[self.cur_frame]
