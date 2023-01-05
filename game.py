@@ -24,10 +24,11 @@ class Game:
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
             'door': functions.load_image('door.png'),
             'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
-            'key': functions.load_image('key.png'),
-            'slime': functions.load_image('slime.png'),
+            'key': pygame.transform.scale(functions.load_image('key.png'), (96, 48)),
+            'slime': pygame.transform.scale(functions.load_image('slime.png'), (192, 48)),
             'grass': pygame.transform.scale(functions.load_image('grass.png'), (96, 96)),
             'floorDetail': pygame.transform.scale(functions.load_image('floorDetail.png'), (768, 192)),
+            'tree': pygame.transform.scale(functions.load_image('tree.png'), (48, 48))
         }
         self.enemies = []
         self.player = None

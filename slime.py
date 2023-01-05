@@ -9,8 +9,10 @@ class Slime(DynamicGameObject):
         self.speedY = 1
         if isVertically:
             self.speedX = 0
+            self.frames = self.frames[:2]
         else:
             self.speedY = 0
+            self.frames = self.frames[2:]
 
     def move(self, *args):
         if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):
@@ -20,3 +22,7 @@ class Slime(DynamicGameObject):
         else:
             self.speedY *= -1
             self.speedX *= -1
+            self.update_sprite((self.cur_frame + 1) % 2)
+            self.coord += [self.speedX, self.speedY]
+            self.rect.x += self.speedX * self.game.tile_width
+            self.rect.y += self.speedY * self.game.tile_height

@@ -9,6 +9,7 @@ from door import Door
 from key import Key
 from slime import Slime
 from detail import Detail
+from tree import Tree
 import sys
 
 
@@ -64,7 +65,7 @@ def generate_levelInHouse(level, game):
             else:
                 new_level[y][x] = Floor('empty', x, y, game, 3, 3, 4)
             if level[y][x] == '#':
-                new_level[y][x] = Wall('wall', x, y, game, 2, 1)
+                new_level[y][x] = Wall('wall', x, y, game, 2, 1, random.randrange(2))
             elif level[y][x] == '%':
                 new_level[y][x] = Door('door', x, y, game, True, 1, 1)
             elif level[y][x] == 'K':
@@ -110,17 +111,19 @@ def generate_levelOutside(level, game):
                 if random.randrange(5) == 0:
                     Detail('floorDetail', x, y, game, 16, 4, random.randrange(48))
             elif level[y][x] == '#':
-                new_level[y][x] = Wall('wall', x, y, game, 2, 1)
+                new_level[y][x] = Wall('wall', x, y, game, 2, 1, random.randrange(2))
             elif level[y][x] == '%':
                 new_level[y][x] = Door('door', x, y, game, True, 1, 1)
             elif level[y][x] == 'K':
-                new_level[y][x] = Key('key', x, y, game, 1, 1)
+                new_level[y][x] = Key('key', x, y, game, 2, 1)
+            elif level[y][x] == 'T':
+                new_level[y][x] = Tree('tree', x, y, game, 1, 1)
     for y in range(len(level)):
         for x in range(len(level[y])):
             if level[y][x] == '@':
                 new_player = Player('player', x, y, game)
             elif level[y][x] == '-':
-                enemy.append(Slime('slime', x, y, game, True, 1, 1))
+                enemy.append(Slime('slime', x, y, game, True, 4, 1))
 
     # вернем игрока, а также размер поля в клетках
     return new_level, new_player, enemy, x, y
