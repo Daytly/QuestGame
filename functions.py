@@ -42,10 +42,9 @@ def generate_level(level, game):
         new_level.append([])
         new_level[-1] = [0] * len(level[y])
         for x in range(len(level[y])):
-            if level[y][x] == '.':
-                new_level[y][x] = Floor('empty', x, y, game, 1, 1)
-            elif level[y][x] == '#':
-                new_level[y][x] = Wall('wall', x, y, game, 1, 1)
+            new_level[y][x] = Floor('empty', x, y, game, 1, 1)
+            if level[y][x] == '#':
+                new_level[y][x] = Wall('wall', x, y, game, 2, 1)
             elif level[y][x] == '%':
                 new_level[y][x] = Door('door', x, y, game, True, 1, 1)
             elif level[y][x] == 'K':

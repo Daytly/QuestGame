@@ -8,3 +8,5 @@ class Wall(StaticGameObject):
         super().__init__(sheet, pos_x, pos_y, game, cols, rows)
         self.solid = False
 
+
+

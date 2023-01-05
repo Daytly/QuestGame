@@ -20,7 +20,7 @@ class Game:
         self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.tile_images = {
-            'wall': functions.load_image('box.png'),
+            'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': functions.load_image('grass.png'),
             'door': functions.load_image('door.png'),
             'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
