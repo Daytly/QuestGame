@@ -26,7 +26,8 @@ class Game:
             'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
             'key': functions.load_image('key.png'),
             'slime': functions.load_image('slime.png'),
-            'grass': pygame.transform.scale(functions.load_image('grass.png'), (96, 96))
+            'grass': pygame.transform.scale(functions.load_image('grass.png'), (96, 96)),
+            'floorDetail': pygame.transform.scale(functions.load_image('floorDetail.png'), (768, 192)),
         }
         self.enemies = []
         self.player = None

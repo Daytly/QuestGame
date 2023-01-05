@@ -1,4 +1,6 @@
 import os
+import random
+
 import pygame
 from player import Player
 from wall import Wall
@@ -6,6 +8,7 @@ from floor import Floor
 from door import Door
 from key import Key
 from slime import Slime
+from detail import Detail
 import sys
 
 
@@ -103,7 +106,10 @@ def generate_levelOutside(level, game):
                 new_level[y][x] = Floor('grass', x, y, game, 2, 2, 7)
             else:
                 new_level[y][x] = Floor('grass', x, y, game, 2, 2, 4)
-            if level[y][x] == '#':
+            if level[y][x] == '.':
+                if random.randrange(3) == 0:
+                    Detail('floorDetail', x, y, game, 16, 4, random.randrange(48))
+            elif level[y][x] == '#':
                 new_level[y][x] = Wall('wall', x, y, game, 2, 1)
             elif level[y][x] == '%':
                 new_level[y][x] = Door('door', x, y, game, True, 1, 1)
