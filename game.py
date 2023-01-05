@@ -69,6 +69,9 @@ class Game:
             reset_btn.draw(self.screen, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
             menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
             self.display.flip()
+            if self.check_intersection():
+                self.death()
+                self.end_screen(False)
 
     def start_screen(self):
         intro_text = ["ЗАСТАВКА", "",
@@ -93,7 +96,7 @@ class Game:
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    terminate()
+                    sys.exit()
                 elif event.type == pygame.KEYDOWN or \
                         event.type == pygame.MOUSEBUTTONDOWN:
                     time.sleep(0.5)
@@ -167,11 +170,47 @@ class Game:
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    terminate()
+                    sys.exit()
                 elif event.type == pygame.KEYDOWN or \
                         event.type == pygame.MOUSEBUTTONDOWN:
                     return self.menu()
             pygame.display.flip()
+            self.clock.tick(self.fps)
+
+    def check_intersection(self):
+        for i in self.enemies:
+            if i.rect.center == self.player.rect.center:
+                self.player.killer = i
+                return True
+        return False
+
+    def death(self):
+        death_img = self.player.frames[0]
+        for i in self.all_sprites:
+            if i != self.player.killer and i != self.player:
+                i.draw(self.screen)
+        self.screen.blit(death_img, self.player.rect)
+        self.display.flip()
+        tick = 0
+        while tick < 30:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+            tick += 1
+            self.clock.tick(self.fps)
+        death_img = pygame.transform.scale(
+            pygame.image.load('NinjaAdventure/Actor/Characters/BlueNinja/SeparateAnim/Dead.png'), (48, 48))
+        for i in self.all_sprites:
+            if i != self.player.killer and i != self.player:
+                i.draw(self.screen)
+        self.screen.blit(death_img, self.player.rect)
+        self.display.flip()
+        tick = 0
+        while tick < 60:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+            tick += 1
             self.clock.tick(self.fps)
 
 

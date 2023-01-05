@@ -9,6 +9,7 @@ class Player(DynamicGameObject):
         super().__init__(sheet, pos_x, pos_y, game, 4, 1)
         self.rect = self.image.get_rect().move(game.tile_width * pos_x + 1, game.tile_height * pos_y + 1)
         self.key = False
+        self.killer = None  # Тот кто убил персонажа
 
     def update(self, *args):
         if args and args[0].type == pygame.KEYDOWN:
