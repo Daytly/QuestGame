@@ -15,13 +15,13 @@ class Game:
         self.width = 700
         self.height = 700
         self.fps = 60
-        self.tile_height = 50
-        self.tile_width = 50
+        self.tile_height = 48
+        self.tile_width = 48
         self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.tile_images = {
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
-            'empty': functions.load_image('grass.png'),
+            'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
             'door': functions.load_image('door.png'),
             'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
             'key': functions.load_image('key.png'),
