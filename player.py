@@ -14,25 +14,24 @@ class Player(DynamicGameObject):
         if args and args[0].type == pygame.KEYDOWN:
             if args[0].key == pygame.K_UP:
                 if self.check(self.coord.x, self.coord.y - 1):
-                    if self.rect.y >= self.game.tile_height:
-                        self.rect.y -= 50
-                        self.coord.y -= 1
-                        self.cur_frame = 1
+                    self.rect.y -= 50
+                    self.coord.y -= 1
+                self.cur_frame = 1
             if args[0].key == pygame.K_DOWN:
                 if self.check(self.coord.x, self.coord.y + 1):
                     self.rect.y += 50
                     self.coord.y += 1
-                    self.cur_frame = 0
+                self.cur_frame = 0
             if args[0].key == pygame.K_RIGHT:
                 if self.check(self.coord.x + 1, self.coord.y):
                     self.rect.x += 50
                     self.coord.x += 1
-                    self.cur_frame = 3
+                self.cur_frame = 3
             if args[0].key == pygame.K_LEFT:
                 if self.check(self.coord.x - 1, self.coord.y):
                     self.rect.x -= 50
                     self.coord.x -= 1
-                    self.cur_frame = 2
+                self.cur_frame = 2
             self.image = self.frames[self.cur_frame]
 
     def check(self, x, y):
