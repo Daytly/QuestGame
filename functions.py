@@ -107,7 +107,7 @@ def generate_levelOutside(level, game):
             else:
                 new_level[y][x] = Floor('grass', x, y, game, 2, 2, 4)
             if level[y][x] == '.':
-                if random.randrange(3) == 0:
+                if random.randrange(5) == 0:
                     Detail('floorDetail', x, y, game, 16, 4, random.randrange(48))
             elif level[y][x] == '#':
                 new_level[y][x] = Wall('wall', x, y, game, 2, 1)
