@@ -16,7 +16,7 @@ class GameObject(pygame.sprite.Sprite):
         pass
 
     def draw(self, screen):
-        self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+        screen.blit(self.image, self.rect)
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
