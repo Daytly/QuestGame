@@ -25,7 +25,8 @@ class Game:
             'door': functions.load_image('door.png'),
             'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
             'key': functions.load_image('key.png'),
-            'slime': functions.load_image('slime.png')
+            'slime': functions.load_image('slime.png'),
+            'grass': pygame.transform.scale(functions.load_image('grass.png'), (96, 96))
         }
         self.enemies = []
         self.player = None
@@ -35,7 +36,7 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         level_list = functions.load_level('map.txt')
-        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_level(level_list, self)
+        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_levelInHouse(level_list, self)
 
     def run(self, name_level):
         self.enemies = []
@@ -46,7 +47,7 @@ class Game:
         level_list = functions.load_level(name_level)
         enemyEventType = pygame.USEREVENT + 1
         pygame.time.set_timer(enemyEventType, 500)
-        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_level(level_list, self)
+        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_levelOutside(level_list, self)
         reset_btn = ButtonLevel(40, 40, 295, 650, name_level)
         menu_btn = Button(40, 40, 345, 650)
         while True:
