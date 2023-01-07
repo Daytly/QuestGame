@@ -41,9 +41,10 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         level_list = functions.load_level('map.txt')
-        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(level_list,
-                                                                                                     self,
-                                                                                                     False)
+        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(
+            level_list,
+            self,
+            False)
 
     def run(self, name_level):
         self.enemies = []
@@ -59,6 +60,14 @@ class Game:
         pygame.time.set_timer(spikesEventType, 500)
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
             functions.generate_level(level_list, self, False)
+        # изменяем ракурс камеры
+        self.camera.move(self.player)
+        # обновляем положение всех спрайтов
+        for sprite in self.all_sprites:
+            self.camera.apply(sprite)
+            sprite.draw(self.screen)
+        self.display.flip()
+        pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         reset_btn = ButtonLevel(40, 40, 295, 650, name_level)
         menu_btn = Button(40, 40, 345, 650)
         while True:
@@ -82,13 +91,13 @@ class Game:
                 sprite.draw(self.screen)
             reset_btn.draw(self.screen, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
             menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
-            self.display.flip()
             if self.check_intersection():
                 self.death()
                 self.end_screen(False)
             if self.player.isDead():
                 self.death()
                 self.end_screen(False)
+            self.display.flip()
 
     def start_screen(self):
         intro_text = ["ЗАСТАВКА", "",
@@ -142,14 +151,13 @@ class Game:
     def menu_levels(self):
         fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
-        # play_btn = Button(200, 40, 0, 0)
-        # exit_btn = Button(200, 40, 0, 0)
-        buttons = []
+        levels = []
+        indLevel = 0
+        font = pygame.font.Font(None, 50)
         dirLevels = listdir('Data/levels')
-        for i in range(9):
-            for j in range(9):
-                if dirLevels:
-                    buttons.append(ButtonLevel(60, 60, j * 70 + 40, i * 70 + 6, dirLevels.pop(0)))
+        for level in dirLevels:
+            levels.append([])
+            levels[-1].append(ButtonLevel(400, 30, 150, 570, level))
         menu_btn = Button(60, 60, 5, 635)
         for level in buttons:
             level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150))
