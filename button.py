@@ -13,6 +13,7 @@ class Button:
         self.activeColor = activeColor
         self.dis = dis
         self.action = action
+        self.isPressed = False
 
     def draw(self, screen):
         mouse = pygame.mouse.get_pos()
@@ -23,8 +24,11 @@ class Button:
                 if click[0] == 1:
                     # pygame.mixer.Sound.play(mp3_button)
                     # pygame.time.delay(170)
-                    if self.action is not None:
+                    if self.action is not None and not self.isPressed:
                         self.action()
+                        self.isPressed = True
+                else:
+                    self.isPressed = False
             else:
                 pygame.draw.rect(screen, self.activeColor, (self.x, self.y, self.width, self.height))
         else:

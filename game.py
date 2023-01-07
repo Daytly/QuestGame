@@ -47,6 +47,7 @@ class Game:
             level_list,
             self,
             False)
+        self.indLevel = 0
 
     def run(self, name_level):
         self.enemies = []
@@ -156,7 +157,7 @@ class Game:
         fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         levels = []
-        indLevel = 0
+        self.indLevel = 0
         dirLevels = listdir('Data/levels')
         for level in dirLevels:
             levels.append([])
@@ -164,10 +165,16 @@ class Game:
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/{level.rstrip(".txt")}SH.png', 450, 450))
             else:
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
-            levels[-1].append(Text(20, 480, (0, 0, 0), 50, level.rstrip('.txt')))
-            levels[-1].append(ButtonLevel(400, 50, 150, 570, level, 'Play', (100, 100, 100), (150, 150, 150), self.run))
-        menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), self.menu)
-        for obj in levels[indLevel]:
+            levels[-1].append(Text(125, 495, (0, 0, 0), 50, level.rstrip('.txt')))
+            levels[-1].append(ButtonLevel(450, 50, 125, 570, level, 'Play', (100, 100, 100), (150, 150, 150), self.run))
+        menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
+        right_btn = Button(60, 60, 635, 245, '>', (100, 100, 100), (150, 150, 150), action=self.rightBtn)
+        left_btn = Button(60, 60, 5, 245, '<', (100, 100, 100), (150, 150, 150), action=self.leftBtn)
+        menu_btn.draw(self.screen)
+        left_btn.draw(self.screen)
+        right_btn.draw(self.screen)
+        self.indLevel %= len(levels)
+        for obj in levels[self.indLevel]:
             obj.draw(self.screen)
         pygame.display.flip()
         time.sleep(0.5)
@@ -178,12 +185,15 @@ class Game:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
-                        indLevel = (indLevel + 1) % len(levels)
+                        self.rightBtn()
                     if event.key == pygame.K_LEFT:
-                        indLevel = (indLevel - 1) % len(levels)
-            for obj in levels[indLevel]:
+                        self.leftBtn()
+            self.indLevel %= len(levels)
+            for obj in levels[self.indLevel]:
                 obj.draw(self.screen)
             menu_btn.draw(self.screen)
+            left_btn.draw(self.screen)
+            right_btn.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -247,6 +257,12 @@ class Game:
                     sys.exit()
             tick += 1
             self.clock.tick(self.fps)
+
+    def rightBtn(self):
+        self.indLevel = self.indLevel + 1
+
+    def leftBtn(self):
+        self.indLevel = self.indLevel - 1
 
 
 game = Game()
