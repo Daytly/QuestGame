@@ -8,7 +8,7 @@ class Key(StaticGameObject):
         self.solid = True
         self.isActive = True
 
-    def stepOn(self):
+    def stepOn(self, entity):
         if self.isActive:
             self.isActive = False
             self.update_sprite(1)

@@ -29,9 +29,11 @@ class Game:
             'grass': pygame.transform.scale(functions.load_image('grass.png'), (96, 96)),
             'floorDetail': pygame.transform.scale(functions.load_image('floorDetail.png'), (768, 192)),
             'tree': pygame.transform.scale(functions.load_image('tree.png'), (48, 48)),
-            'deadPlayer': pygame.transform.scale(functions.load_image('deadPlayer.png'), (48, 48))
+            'deadPlayer': pygame.transform.scale(functions.load_image('deadPlayer.png'), (48, 48)),
+            'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48))
         }
         self.enemies = []
+        self.coordSpikes = []
         self.player = None
         self.camera = Camera(self)
         # группы спрайтов
@@ -39,18 +41,24 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         level_list = functions.load_level('map.txt')
-        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_levelInHouse(level_list, self)
+        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(level_list,
+                                                                                                     self,
+                                                                                                     False)
 
     def run(self, name_level):
         self.enemies = []
+        self.coordSpikes = []
         self.camera = Camera(self)
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         level_list = functions.load_level(name_level)
         enemyEventType = pygame.USEREVENT + 1
+        spikesEventType = enemyEventType + 1
         pygame.time.set_timer(enemyEventType, 500)
-        self.level, self.player, self.enemies, self.level_x, self.level_y = functions.generate_levelOutside(level_list, self)
+        pygame.time.set_timer(spikesEventType, 500)
+        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
+            functions.generate_level(level_list, self, False)
         reset_btn = ButtonLevel(40, 40, 295, 650, name_level)
         menu_btn = Button(40, 40, 345, 650)
         while True:
@@ -62,6 +70,9 @@ class Game:
                 if event.type == enemyEventType:
                     for enemy in self.enemies:
                         enemy.move(event)
+                if event.type == spikesEventType:
+                    for y, x in self.coordSpikes:
+                        self.level[y][x].update(event)
                 self.player.update(event)
             # изменяем ракурс камеры
             self.camera.update(self.player)
@@ -73,6 +84,9 @@ class Game:
             menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
             self.display.flip()
             if self.check_intersection():
+                self.death()
+                self.end_screen(False)
+            if self.player.isDead():
                 self.death()
                 self.end_screen(False)
 
@@ -190,7 +204,7 @@ class Game:
     def death(self):
         death_img = self.tile_images['deadPlayer']
         for i in self.all_sprites:
-            if i != self.player.killer and i != self.player:
+            if i != self.player:
                 i.draw(self.screen)
         self.screen.blit(death_img, self.player.rect)
         self.display.flip()
@@ -202,7 +216,7 @@ class Game:
             tick += 1
             self.clock.tick(self.fps)
         for i in self.all_sprites:
-            if i != self.player.killer and i != self.player:
+            if i != self.player:
                 i.draw(self.screen)
         self.screen.blit(death_img, self.player.rect)
         self.display.flip()

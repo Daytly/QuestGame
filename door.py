@@ -14,7 +14,7 @@ class Door(StaticGameObject):
     def unLock(self):
         self.lock = False
 
-    def stepOn(self):
+    def stepOn(self, entity):
         if not self.lock:
             self.game.end_screen(True)
             return self.solid

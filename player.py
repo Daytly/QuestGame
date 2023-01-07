@@ -2,6 +2,7 @@ import pygame
 from dynamicGameObject import DynamicGameObject
 from key import Key
 from door import Door
+from spikes import Spikes
 
 
 class Player(DynamicGameObject):
@@ -35,6 +36,8 @@ class Player(DynamicGameObject):
                 self.update_sprite(2)
             self.image = self.frames[self.cur_frame]
 
+        self.check(self.coord.x, self.coord.y)
+
     def check(self, x, y):
         try:
             _type = type(self.game.level[y][x])
@@ -43,6 +46,18 @@ class Player(DynamicGameObject):
             elif _type == Door and self.key:
                 self.game.level[y][x].unLock()
                 self.key = False
-            return self.game.level[y][x].stepOn()
+            elif _type == Spikes:
+                if self.game.level[y][x].isActive():
+                    self.killer = self.game.level[y][x]
+            return self.game.level[y][x].stepOn(self)
         except IndexError:
             return False
+
+    def isDead(self):
+        return self.killer
+
+    def murder(self, killer):
+        self.killer = killer
+
+    def get_coord(self):
+        return self.coord

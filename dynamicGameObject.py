@@ -10,7 +10,7 @@ class DynamicGameObject(GameObject):
 
     def check(self, x, y):
         try:
-            return self.game.level[y][x].stepOn()
+            return self.game.level[y][x].stepOn(self)
         except IndexError:
             return False
 

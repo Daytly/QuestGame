@@ -7,5 +7,5 @@ class StaticGameObject(GameObject):
         super().__init__(sheet, pos_x, pos_y, game, cols, rows)
         self.solid = True
 
-    def stepOn(self):
+    def stepOn(self, entity):
         return self.solid

@@ -28,5 +28,5 @@ class GameObject(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update_sprite(self, numSprite):
-        self.cur_frame = numSprite
+        self.cur_frame = numSprite % len(self.frames)
         self.image = self.frames[self.cur_frame % len(self.frames)]

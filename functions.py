@@ -10,6 +10,7 @@ from key import Key
 from slime import Slime
 from detail import Detail
 from tree import Tree
+from spikes import Spikes
 import sys
 
 
@@ -38,75 +39,36 @@ def load_level(filename):
     return level_map
 
 
-def generate_levelInHouse(level, game):
+def generate_level(level, game, inHouse):
     new_player, x, y = None, None, None
     new_level = []
     enemy = []
+    spikesCoord = []
+    tilesFloor = 'empty' if inHouse else 'grass'
     for y in range(len(level)):
         new_level.append([])
         new_level[-1] = [0] * len(level[y])
         for x in range(len(level[y])):
+            # Генерация карты
             if x == y == 0:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 0)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 0)
             elif x == len(level[y]) - 1 and y == 0:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 2)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 2)
             elif x == 0 and y == len(level) - 1:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 6)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 6)
             elif x == len(level[y]) - 1 and y == len(level) - 1:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 8)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 8)
             elif x == 0:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 3)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 3)
             elif x == len(level[y]) - 1:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 5)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 5)
             elif y == 0:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 1)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 1)
             elif y == len(level) - 1:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 7)
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 7)
             else:
-                new_level[y][x] = Floor('empty', x, y, game, 3, 3, 4)
-            if level[y][x] == '#':
-                new_level[y][x] = Wall('wall', x, y, game, 2, 1, random.randrange(2))
-            elif level[y][x] == '%':
-                new_level[y][x] = Door('door', x, y, game, True, 1, 1)
-            elif level[y][x] == 'K':
-                new_level[y][x] = Key('key', x, y, game, 1, 1)
-    for y in range(len(level)):
-        for x in range(len(level[y])):
-            if level[y][x] == '@':
-                new_player = Player('player', x, y, game)
-            elif level[y][x] == '-':
-                enemy.append(Slime('slime', x, y, game, True, 1, 1))
+                new_level[y][x] = Floor(tilesFloor, x, y, game, 2, 2, 4)
 
-    # вернем игрока, а также размер поля в клетках
-    return new_level, new_player, enemy, x, y
-
-
-def generate_levelOutside(level, game):
-    new_player, x, y = None, None, None
-    new_level = []
-    enemy = []
-    for y in range(len(level)):
-        new_level.append([])
-        new_level[-1] = [0] * len(level[y])
-        for x in range(len(level[y])):
-            if x == y == 0:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 0)
-            elif x == len(level[y]) - 1 and y == 0:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 2)
-            elif x == 0 and y == len(level) - 1:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 6)
-            elif x == len(level[y]) - 1 and y == len(level) - 1:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 8)
-            elif x == 0:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 3)
-            elif x == len(level[y]) - 1:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 5)
-            elif y == 0:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 1)
-            elif y == len(level) - 1:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 7)
-            else:
-                new_level[y][x] = Floor('grass', x, y, game, 2, 2, 4)
             if level[y][x] == '.':
                 if random.randrange(5) == 0:
                     Detail('floorDetail', x, y, game, 16, 4, random.randrange(48))
@@ -118,15 +80,24 @@ def generate_levelOutside(level, game):
                 new_level[y][x] = Key('key', x, y, game, 2, 1)
             elif level[y][x] == 'T':
                 new_level[y][x] = Tree('tree', x, y, game, 1, 1)
+            elif level[y][x] == '$':
+                new_level[y][x] = Spikes('spikes', x, y, game, 10, 1)
+                spikesCoord.append([y, x])
+    # Генерация врагов
+    for y in range(len(level)):
+        for x in range(len(level[y])):
+            if level[y][x] == '-':
+                enemy.append(Slime('slime', x, y, game, True, 4, 1))
+            elif level[y][x] == '|':
+                enemy.append(Slime('slime', x, y, game, False, 4, 1))
+    # Генерация игрока
     for y in range(len(level)):
         for x in range(len(level[y])):
             if level[y][x] == '@':
                 new_player = Player('player', x, y, game)
-            elif level[y][x] == '-':
-                enemy.append(Slime('slime', x, y, game, True, 4, 1))
 
     # вернем игрока, а также размер поля в клетках
-    return new_level, new_player, enemy, x, y
+    return new_level, new_player, enemy, spikesCoord, x, y
 
 
 def print_text(screen, x, y, size, _str, color):
