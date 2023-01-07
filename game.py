@@ -28,7 +28,8 @@ class Game:
             'key': pygame.transform.scale(functions.load_image('key.png'), (96, 48)),
             'grass': pygame.transform.scale(functions.load_image('grass.png'), (96, 96)),
             'floorDetail': pygame.transform.scale(functions.load_image('floorDetail.png'), (768, 192)),
-            'tree': pygame.transform.scale(functions.load_image('tree.png'), (48, 48))
+            'tree': pygame.transform.scale(functions.load_image('tree.png'), (48, 48)),
+            'deadPlayer': pygame.transform.scale(functions.load_image('deadPlayer.png'), (48, 48))
         }
         self.enemies = []
         self.player = None
@@ -61,8 +62,7 @@ class Game:
                 if event.type == enemyEventType:
                     for enemy in self.enemies:
                         enemy.move(event)
-                if event.type == pygame.KEYDOWN:
-                    self.all_sprites.update(event)
+                self.player.update(event)
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов
@@ -188,7 +188,7 @@ class Game:
         return False
 
     def death(self):
-        death_img = self.player.frames[0]
+        death_img = self.tile_images['deadPlayer']
         for i in self.all_sprites:
             if i != self.player.killer and i != self.player:
                 i.draw(self.screen)
@@ -201,8 +201,6 @@ class Game:
                     sys.exit()
             tick += 1
             self.clock.tick(self.fps)
-        death_img = pygame.transform.scale(
-            pygame.image.load('NinjaAdventure/Actor/Characters/BlueNinja/SeparateAnim/Dead.png'), (48, 48))
         for i in self.all_sprites:
             if i != self.player.killer and i != self.player:
                 i.draw(self.screen)
