@@ -44,7 +44,14 @@ def generate_level(level, game, inHouse):
     new_level = []
     enemy = []
     spikesCoord = []
+    closed = False
     tilesFloor = 'empty' if inHouse else 'grass'
+    level = ['T' * 18] * 8 + level + ['T' * 18] * 8
+    for y in range(len(level)):
+        level[y] = 'T' * 9 + level[y] + 'T' * 9
+        for x in range(len(level[y])):
+            if level[y][x] == 'K':
+                closed = True
     for y in range(len(level)):
         new_level.append([])
         new_level[-1] = [0] * len(level[y])
@@ -75,7 +82,7 @@ def generate_level(level, game, inHouse):
             elif level[y][x] == '#':
                 new_level[y][x] = Wall('wall', x, y, game, 2, 1, random.randrange(2))
             elif level[y][x] == '%':
-                new_level[y][x] = Door('door', x, y, game, True, 1, 1)
+                new_level[y][x] = Door('door', x, y, game, closed, 1, 1)
             elif level[y][x] == 'K':
                 new_level[y][x] = Key('key', x, y, game, 2, 1)
             elif level[y][x] == 'T':
