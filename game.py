@@ -4,8 +4,10 @@ import pygame
 from camera import Camera
 from floor import Floor
 from button import Button, ButtonLevel
+from picture import Picture
+from text import Text
 import functions
-from os import listdir
+from os import listdir, path
 
 
 class Game:
@@ -67,9 +69,9 @@ class Game:
             self.camera.apply(sprite)
             sprite.draw(self.screen)
         self.display.flip()
+        reset_btn = ButtonLevel(40, 40, 295, 650, name_level, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
+        menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
-        reset_btn = ButtonLevel(40, 40, 295, 650, name_level)
-        menu_btn = Button(40, 40, 345, 650)
         while True:
             self.screen.fill(pygame.Color('white'))
             self.clock.tick(self.fps)
@@ -89,8 +91,8 @@ class Game:
             for sprite in self.all_sprites:
                 self.camera.apply(sprite)
                 sprite.draw(self.screen)
-            reset_btn.draw(self.screen, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
-            menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
+            reset_btn.draw(self.screen)
+            menu_btn.draw(self.screen)
             if self.check_intersection():
                 self.death()
                 self.end_screen(False)
@@ -133,18 +135,20 @@ class Game:
     def menu(self):
         fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(400, 70, 150, 250)
-        exit_btn = Button(200, 40, 250, 350)
-        play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150))
-        exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150))
+        play_btn = Button(400, 70, 150, 250, 'PLAY', (100, 100, 100), (150, 150, 150))
+        exit_btn = Button(200, 40, 250, 350, 'EXIT', (100, 100, 100), (150, 150, 150))
+        play_btn.draw(self.screen)
+        exit_btn.draw(self.screen)
         pygame.display.flip()
+        play_btn.action = self.menu_levels
+        exit_btn.action = sys.exit
         time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-            play_btn.draw(self.screen, 'PLAY', (100, 100, 100), (150, 150, 150), action=self.menu_levels)
-            exit_btn.draw(self.screen, 'EXIT', (100, 100, 100), (150, 150, 150), action=sys.exit)
+            play_btn.draw(self.screen)
+            exit_btn.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -153,25 +157,33 @@ class Game:
         self.screen.blit(fon, (0, 0))
         levels = []
         indLevel = 0
-        font = pygame.font.Font(None, 50)
         dirLevels = listdir('Data/levels')
         for level in dirLevels:
             levels.append([])
-            levels[-1].append(ButtonLevel(400, 30, 150, 570, level))
-        menu_btn = Button(60, 60, 5, 635)
-        for level in buttons:
-            level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150))
-        menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150))
+            if path.isfile(f'Data/screenShots/{level.rstrip(".txt")}SH.png'):
+                levels[-1].append(Picture(125, 20, f'Data/screenShots/{level.rstrip(".txt")}SH.png', 450, 450))
+            else:
+                levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
+            levels[-1].append(Text(20, 480, (0, 0, 0), 50, level.rstrip('.txt')))
+            levels[-1].append(ButtonLevel(400, 50, 150, 570, level, 'Play', (100, 100, 100), (150, 150, 150), self.run))
+        menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), self.menu)
+        for obj in levels[indLevel]:
+            obj.draw(self.screen)
         pygame.display.flip()
         time.sleep(0.5)
         while True:
+            self.screen.fill((153, 217, 234))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-            for level in buttons:
-                level.draw(self.screen, level.get_level().rstrip('.txt'), (100, 100, 100), (150, 150, 150),
-                           action=self.run)
-            menu_btn.draw(self.screen, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RIGHT:
+                        indLevel = (indLevel + 1) % len(levels)
+                    if event.key == pygame.K_LEFT:
+                        indLevel = (indLevel - 1) % len(levels)
+            for obj in levels[indLevel]:
+                obj.draw(self.screen)
+            menu_btn.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
