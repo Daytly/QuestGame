@@ -33,7 +33,7 @@ class Game:
             'tree': pygame.transform.scale(functions.load_image('tree.png'), (48, 48)),
             'deadPlayer': pygame.transform.scale(functions.load_image('deadPlayer.png'), (48, 48)),
             'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48)),
-            'shuriken': pygame.transform.scale(functions.load_image('shrilen.png'), (96, 48)),
+            'shuriken': pygame.transform.scale(functions.load_image('shuriken.png'), (96, 48)),
             'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96))
         }
         self.enemies = []

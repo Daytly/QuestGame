@@ -3,13 +3,13 @@ import pygame
 
 
 class Missile(DynamicGameObject):
-    def __init__(self, sheet, pos_x, pos_y, game, cols, rows, isVertically, owner):
+    def __init__(self, sheet, pos_x, pos_y, game, cols, rows, speedX, speedY, owner):
         super().__init__(sheet, pos_x, pos_y, game, cols, rows)
-        self.speedX = 0 if isVertically else 1
-        self.speedY = 1 if isVertically else 0
+        self.speedX = speedX
+        self.speedY = speedY
         self.owner = owner
 
-    def update(self, *args):
+    def move(self, *args):
         if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):
             self.coord += [self.speedX, self.speedY]
             self.rect.x += self.speedX * self.game.tile_width

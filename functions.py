@@ -11,6 +11,7 @@ from slime import Slime
 from detail import Detail
 from tree import Tree
 from spikes import Spikes
+from darkNinja import DarkNinja
 import sys
 
 
@@ -97,6 +98,8 @@ def generate_level(level, game, inHouse):
                 enemy.append(Slime('slime', x, y, game, True, 4, 1))
             elif level[y][x] == '-':
                 enemy.append(Slime('slime', x, y, game, False, 4, 1))
+            elif level[y][x] == '^':
+                enemy.append(DarkNinja('darkNinja', x, y, game, 4, 2, True))
     # Генерация игрока
     for y in range(len(level)):
         for x in range(len(level[y])):
