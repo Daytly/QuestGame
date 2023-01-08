@@ -7,6 +7,7 @@ from button import Button, ButtonLevel
 from picture import Picture
 from text import Text
 import functions
+from missile import Missile
 from os import listdir, path
 
 
@@ -25,7 +26,7 @@ class Game:
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
             'door': pygame.transform.scale(functions.load_image('door.png'), (48, 48)),
-            'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
+            'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (188, 47)),
             'slime': pygame.transform.scale(functions.load_image('slime.png'), (192, 48)),
             'key': pygame.transform.scale(functions.load_image('key.png'), (96, 48)),
             'grass': pygame.transform.scale(functions.load_image('grass.png'), (96, 96)),
@@ -44,6 +45,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
+        self.enemies_group = pygame.sprite.Group()
         level_list = functions.load_level('map.txt')
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(
             level_list,
@@ -58,11 +60,14 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
+        self.enemies_group = pygame.sprite.Group()
         level_list = functions.load_level(name_level)
         enemyEventType = pygame.USEREVENT + 1
         spikesEventType = enemyEventType + 1
+        shurikenEventType = spikesEventType + 1
         pygame.time.set_timer(enemyEventType, 500)
         pygame.time.set_timer(spikesEventType, 500)
+        pygame.time.set_timer(shurikenEventType, 100)
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
             functions.generate_level(level_list, self, False)
         # изменяем ракурс камеры
@@ -83,7 +88,12 @@ class Game:
                     sys.exit()
                 if event.type == enemyEventType:
                     for enemy in self.enemies:
-                        enemy.move(event)
+                        if type(enemy) != Missile:
+                            enemy.move(event)
+                if event.type == shurikenEventType:
+                    for enemy in self.enemies:
+                        if type(enemy) == Missile:
+                            enemy.move(event)
                 if event.type == spikesEventType:
                     for y, x in self.coordSpikes:
                         self.level[y][x].update(event)
@@ -227,10 +237,10 @@ class Game:
             self.clock.tick(self.fps)
 
     def check_intersection(self):
-        for i in self.enemies:
-            if i.rect.center == self.player.rect.center:
-                self.player.killer = i
-                return True
+        entities = pygame.sprite.spritecollide(self.player, self.enemies_group, True)
+        if entities:
+            self.player.killer = entities[0]
+            return True
         return False
 
     def death(self):

@@ -12,6 +12,7 @@ from detail import Detail
 from tree import Tree
 from spikes import Spikes
 from darkNinja import DarkNinja
+from missile import Missile
 import sys
 
 
@@ -47,9 +48,9 @@ def generate_level(level, game, inHouse):
     spikesCoord = []
     closed = False
     tilesFloor = 'empty' if inHouse else 'grass'
-    level = ['T' * 18] * 8 + level + ['T' * 18] * 8
+    # level = ['T' * 18] * 8 + level + ['T' * 18] * 8
     for y in range(len(level)):
-        level[y] = 'T' * 9 + level[y] + 'T' * 9
+        # level[y] = 'T' * 9 + level[y] + 'T' * 9
         for x in range(len(level[y])):
             if level[y][x] == 'K':
                 closed = True
