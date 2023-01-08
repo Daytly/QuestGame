@@ -18,4 +18,4 @@ class Door(StaticGameObject):
         if not self.lock:
             self.game.end_screen(True)
             return self.solid
-        return False
+        return True

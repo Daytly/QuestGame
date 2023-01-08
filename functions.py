@@ -93,9 +93,9 @@ def generate_level(level, game, inHouse):
     # Генерация врагов
     for y in range(len(level)):
         for x in range(len(level[y])):
-            if level[y][x] == '-':
+            if level[y][x] == '|':
                 enemy.append(Slime('slime', x, y, game, True, 4, 1))
-            elif level[y][x] == '|':
+            elif level[y][x] == '-':
                 enemy.append(Slime('slime', x, y, game, False, 4, 1))
     # Генерация игрока
     for y in range(len(level)):

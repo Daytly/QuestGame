@@ -53,7 +53,7 @@ class ButtonLevel(Button):
         if self.rect.x < mouse[0] < self.rect.x + self.width:
             if self.rect.y < mouse[1] < self.rect.y + self.height:
                 pygame.draw.rect(screen, self.staticColor, (self.rect.x, self.rect.y, self.width, self.height))
-                if click[0] == 1:
+                if click[0] == 1: 
                     # pygame.mixer.Sound.play(mp3_button)
                     # pygame.time.delay(170)
                     if self.action is not None and not self.isPressed:

@@ -24,7 +24,7 @@ class Game:
         self.tile_images = {
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
-            'door': functions.load_image('door.png'),
+            'door': pygame.transform.scale(functions.load_image('door.png'), (48, 48)),
             'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (192, 48)),
             'slime': pygame.transform.scale(functions.load_image('slime.png'), (192, 48)),
             'key': pygame.transform.scale(functions.load_image('key.png'), (96, 48)),
@@ -32,7 +32,9 @@ class Game:
             'floorDetail': pygame.transform.scale(functions.load_image('floorDetail.png'), (768, 192)),
             'tree': pygame.transform.scale(functions.load_image('tree.png'), (48, 48)),
             'deadPlayer': pygame.transform.scale(functions.load_image('deadPlayer.png'), (48, 48)),
-            'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48))
+            'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48)),
+            'shuriken': pygame.transform.scale(functions.load_image('shrilen.png'), (96, 48)),
+            'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96))
         }
         self.enemies = []
         self.coordSpikes = []
