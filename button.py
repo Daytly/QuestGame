@@ -15,7 +15,7 @@ class Button:
         self.action = action
         self.image = pygame.transform.scale(pygame.image.load(image), (width, height))
         self.rect = self.image.get_rect().move(x, y)
-        self.isPressed = False
+        self.isPressed = True
 
     def draw(self, screen):
         mouse = pygame.mouse.get_pos()
@@ -67,4 +67,3 @@ class ButtonLevel(Button):
             pygame.draw.rect(screen, self.activeColor, (self.rect.x, self.rect.y, self.width, self.height))
         print_text(screen, self.rect.x + (self.width - len(self.massage) * 20) // 2, self.rect.y + (self.height - 20) // 2,
                    30, self.massage, (200, 0, 0))
-

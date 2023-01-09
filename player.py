@@ -61,3 +61,6 @@ class Player(DynamicGameObject):
 
     def get_coord(self):
         return self.coord
+
+    def setKiller(self, killer):
+        self.killer = killer

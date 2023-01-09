@@ -77,6 +77,7 @@ class Game:
             self.camera.apply(sprite)
             sprite.draw(self.screen)
         self.display.flip()
+
         reset_btn = ButtonLevel(40, 40, 295, 650, name_level, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
         menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
@@ -170,8 +171,7 @@ class Game:
         self.screen.blit(fon, (0, 0))
         levels = []
         self.indLevel = 0
-        dirLevels = listdir('Data/levels')
-        for level in dirLevels:
+        for level in listdir('Data/levels'):
             levels.append([])
             if path.isfile(f'Data/screenShots/{level.rstrip(".txt")}SH.png'):
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/{level.rstrip(".txt")}SH.png', 450, 450))
@@ -230,8 +230,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                elif event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     return self.menu()
             pygame.display.flip()
             self.clock.tick(self.fps)
@@ -239,7 +238,7 @@ class Game:
     def check_intersection(self):
         entities = pygame.sprite.spritecollide(self.player, self.enemies_group, True)
         if entities:
-            self.player.killer = entities[0]
+            self.player.setKiller(entities[0])
             return True
         return False
 
