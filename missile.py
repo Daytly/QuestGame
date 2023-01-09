@@ -5,7 +5,7 @@ from coord import Coord
 
 class Missile(DynamicGameObject):
     def __init__(self, sheet, pos_x, pos_y, game, cols, rows, speedX, speedY, owner, rect):
-        super().__init__(sheet, pos_x, pos_y, game, cols, rows, (game.enemies_group))
+        super().__init__(sheet, pos_x, pos_y, game, cols, rows, game.enemies_group)
         self.speedX = speedX
         self.speedY = speedY
         self.owner = owner

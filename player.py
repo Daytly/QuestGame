@@ -7,7 +7,7 @@ from spikes import Spikes
 
 class Player(DynamicGameObject):
     def __init__(self, sheet, pos_x, pos_y, game):
-        super().__init__(sheet, pos_x, pos_y, game, 4, 1, (game.player_group))
+        super().__init__(sheet, pos_x, pos_y, game, 4, 1, game.player_group)
         self.rect = self.image.get_rect().move(game.tile_width * pos_x + 1, game.tile_height * pos_y + 1)
         self.key = False
         self.killer = None  # Тот кто убил персонажа

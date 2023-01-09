@@ -5,7 +5,7 @@ from missile import Missile
 
 class DarkNinja(DynamicGameObject):
     def __init__(self, sheet, pos_x, pos_y, game, cols, rows, isVertically):
-        super().__init__(sheet, pos_x, pos_y, game, cols, rows, (game.enemies_group))
+        super().__init__(sheet, pos_x, pos_y, game, cols, rows, game.enemies_group)
         self.framesAttack = self.frames[4:] if isVertically else self.frames[4:]
         self.frames = self.frames[:2] if isVertically else self.frames[3:1:-1]
         self.speedX = 0 if isVertically else 1

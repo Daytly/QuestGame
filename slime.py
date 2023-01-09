@@ -4,7 +4,7 @@ from dynamicGameObject import DynamicGameObject
 
 class Slime(DynamicGameObject):
     def __init__(self, sheet, pos_x, pos_y, game, isVertically, cols, rows):
-        super().__init__(sheet, pos_x, pos_y, game, cols, rows, (game.enemies_group))
+        super().__init__(sheet, pos_x, pos_y, game, cols, rows, game.enemies_group)
         self.rect = self.image.get_rect().move(game.tile_width * pos_x + 1, game.tile_height * pos_y + 1)
         self.speedX = 1
         self.speedY = 1
