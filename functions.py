@@ -48,9 +48,9 @@ def generate_level(level, game, inHouse):
     spikesCoord = []
     closed = False
     tilesFloor = 'empty' if inHouse else 'grass'
-    # level = ['T' * 18] * 8 + level + ['T' * 18] * 8
+    level = ['T' * 18] * 8 + level + ['T' * 18] * 8
     for y in range(len(level)):
-        # level[y] = 'T' * 9 + level[y] + 'T' * 9
+        level[y] = 'T' * 9 + level[y] + 'T' * 9
         for x in range(len(level[y])):
             if level[y][x] == 'K':
                 closed = True
@@ -101,6 +101,8 @@ def generate_level(level, game, inHouse):
                 enemy.append(Slime('slime', x, y, game, False, 4, 1))
             elif level[y][x] == '^':
                 enemy.append(DarkNinja('darkNinja', x, y, game, 4, 2, True))
+            elif level[y][x] == '>':
+                enemy.append(DarkNinja('darkNinja', x, y, game, 4, 2, False))
     # Генерация игрока
     for y in range(len(level)):
         for x in range(len(level[y])):

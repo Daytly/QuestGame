@@ -14,9 +14,12 @@ class Spikes(StaticGameObject):
         else:
             self.active = False
 
-    def stepOn(self, player):
+    def stepOn(self, entity):
         if self.active:
-            player.murder(self)
+            try:
+                entity.murder(self)
+            except AttributeError:
+                return self.solid
         return self.solid
 
     def isActive(self):
