@@ -12,7 +12,7 @@ class DarkNinja(DynamicGameObject):
         self.speedY = 1 if isVertically else 0
         self.missiles = []
 
-    def move(self, *args):
+    def move(self):
         if self.attack():
             return
         if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):

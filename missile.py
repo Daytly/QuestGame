@@ -13,7 +13,7 @@ class Missile(DynamicGameObject):
         self.center = self.rect.center
         self.coord = Coord(pos_x, pos_y)
 
-    def move(self, *args):
+    def move(self):
         if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):
             self.coord += [self.speedX, self.speedY]
             self.rect.x += self.speedX * self.game.tile_width

@@ -95,11 +95,11 @@ class Game:
                 if event.type == enemyEventType:
                     for enemy in self.enemies:
                         if type(enemy) != Missile:
-                            enemy.move(event)
+                            enemy.move()
                 if event.type == shurikenEventType:
                     for enemy in self.enemies:
                         if type(enemy) == Missile:
-                            enemy.move(event)
+                            enemy.move()
                 if event.type == spikesEventType:
                     for y, x in self.coordSpikes:
                         self.level[y][x].update(event)
