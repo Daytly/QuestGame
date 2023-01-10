@@ -1,6 +1,6 @@
+import pygame
 import sys
 import time
-import pygame
 from camera import Camera
 from floor import Floor
 from button import Button, ButtonLevel
@@ -9,12 +9,12 @@ from text import Text
 import functions
 from missile import Missile
 from os import listdir, path
+import mixer as mx
 
 
 class Game:
     def __init__(self):
         pygame.init()
-        import mixer as mx
         self.display = pygame.display
         self.width = 700
         self.height = 700
@@ -58,6 +58,7 @@ class Game:
         self.indLevel = 0
 
     def run(self, name_level):
+        mx.mixer.play('button', loops=1)
         self.enemies = []
         self.coordSpikes = []
         self.camera = Camera(self)
@@ -148,6 +149,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
+        mx.mixer.play('button', loops=1)
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
         play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), image='start.png')
@@ -167,6 +169,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu_levels(self):
+        mx.mixer.play('button', loops=1)
         fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         levels = []
@@ -260,9 +263,11 @@ class Game:
             self.clock.tick(self.fps)
 
     def rightBtn(self):
+        mx.mixer.play('button', loops=1)
         self.indLevel = self.indLevel + 1
 
     def leftBtn(self):
+        mx.mixer.play('button', loops=1)
         self.indLevel = self.indLevel - 1
 
 
