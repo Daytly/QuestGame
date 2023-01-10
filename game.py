@@ -14,6 +14,7 @@ from os import listdir, path
 class Game:
     def __init__(self):
         pygame.init()
+        import mixer as mx
         self.display = pygame.display
         self.width = 700
         self.height = 700
@@ -22,6 +23,7 @@ class Game:
         self.tile_width = 48
         self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
+        mx.mixer.play('menu', fade_ms=200)
         self.tile_images = {
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
