@@ -35,7 +35,9 @@ class Game:
             'deadPlayer': pygame.transform.scale(functions.load_image('deadPlayer.png'), (48, 48)),
             'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48)),
             'shuriken': pygame.transform.scale(functions.load_image('shuriken.png'), (96, 48)),
-            'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96))
+            'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
+            'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
+            'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         }
         self.enemies = []
         self.coordSpikes = []
@@ -116,22 +118,21 @@ class Game:
             self.display.flip()
 
     def start_screen(self):
-        intro_text = ["ЗАСТАВКА", "",
-                      "Правила игры",
-                      "Если в правилах несколько строк,",
-                      "приходится выводить их построчно"]
+        intro_text = []
 
-        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
+        fon = self.tile_images['startScreen']
         self.screen.blit(fon, (0, 0))
-        font = pygame.font.Font(None, 30)
-        text_coord = 50
+        font = pygame.font.Font(None, 70)
+        text_coordY = 500
+        text_coordX = 100
         for line in intro_text:
-            string_rendered = font.render(line, 1, pygame.Color('white'))
+            string_rendered = font.render(line, 1, pygame.Color('black'))
             intro_rect = string_rendered.get_rect()
-            text_coord += 10
-            intro_rect.top = text_coord
-            intro_rect.x = 10
-            text_coord += intro_rect.height
+            text_coordY -= 10
+            intro_rect.top = text_coordY
+            intro_rect.x = text_coordX
+            text_coordX += 40
+            text_coordY += intro_rect.height
             self.screen.blit(string_rendered, intro_rect)
         pygame.display.flip()
         time.sleep(0.5)
@@ -147,16 +148,15 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
-        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
+        fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(400, 70, 150, 250, 'PLAY', (100, 100, 100), (150, 150, 150))
-        exit_btn = Button(200, 40, 250, 350, 'EXIT', (100, 100, 100), (150, 150, 150))
+        play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), image='start.png')
+        exit_btn = Button(200, 40, 250, 450, 'EXIT', (100, 100, 100), (150, 150, 150))
         play_btn.draw(self.screen)
         exit_btn.draw(self.screen)
         pygame.display.flip()
         play_btn.action = self.menu_levels
         exit_btn.action = sys.exit
-        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -182,14 +182,6 @@ class Game:
         menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
         right_btn = Button(60, 60, 635, 245, '>', (100, 100, 100), (150, 150, 150), action=self.rightBtn)
         left_btn = Button(60, 60, 5, 245, '<', (100, 100, 100), (150, 150, 150), action=self.leftBtn)
-        menu_btn.draw(self.screen)
-        left_btn.draw(self.screen)
-        right_btn.draw(self.screen)
-        self.indLevel %= len(levels)
-        for obj in levels[self.indLevel]:
-            obj.draw(self.screen)
-        pygame.display.flip()
-        time.sleep(0.5)
         while True:
             self.screen.fill((153, 217, 234))
             for event in pygame.event.get():
@@ -224,8 +216,6 @@ class Game:
             intro_rect.x = 10
             text_coord += intro_rect.height
             self.screen.blit(string_rendered, intro_rect)
-        pygame.display.flip()
-        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
