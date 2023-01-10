@@ -135,14 +135,12 @@ class Game:
             text_coordY += intro_rect.height
             self.screen.blit(string_rendered, intro_rect)
         pygame.display.flip()
-        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN or \
                         event.type == pygame.MOUSEBUTTONDOWN:
-                    time.sleep(0.5)
                     return  # начинаем игру
             pygame.display.flip()
             self.clock.tick(self.fps)
