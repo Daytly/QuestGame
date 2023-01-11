@@ -3,7 +3,7 @@ import sys
 import time
 from camera import Camera
 from floor import Floor
-from button import Button, ButtonLevel
+from button import Button
 from picture import Picture
 from text import Text
 import functions
@@ -55,10 +55,10 @@ class Game:
             level_list,
             self,
             False)
+        self.namesLevels = listdir('Data/levels')
         self.indLevel = 0
 
     def run(self, name_level):
-        mx.mixer.play('button', loops=1)
         self.enemies = []
         self.coordSpikes = []
         self.camera = Camera(self)
@@ -83,8 +83,8 @@ class Game:
             sprite.draw(self.screen)
         self.display.flip()
 
-        reset_btn = ButtonLevel(40, 40, 295, 650, name_level, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
-        menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
+        reset_btn = Button(40, 40, 295, 650, 'R', (100, 100, 100), (150, 150, 150), name_level, action=self.run)
+        menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), name_level, action=self.menu_levels)
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -149,10 +149,9 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
-        mx.mixer.play('button', loops=1)
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), image='start.png')
+        play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), self.namesLevels[0], image='start.png')
         exit_btn = Button(200, 40, 250, 450, 'EXIT', (100, 100, 100), (150, 150, 150))
         play_btn.draw(self.screen)
         exit_btn.draw(self.screen)
@@ -168,20 +167,21 @@ class Game:
             pygame.display.flip()
             self.clock.tick(self.fps)
 
-    def menu_levels(self):
-        mx.mixer.play('button', loops=1)
+    def menu_levels(self, nameLevel):
         fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         levels = []
-        self.indLevel = 0
-        for level in listdir('Data/levels'):
+        for level in self.namesLevels:
+            nameLevel = level.rstrip('.txt')
             levels.append([])
-            if path.isfile(f'Data/screenShots/{level.rstrip(".txt")}SH.png'):
-                levels[-1].append(Picture(125, 20, f'Data/screenShots/{level.rstrip(".txt")}SH.png', 450, 450))
+            if path.isfile(f'Data/screenShots/{nameLevel}SH.png'):
+                levels[-1].append(Picture(125, 20, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
             else:
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
-            levels[-1].append(Text(125, 495, (0, 0, 0), 50, level.rstrip('.txt')))
-            levels[-1].append(ButtonLevel(450, 50, 125, 570, level, 'Play', (100, 100, 100), (150, 150, 150), self.run))
+            levels[-1].append(Text(125, 495, (0, 0, 0), 50, nameLevel))
+            levels[-1].append(Button(450, 50, 125, 570, 'Play', (100, 100, 100), (150, 150, 150), level,
+                                     action=self.run))
+
         menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
         right_btn = Button(60, 60, 635, 245, '>', (100, 100, 100), (150, 150, 150), action=self.rightBtn)
         left_btn = Button(60, 60, 5, 245, '<', (100, 100, 100), (150, 150, 150), action=self.leftBtn)
@@ -263,11 +263,9 @@ class Game:
             self.clock.tick(self.fps)
 
     def rightBtn(self):
-        mx.mixer.play('button', loops=1)
         self.indLevel = self.indLevel + 1
 
     def leftBtn(self):
-        mx.mixer.play('button', loops=1)
         self.indLevel = self.indLevel - 1
 
 
