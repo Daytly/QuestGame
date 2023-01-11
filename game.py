@@ -6,6 +6,7 @@ from floor import Floor
 from button import Button
 from picture import Picture
 from text import Text
+from panel import Panel
 import functions
 from missile import Missile
 from os import listdir, path
@@ -41,6 +42,7 @@ class Game:
             'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
             'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         }
+        self.activeMenu = False
         self.enemies = []
         self.coordSpikes = []
         self.player = None
@@ -66,6 +68,7 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         self.enemies_group = pygame.sprite.Group()
+        self.activeMenu = False
         level_list = functions.load_level(name_level)
         enemyEventType = pygame.USEREVENT + 1
         spikesEventType = enemyEventType + 1
@@ -83,8 +86,16 @@ class Game:
             sprite.draw(self.screen)
         self.display.flip()
 
-        reset_btn = Button(40, 40, 295, 650, 'R', (100, 100, 100), (150, 150, 150), name_level, action=self.run)
-        menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), action=self.menu_levels)
+        pause_btn = Button(80, 80, 310, 620, '', (100, 100, 100), (150, 150, 150), action=self.openMenu,
+                           image='pauseBtn.png')
+        menu = Panel(100, 100, 500, 500,
+                     'menuPanel1.png',
+                     [Button(80, 80, 0, 0, 'PLAY', (0, 0, 0), (0, 0, 0), action=self.closeMenu,
+                             image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'OPTIONS', (0, 0, 0), (0, 0, 0), image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'LEVELS', (0, 0, 0), (0, 0, 0), action=self.menu_levels,
+                             image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'MENU', (0, 0, 0), (0, 0, 0), action=self.menu, image='buttonLong.png')])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -92,32 +103,34 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == enemyEventType:
+                if event.type == enemyEventType and not self.activeMenu:
                     for enemy in self.enemies:
                         if type(enemy) != Missile:
                             enemy.move()
-                if event.type == shurikenEventType:
+                if event.type == shurikenEventType and not self.activeMenu:
                     for enemy in self.enemies:
                         if type(enemy) == Missile:
                             enemy.move()
-                if event.type == spikesEventType:
+                if event.type == spikesEventType and not self.activeMenu:
                     for y, x in self.coordSpikes:
                         self.level[y][x].update(event)
-                self.player.update(event)
+                if not self.activeMenu:
+                    self.player.update(event)
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов
             for sprite in self.all_sprites:
                 self.camera.apply(sprite)
                 sprite.draw(self.screen)
-            reset_btn.draw(self.screen)
-            menu_btn.draw(self.screen)
+            pause_btn.draw(self.screen)
             if self.check_intersection():
                 self.death()
                 self.end_screen(False)
             if self.player.isDead():
                 self.death()
                 self.end_screen(False)
+            if self.activeMenu:
+                menu.draw(self.screen)
             self.display.flip()
 
     def start_screen(self):
@@ -271,6 +284,12 @@ class Game:
 
     def leftBtn(self):
         self.indLevel = self.indLevel - 1
+
+    def openMenu(self):
+        self.activeMenu = True
+
+    def closeMenu(self):
+        self.activeMenu = False
 
 
 game = Game()

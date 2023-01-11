@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from functions import print_text
 import mixer as mx
@@ -18,7 +20,7 @@ class Button:
         self.frames = []
         self.cut_sheet(self.sheet, cols, rows)
         self.cur_frame = 0
-        self.image = self.frames[self.cur_frame]
+        self.update_sprite(0)
         self.useImage = image != 'none.png'
         self.rect = self.image.get_rect().move(x, y)
         self.isPressed = True
@@ -30,10 +32,12 @@ class Button:
         if self.rect.x < mouse[0] < self.rect.x + self.width:
             if self.rect.y < mouse[1] < self.rect.y + self.height:
                 if self.useImage:
-                    pass
+                    self.update_sprite(2)
                 else:
                     self.image.fill(self.activeColor)
                 if click[0] == 1:
+                    self.update_sprite(1)
+                    screen.blit(self.image, self.rect)
                     if self.action is not None and not self.isPressed:
                         mx.mixer.play('button', loops=0)
                         self.action(*self.args) if self.args else self.action()
@@ -42,12 +46,12 @@ class Button:
                     self.isPressed = False
             else:
                 if self.useImage:
-                    pass
+                    self.update_sprite(0)
                 else:
                     self.image.fill(self.staticColor)
         else:
             if self.useImage:
-                pass
+                self.update_sprite(0)
             else:
                 self.image.fill(pygame.Color(self.staticColor))
         print_text(screen, self.rect.x + (self.width - len(self.massage) * 20)//2, self.rect.y + (self.height - 20)//2,
@@ -65,5 +69,12 @@ class Button:
     def update_sprite(self, numSprite):
         self.cur_frame = numSprite % len(self.frames)
         self.image = self.frames[int(self.cur_frame % len(self.frames))]
+
+    def reSize(self, sizeX, sizeY, cols, rows):
+        self.width = sizeX
+        self.height = sizeY
+        self.frames = []
+        self.cut_sheet(self.sheet, cols, rows)
+        self.update_sprite(0)
 
 
