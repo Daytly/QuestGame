@@ -119,6 +119,6 @@ def generate_level(level, game, inHouse):
 
 
 def print_text(screen, x, y, size, _str, color):
-    text = pygame.font.SysFont("monospace", size)
+    text = pygame.font.Font('Data/fonts/pixelFont.ttf', size)
     string = text.render(str(_str), 0, color)
     screen.blit(string, (x, y))

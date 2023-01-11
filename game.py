@@ -84,7 +84,7 @@ class Game:
         self.display.flip()
 
         reset_btn = Button(40, 40, 295, 650, 'R', (100, 100, 100), (150, 150, 150), name_level, action=self.run)
-        menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), name_level, action=self.menu_levels)
+        menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), action=self.menu_levels)
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -151,7 +151,7 @@ class Game:
     def menu(self):
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), self.namesLevels[0], image='start.png')
+        play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), image='start.png')
         exit_btn = Button(200, 40, 250, 450, 'EXIT', (100, 100, 100), (150, 150, 150))
         play_btn.draw(self.screen)
         exit_btn.draw(self.screen)
@@ -167,7 +167,7 @@ class Game:
             pygame.display.flip()
             self.clock.tick(self.fps)
 
-    def menu_levels(self, nameLevel):
+    def menu_levels(self):
         fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         levels = []
