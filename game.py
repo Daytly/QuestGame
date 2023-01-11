@@ -149,6 +149,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
+        mx.mixer.setVolume('menu', 1)
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
         play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), image='start.png')
@@ -174,17 +175,17 @@ class Game:
         for level in self.namesLevels:
             nameLevel = level.rstrip('.txt')
             levels.append([])
+            levels[-1].append(Text(125, 20, (0, 0, 0), 50, nameLevel))
             if path.isfile(f'Data/screenShots/{nameLevel}SH.png'):
-                levels[-1].append(Picture(125, 20, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
+                levels[-1].append(Picture(125, 80, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
             else:
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
-            levels[-1].append(Text(125, 495, (0, 0, 0), 50, nameLevel))
-            levels[-1].append(Button(450, 50, 125, 570, 'Play', (100, 100, 100), (150, 150, 150), level,
-                                     action=self.run))
+            levels[-1].append(Button(240, 80, 230, 570, 'Play', (100, 100, 100), (150, 150, 150), level,
+                                     action=self.run, image='buttonLong.png', rows=3))
 
         menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
-        right_btn = Button(60, 60, 635, 245, '>', (100, 100, 100), (150, 150, 150), action=self.rightBtn)
-        left_btn = Button(60, 60, 5, 245, '<', (100, 100, 100), (150, 150, 150), action=self.leftBtn)
+        right_btn = Button(60, 60, 635, 275, '>', (100, 100, 100), (150, 150, 150), action=self.rightBtn)
+        left_btn = Button(60, 60, 5, 275, '<', (100, 100, 100), (150, 150, 150), action=self.leftBtn)
         while True:
             self.screen.fill((153, 217, 234))
             for event in pygame.event.get():
@@ -232,10 +233,13 @@ class Game:
         entities = pygame.sprite.spritecollide(self.player, self.enemies_group, True)
         if entities:
             self.player.setKiller(entities[0])
+            mx.mixer.setVolume('menu', 0)
+            mx.mixer.play('hit', loops=0)
             return True
         return False
 
     def death(self):
+        mx.mixer.play('gameOver', loops=0)
         death_img = self.tile_images['deadPlayer']
         for i in self.all_sprites:
             if i != self.player:

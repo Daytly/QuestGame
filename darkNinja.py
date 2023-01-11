@@ -1,6 +1,7 @@
 from dynamicGameObject import DynamicGameObject
 import pygame
 from missile import Missile
+import mixer as mx
 
 
 class DarkNinja(DynamicGameObject):
@@ -49,6 +50,7 @@ class DarkNinja(DynamicGameObject):
                     if not self.check(self.coord.x, y):
                         t = True
             if not t:
+                mx.mixer.play('attack', loops=0)
                 self.missiles.append(Missile('shuriken', self.coord.x,
                                              self.coord.y,
                                              self.game, 2, 1, speedX, speedY, self, self.rect))
@@ -70,6 +72,7 @@ class DarkNinja(DynamicGameObject):
                         t = True
                         break
             if not t:
+                mx.mixer.play('attack', loops=0)
                 self.missiles.append(Missile('shuriken', self.coord.x,
                                              self.coord.y,
                                              self.game, 2, 1, speedX, speedY, self, self.rect))
