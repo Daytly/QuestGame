@@ -158,6 +158,7 @@ class Game:
                 self.end_screen(False)
             if self.activeMenu:
                 menu.draw(self.screen)
+            self.display.flip()
 
     def start_screen(self):
         intro_text = []

@@ -23,6 +23,6 @@ TTTTTTTTTT
 TTTTTTTTTT
 TTTTTTTTTT
 ##########
-#L.......#
-#KKKK....#
+#L....L..#
+#KKKK...L#
 ##########
