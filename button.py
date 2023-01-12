@@ -61,8 +61,14 @@ class Button:
                 self.update_sprite(0)
             else:
                 self.image.fill(pygame.Color(self.staticColor))
-        print_text(screen, self.rect.x + (self.width - len(self.massage) * 20)//2, self.rect.y + (self.height - 20)//2,
-                   30, self.massage, (200, 0, 0))
+        if self.isClick:
+            print_text(screen, self.rect.x + (self.width - len(self.massage) * 20) // 2,
+                       self.rect.y + (self.height - 20) // 2 + 2,
+                       30, self.massage, (192, 203, 220))
+        else:
+            print_text(screen, self.rect.x + (self.width - len(self.massage) * 20) // 2,
+                       self.rect.y + (self.height - 20) // 2,
+                       30, self.massage, (192, 203, 220))
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -83,5 +89,3 @@ class Button:
         self.frames = []
         self.cut_sheet(self.sheet, cols, rows)
         self.update_sprite(0)
-
-

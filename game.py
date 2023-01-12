@@ -17,6 +17,8 @@ class Game:
     def __init__(self):
         pygame.init()
         self.display = pygame.display
+        self.display.set_caption('Samurai Storm')
+        self.display.set_icon(pygame.image.load('Data/sprites/icon.png'))
         self.width = 700
         self.height = 700
         self.fps = 60
