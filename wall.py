@@ -10,6 +10,3 @@ class Wall(StaticGameObject):
         super().__init__(sheet, pos_x, pos_y, game, cols, rows)
         self.update_sprite(numSprite)
         self.solid = False
-
-
-

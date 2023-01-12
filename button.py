@@ -20,6 +20,7 @@ class Button:
         self.frames = []
         self.cut_sheet(self.sheet, cols, rows)
         self.cur_frame = 0
+        self.image = None
         self.update_sprite(0)
         self.useImage = image != 'none.png'
         self.rect = self.image.get_rect().move(x, y)
