@@ -36,6 +36,7 @@ class Player(DynamicGameObject):
                     self.coord.x -= 1
                 self.update_sprite(2)
             self.image = self.frames[self.cur_frame]
+        if args[0].type == pygame.JOYBUTTONDOWN:
             if args[0].button == 0:
                 for ladder in self.game.ladders_group:
                     if ladder.coord == self.coord:
