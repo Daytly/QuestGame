@@ -165,19 +165,18 @@ class Game:
         mx.mixer.setVolume('menu', 1)
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(360, 120, 170, 250, '', (1, 1, 1), (1, 1, 1), image='start.png')
-        exit_btn = Button(200, 40, 250, 450, 'EXIT', (100, 100, 100), (150, 150, 150))
-        play_btn.draw(self.screen)
-        exit_btn.draw(self.screen)
+        menu = Panel(100, 100, 500, 500,
+                     'menuPanel1.png',
+                     [Button(80, 80, 0, 0, 'PLAY', (0, 0, 0), (0, 0, 0), action=self.menu_levels,
+                             image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'OPTIONS', (0, 0, 0), (0, 0, 0), image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'EXIT', (0, 0, 0), (0, 0, 0), image='buttonLong.png', action=sys.exit)])
         pygame.display.flip()
-        play_btn.action = self.menu_levels
-        exit_btn.action = sys.exit
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-            play_btn.draw(self.screen)
-            exit_btn.draw(self.screen)
+            menu.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -196,9 +195,12 @@ class Game:
             levels[-1].append(Button(240, 80, 230, 570, 'Play', (100, 100, 100), (150, 150, 150), level,
                                      action=self.run, image='buttonLong.png', rows=3))
 
-        menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
-        right_btn = Button(60, 60, 635, 275, '>', (100, 100, 100), (150, 150, 150), action=self.rightBtn)
-        left_btn = Button(60, 60, 5, 275, '<', (100, 100, 100), (150, 150, 150), action=self.leftBtn)
+        menu_btn = Button(60, 60, 5, 635, '', (100, 100, 100), (150, 150, 150), action=self.menu, image='menuBtn.png',
+                          cols=3, rows=1)
+        right_btn = Button(60, 60, 635, 275, '', (100, 100, 100), (150, 150, 150), action=self.rightBtn,
+                           image='rightBtn.png', cols=3, rows=1)
+        left_btn = Button(60, 60, 5, 275, '', (100, 100, 100), (150, 150, 150), action=self.leftBtn,
+                          image='leftBtn.png', cols=3, rows=1)
         while True:
             self.screen.fill((153, 217, 234))
             for event in pygame.event.get():

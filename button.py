@@ -24,6 +24,7 @@ class Button:
         self.useImage = image != 'none.png'
         self.rect = self.image.get_rect().move(x, y)
         self.isPressed = True
+        self.isClick = False
 
     def draw(self, screen):
         mouse = pygame.mouse.get_pos()
@@ -38,18 +39,24 @@ class Button:
                 if click[0] == 1:
                     self.update_sprite(1)
                     screen.blit(self.image, self.rect)
-                    if self.action is not None and not self.isPressed:
-                        mx.mixer.play('button', loops=0)
-                        self.action(*self.args) if self.args else self.action()
-                        self.isPressed = True
+                    self.isClick = True
+
                 else:
+                    if self.isClick:
+                        if self.action is not None and not self.isPressed:
+                            mx.mixer.play('button', loops=0)
+                            self.action(*self.args) if self.args else self.action()
+                            self.isPressed = True
+                    self.isClick = False
                     self.isPressed = False
             else:
+                self.isClick = False
                 if self.useImage:
                     self.update_sprite(0)
                 else:
                     self.image.fill(self.staticColor)
         else:
+            self.isClick = False
             if self.useImage:
                 self.update_sprite(0)
             else:
