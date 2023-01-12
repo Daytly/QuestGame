@@ -21,7 +21,7 @@ class Portal(StaticGameObject):
     def use(self):
         if self.other_ladder:
             self.game.player.rect.center = self.other_ladder.rect.center
-            self.game.player.coord = self.other_ladder.coord
+            self.game.player.coord = self.other_ladder.coord.__copy__()
             self.game.camera.move(self.game.player)
             for i in self.game.all_sprites:
                 self.game.camera.apply(i)

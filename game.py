@@ -106,6 +106,7 @@ class Game:
                              image='buttonLong.png'),
                       Button(80, 80, 0, 0, 'MENU', (0, 0, 0), (0, 0, 0), action=self.menu, image='buttonLong.png')])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
+        tick = 0
         while True:
             self.screen.fill(pygame.Color('white'))
             self.clock.tick(self.fps)
@@ -157,7 +158,6 @@ class Game:
                 self.end_screen(False)
             if self.activeMenu:
                 menu.draw(self.screen)
-            self.display.flip()
 
     def start_screen(self):
         intro_text = []
