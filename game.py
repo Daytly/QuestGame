@@ -17,6 +17,8 @@ import mixer as mx
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.joystick.init()
+        self.joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
         self.display = pygame.display
         self.display.set_caption('Samurai Storm')
         self.display.set_icon(pygame.image.load('Data/sprites/icon.png'))
@@ -67,6 +69,7 @@ class Game:
         self.indLevel = 0
 
     def run(self, name_level):
+        self.joysticks[0].init()
         self.enemies = []
         self.coordSpikes = []
         self.camera = Camera(self)
@@ -82,7 +85,7 @@ class Game:
         shurikenEventType = spikesEventType + 1
         pygame.time.set_timer(enemyEventType, 500)
         pygame.time.set_timer(spikesEventType, 500)
-        pygame.time.set_timer(shurikenEventType, 100)
+        pygame.time.set_timer(shurikenEventType, 200)
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
             functions.generate_level(level_list, self, False)
         # изменяем ракурс камеры
@@ -129,6 +132,17 @@ class Game:
                             if i.coord == self.player.coord:
                                 i.use()
                                 break
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if event.button == 0:
+                        for i in self.ladders_group:
+                            if i.coord == self.player.coord:
+                                i.use()
+                                break
+                    if event.button == 7:
+                        if self.activeMenu:
+                            self.closeMenu()
+                        else:
+                            self.openMenu()
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов
@@ -171,6 +185,8 @@ class Game:
                 elif event.type == pygame.KEYDOWN or \
                         event.type == pygame.MOUSEBUTTONDOWN:
                     return  # начинаем игру
+                if event.type == pygame.JOYBUTTONDOWN or event.type == pygame.JOYHATMOTION:
+                    return
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -224,6 +240,17 @@ class Game:
                         self.rightBtn()
                     if event.key == pygame.K_LEFT:
                         self.leftBtn()
+                if event.type == pygame.JOYHATMOTION:
+                    x, y = self.joysticks[0].get_hat(0)
+                    if x == 1:
+                        self.rightBtn()
+                    if x == -1:
+                        self.leftBtn()
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if event.button == 0:
+                        self.run(self.namesLevels[self.indLevel])
+                    if event.button == 7:
+                        self.menu()
             self.indLevel %= len(levels)
             for obj in levels[self.indLevel]:
                 obj.draw(self.screen)

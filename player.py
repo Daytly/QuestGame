@@ -13,6 +13,29 @@ class Player(DynamicGameObject):
         self.killer = None  # Тот кто убил персонажа
 
     def update(self, *args):
+        if args and args[0].type == pygame.JOYHATMOTION:
+            x, y = self.game.joysticks[0].get_hat(0)
+            if y == 1:
+                if self.check(self.coord.x, self.coord.y - 1):
+                    self.rect.y -= self.game.tile_height
+                    self.coord.y -= 1
+                self.update_sprite(1)
+            if y == -1:
+                if self.check(self.coord.x, self.coord.y + 1):
+                    self.rect.y += self.game.tile_height
+                    self.coord.y += 1
+                self.update_sprite(0)
+            if x == 1:
+                if self.check(self.coord.x + 1, self.coord.y):
+                    self.rect.x += self.game.tile_width
+                    self.coord.x += 1
+                self.update_sprite(3)
+            if x == -1:
+                if self.check(self.coord.x - 1, self.coord.y):
+                    self.rect.x -= self.game.tile_width
+                    self.coord.x -= 1
+                self.update_sprite(2)
+            self.image = self.frames[self.cur_frame]
         if args and args[0].type == pygame.KEYDOWN:
             if args[0].key == pygame.K_UP:
                 if self.check(self.coord.x, self.coord.y - 1):
