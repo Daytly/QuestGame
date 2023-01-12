@@ -69,7 +69,6 @@ class Game:
         self.indLevel = 0
 
     def run(self, name_level):
-        self.joysticks[0].init()
         self.enemies = []
         self.coordSpikes = []
         self.camera = Camera(self)

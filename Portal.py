@@ -19,8 +19,9 @@ class Portal(StaticGameObject):
             Portal.ol = None
 
     def use(self):
-        self.game.player.rect.center = self.other_ladder.rect.center
-        self.game.player.coord = self.other_ladder.coord
-        self.game.camera.move(self.game.player)
-        for i in self.game.all_sprites:
-            self.game.camera.apply(i)
+        if self.other_ladder:
+            self.game.player.rect.center = self.other_ladder.rect.center
+            self.game.player.coord = self.other_ladder.coord
+            self.game.camera.move(self.game.player)
+            for i in self.game.all_sprites:
+                self.game.camera.apply(i)
