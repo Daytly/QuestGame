@@ -129,7 +129,6 @@ class Game:
                             if i.coord == self.player.coord:
                                 i.use()
                                 break
-                self.player.update(event)
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов
