@@ -1,5 +1,5 @@
 import pygame
-
+from coord import Coord
 
 class GameObject(pygame.sprite.Sprite):
     def __init__(self, sheet, pos_x, pos_y, game, cols, rows, groups):
@@ -12,6 +12,7 @@ class GameObject(pygame.sprite.Sprite):
         self.rect = self.image.get_rect().move(game.tile_width * pos_x, game.tile_height * pos_y)
         self.game = game
         self.center = self.rect.center
+        self.coord = Coord(pos_x, pos_y)
 
     def update(self, *args):
         pass
@@ -31,3 +32,6 @@ class GameObject(pygame.sprite.Sprite):
     def update_sprite(self, numSprite):
         self.cur_frame = numSprite % len(self.frames)
         self.image = self.frames[int(self.cur_frame % len(self.frames))]
+
+    def use(self):
+        pass

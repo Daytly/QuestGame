@@ -8,3 +8,9 @@ class Coord:
 
     def __iadd__(self, other):
         return Coord(self.x + other[0], self.y + other[1])
+
+    def __eq__(self, other):
+        return other.x == self.x and other.y == self.y
+
+    def __ne__(self, other):
+        return not self.__eq__(other)

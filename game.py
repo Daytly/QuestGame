@@ -8,6 +8,7 @@ from picture import Picture
 from text import Text
 import functions
 from missile import Missile
+from Ladder import Ladder
 from os import listdir, path
 
 
@@ -35,7 +36,9 @@ class Game:
             'deadPlayer': pygame.transform.scale(functions.load_image('deadPlayer.png'), (48, 48)),
             'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48)),
             'shuriken': pygame.transform.scale(functions.load_image('shuriken.png'), (96, 48)),
-            'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96))
+            'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
+            "ladder": pygame.transform.scale(functions.load_image('ladder.png'), (48, 48))
+
         }
         self.enemies = []
         self.coordSpikes = []
@@ -61,6 +64,7 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         self.enemies_group = pygame.sprite.Group()
+        self.ladders_group = pygame.sprite.Group()
         level_list = functions.load_level(name_level)
         enemyEventType = pygame.USEREVENT + 1
         spikesEventType = enemyEventType + 1
@@ -98,6 +102,12 @@ class Game:
                 if event.type == spikesEventType:
                     for y, x in self.coordSpikes:
                         self.level[y][x].update(event)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_e:
+                        for i in self.ladders_group:
+                            if i.coord == self.player.coord:
+                                i.use()
+                                break
                 self.player.update(event)
             # изменяем ракурс камеры
             self.camera.update(self.player)

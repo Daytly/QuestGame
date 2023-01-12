@@ -13,6 +13,7 @@ from tree import Tree
 from spikes import Spikes
 from darkNinja import DarkNinja
 from missile import Missile
+from Ladder import Ladder
 import sys
 
 
@@ -92,6 +93,9 @@ def generate_level(level, game, inHouse):
             elif level[y][x] == '$':
                 new_level[y][x] = Spikes('spikes', x, y, game, 10, 1)
                 spikesCoord.append([y, x])
+            elif level[y][x] == 'L':
+                new_level[y][x] = Ladder('ladder', x, y, game, 1, 1)
+                game.ladders_group.add(new_level[y][x])
     # Генерация врагов
     for y in range(len(level)):
         for x in range(len(level[y])):

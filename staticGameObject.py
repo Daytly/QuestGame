@@ -1,5 +1,6 @@
 import pygame
 from gameObject import GameObject
+from coord import Coord
 
 
 class StaticGameObject(GameObject):
