@@ -3,14 +3,26 @@
 #.#.####
 #...##...#
 #..#.###
-#.L.#....##
+#...#....##
 ##.@.#.#..#
 ##..#.#.##
-###.L.#
+###...#
 ##K#.###
 #KKK#....##
 ##K@.#.#..#
-##K    .#.#.##
+##K L  .#.#.##
 ###...#
 ##..####
 #########
+TTTTTTTTTT
+TTTTTTTTTT
+TTTTTTTTTT
+TTTTTTTTTT
+TTTTTTTTTT
+TTTTTTTTTT
+TTTTTTTTTT
+TTTTTTTTTT
+##########
+#L.......#
+#KKKK....#
+##########
