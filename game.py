@@ -105,7 +105,6 @@ class Game:
                              image='buttonLong.png'),
                       Button(80, 80, 0, 0, 'MENU', (0, 0, 0), (0, 0, 0), action=self.menu, image='buttonLong.png')])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
-        tick = 0
         while True:
             self.screen.fill(pygame.Color('white'))
             self.clock.tick(self.fps)
@@ -125,18 +124,7 @@ class Game:
                         self.level[y][x].update(event)
                 if not self.activeMenu:
                     self.player.update(event)
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_e:
-                        for i in self.ladders_group:
-                            if i.coord == self.player.coord:
-                                i.use()
-                                break
                 if event.type == pygame.JOYBUTTONDOWN:
-                    if event.button == 0:
-                        for i in self.ladders_group:
-                            if i.coord == self.player.coord:
-                                i.use()
-                                break
                     if event.button == 7:
                         if self.activeMenu:
                             self.closeMenu()
