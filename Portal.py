@@ -5,18 +5,18 @@ import pygame
 from staticGameObject import StaticGameObject
 
 
-class Ladder(StaticGameObject):
+class Portal(StaticGameObject):
     ol = None
 
     def __init__(self, sheet, pos_x, pos_y, game, cols, rows):
         super().__init__(sheet, pos_x, pos_y, game, cols, rows)
         self.other_ladder = None
-        if not Ladder.ol:
-            Ladder.ol = self
+        if not Portal.ol:
+            Portal.ol = self
         else:
-            self.other_ladder = Ladder.ol
-            Ladder.ol.other_ladder = self
-            Ladder.ol = None
+            self.other_ladder = Portal.ol
+            Portal.ol.other_ladder = self
+            Portal.ol = None
 
     def use(self):
         self.game.player.rect.center = self.other_ladder.rect.center
