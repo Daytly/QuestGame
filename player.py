@@ -36,6 +36,11 @@ class Player(DynamicGameObject):
                     self.coord.x -= 1
                 self.update_sprite(2)
             self.image = self.frames[self.cur_frame]
+            if args[0].button == 0:
+                for ladder in self.game.ladders_group:
+                    if ladder.coord == self.coord:
+                        ladder.use()
+                        break
         if args and args[0].type == pygame.KEYDOWN:
             if args[0].key == pygame.K_UP:
                 if self.check(self.coord.x, self.coord.y - 1):
@@ -58,7 +63,11 @@ class Player(DynamicGameObject):
                     self.coord.x -= 1
                 self.update_sprite(2)
             self.image = self.frames[self.cur_frame]
-
+            if args[0].key == pygame.K_e:
+                for ladder in self.game.ladders_group:
+                    if ladder.coord == self.coord:
+                        ladder.use()
+                        break
         self.check(self.coord.x, self.coord.y)
 
     def check(self, x, y):
