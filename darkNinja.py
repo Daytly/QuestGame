@@ -1,6 +1,7 @@
 from dynamicGameObject import DynamicGameObject
 import pygame
 from missile import Missile
+import mixer as mx
 
 
 class DarkNinja(DynamicGameObject):
@@ -12,7 +13,29 @@ class DarkNinja(DynamicGameObject):
         self.speedY = 1 if isVertically else 0
         self.missiles = []
 
-    def move(self, *args):
+    def move(self):
+        if self.attack():
+            return
+        if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):
+            self.coord += [self.speedX, self.speedY]
+            self.rect.x += self.speedX * self.game.tile_width
+            self.rect.y += self.speedY * self.game.tile_height
+            self.update_sprite(self.cur_frame)
+        else:
+            self.speedY *= -1
+            self.speedX *= -1
+            self.update_sprite((self.cur_frame + 1) % 2)
+            self.coord += [self.speedX, self.speedY]
+            self.rect.x += self.speedX * self.game.tile_width
+            self.rect.y += self.speedY * self.game.tile_height
+        self.attack()
+
+    def conflict(self, other):
+        self.missiles.remove(other)
+        self.game.enemies.remove(other)
+        other.kill()
+
+    def attack(self):
         if self.coord.x - self.game.player.coord.x == 0:
             t = False  # Есть ли между врагом и иргроком препятствие
             speedX = 0
@@ -27,12 +50,13 @@ class DarkNinja(DynamicGameObject):
                     if not self.check(self.coord.x, y):
                         t = True
             if not t:
+                mx.mixer.play('attack', loops=0)
                 self.missiles.append(Missile('shuriken', self.coord.x,
                                              self.coord.y,
                                              self.game, 2, 1, speedX, speedY, self, self.rect))
                 self.game.enemies.append(self.missiles[-1])
                 self.image = self.framesAttack[1 if speedY <= 0 else 0]
-                return
+                return True
         if self.coord.y - self.game.player.coord.y == 0:
             t = False
             speedX = 1 if self.coord.x - self.game.player.coord.x <= 0 else -1
@@ -48,26 +72,11 @@ class DarkNinja(DynamicGameObject):
                         t = True
                         break
             if not t:
+                mx.mixer.play('attack', loops=0)
                 self.missiles.append(Missile('shuriken', self.coord.x,
                                              self.coord.y,
                                              self.game, 2, 1, speedX, speedY, self, self.rect))
                 self.game.enemies.append(self.missiles[-1])
                 self.image = self.framesAttack[2 if speedX <= 0 else 3]
-                return
-        if self.check(self.coord.x + self.speedX, self.coord.y + self.speedY):
-            self.coord += [self.speedX, self.speedY]
-            self.rect.x += self.speedX * self.game.tile_width
-            self.rect.y += self.speedY * self.game.tile_height
-            self.update_sprite(self.cur_frame)
-        else:
-            self.speedY *= -1
-            self.speedX *= -1
-            self.update_sprite((self.cur_frame + 1) % 2)
-            self.coord += [self.speedX, self.speedY]
-            self.rect.x += self.speedX * self.game.tile_width
-            self.rect.y += self.speedY * self.game.tile_height
-
-    def conflict(self, other):
-        self.missiles.remove(other)
-        self.game.enemies.remove(other)
-        other.kill()
+                return True
+        return False

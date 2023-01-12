@@ -39,7 +39,12 @@ def load_level(filename):
     # читаем уровень, убирая символы перевода строки
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
-    return level_map
+
+    # и подсчитываем максимальную длину
+    max_width = max(map(len, level_map))
+
+    # дополняем каждую строку пустыми клетками ('.')
+    return list(map(lambda x: x.ljust(max_width, 'T'), level_map))
 
 
 def generate_level(level, game, inHouse):
@@ -118,6 +123,6 @@ def generate_level(level, game, inHouse):
 
 
 def print_text(screen, x, y, size, _str, color):
-    text = pygame.font.SysFont("monospace", size)
+    text = pygame.font.Font('Data/fonts/pixelFont.ttf', size)
     string = text.render(str(_str), 0, color)
     screen.blit(string, (x, y))

@@ -1,4 +1,5 @@
 from staticGameObject import StaticGameObject
+import mixer as mx
 
 
 class Key(StaticGameObject):
@@ -10,6 +11,7 @@ class Key(StaticGameObject):
 
     def stepOn(self, entity):
         if self.isActive:
+            mx.mixer.play('openDoor', loops=0)
             self.isActive = False
             self.update_sprite(1)
         self.isActive = False

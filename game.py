@@ -1,21 +1,25 @@
+import pygame
 import sys
 import time
-import pygame
 from camera import Camera
 from floor import Floor
-from button import Button, ButtonLevel
+from button import Button
 from picture import Picture
 from text import Text
+from panel import Panel
 import functions
 from missile import Missile
 from Ladder import Ladder
 from os import listdir, path
+import mixer as mx
 
 
 class Game:
     def __init__(self):
         pygame.init()
         self.display = pygame.display
+        self.display.set_caption('Samurai Storm')
+        self.display.set_icon(pygame.image.load('Data/sprites/icon.png'))
         self.width = 700
         self.height = 700
         self.fps = 60
@@ -23,6 +27,7 @@ class Game:
         self.tile_width = 48
         self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
+        mx.mixer.play('menu', fade_ms=200)
         self.tile_images = {
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
@@ -39,7 +44,11 @@ class Game:
             'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
             "ladder": pygame.transform.scale(functions.load_image('ladder.png'), (48, 48))
 
+            'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
+            'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
+            'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         }
+        self.activeMenu = False
         self.enemies = []
         self.coordSpikes = []
         self.player = None
@@ -54,6 +63,7 @@ class Game:
             level_list,
             self,
             False)
+        self.namesLevels = listdir('Data/levels')
         self.indLevel = 0
 
     def run(self, name_level):
@@ -64,6 +74,7 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         self.enemies_group = pygame.sprite.Group()
+        self.activeMenu = False
         self.ladders_group = pygame.sprite.Group()
         level_list = functions.load_level(name_level)
         enemyEventType = pygame.USEREVENT + 1
@@ -82,8 +93,16 @@ class Game:
             sprite.draw(self.screen)
         self.display.flip()
 
-        reset_btn = ButtonLevel(40, 40, 295, 650, name_level, 'R', (100, 100, 100), (150, 150, 150), action=self.run)
-        menu_btn = Button(40, 40, 345, 650, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
+        pause_btn = Button(80, 80, 310, 620, '', (100, 100, 100), (150, 150, 150), action=self.openMenu,
+                           image='pauseBtn.png')
+        menu = Panel(100, 100, 500, 500,
+                     'menuPanel1.png',
+                     [Button(80, 80, 0, 0, 'PLAY', (0, 0, 0), (0, 0, 0), action=self.closeMenu,
+                             image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'OPTIONS', (0, 0, 0), (0, 0, 0), image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'LEVELS', (0, 0, 0), (0, 0, 0), action=self.menu_levels,
+                             image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'MENU', (0, 0, 0), (0, 0, 0), action=self.menu, image='buttonLong.png')])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -91,17 +110,19 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == enemyEventType:
+                if event.type == enemyEventType and not self.activeMenu:
                     for enemy in self.enemies:
                         if type(enemy) != Missile:
-                            enemy.move(event)
-                if event.type == shurikenEventType:
+                            enemy.move()
+                if event.type == shurikenEventType and not self.activeMenu:
                     for enemy in self.enemies:
                         if type(enemy) == Missile:
-                            enemy.move(event)
-                if event.type == spikesEventType:
+                            enemy.move()
+                if event.type == spikesEventType and not self.activeMenu:
                     for y, x in self.coordSpikes:
                         self.level[y][x].update(event)
+                if not self.activeMenu:
+                    self.player.update(event)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_e:
                         for i in self.ladders_group:
@@ -115,64 +136,61 @@ class Game:
             for sprite in self.all_sprites:
                 self.camera.apply(sprite)
                 sprite.draw(self.screen)
-            reset_btn.draw(self.screen)
-            menu_btn.draw(self.screen)
+            pause_btn.draw(self.screen)
             if self.check_intersection():
                 self.death()
                 self.end_screen(False)
             if self.player.isDead():
                 self.death()
                 self.end_screen(False)
+            if self.activeMenu:
+                menu.draw(self.screen)
             self.display.flip()
 
     def start_screen(self):
-        intro_text = ["ЗАСТАВКА", "",
-                      "Правила игры",
-                      "Если в правилах несколько строк,",
-                      "приходится выводить их построчно"]
+        intro_text = []
 
-        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
+        fon = self.tile_images['startScreen']
         self.screen.blit(fon, (0, 0))
-        font = pygame.font.Font(None, 30)
-        text_coord = 50
+        font = pygame.font.Font(None, 70)
+        text_coordY = 500
+        text_coordX = 100
         for line in intro_text:
-            string_rendered = font.render(line, 1, pygame.Color('white'))
+            string_rendered = font.render(line, 1, pygame.Color('black'))
             intro_rect = string_rendered.get_rect()
-            text_coord += 10
-            intro_rect.top = text_coord
-            intro_rect.x = 10
-            text_coord += intro_rect.height
+            text_coordY -= 10
+            intro_rect.top = text_coordY
+            intro_rect.x = text_coordX
+            text_coordX += 40
+            text_coordY += intro_rect.height
             self.screen.blit(string_rendered, intro_rect)
         pygame.display.flip()
-        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN or \
                         event.type == pygame.MOUSEBUTTONDOWN:
-                    time.sleep(0.5)
                     return  # начинаем игру
             pygame.display.flip()
             self.clock.tick(self.fps)
 
     def menu(self):
-        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
+        mx.mixer.setVolume('menu', 1)
+        fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
-        play_btn = Button(400, 70, 150, 250, 'PLAY', (100, 100, 100), (150, 150, 150))
-        exit_btn = Button(200, 40, 250, 350, 'EXIT', (100, 100, 100), (150, 150, 150))
-        play_btn.draw(self.screen)
-        exit_btn.draw(self.screen)
+        menu = Panel(100, 100, 500, 500,
+                     'menuPanel1.png',
+                     [Button(80, 80, 0, 0, 'PLAY', (0, 0, 0), (0, 0, 0), action=self.menu_levels,
+                             image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'OPTIONS', (0, 0, 0), (0, 0, 0), image='buttonLong.png'),
+                      Button(80, 80, 0, 0, 'EXIT', (0, 0, 0), (0, 0, 0), image='buttonLong.png', action=sys.exit)])
         pygame.display.flip()
-        play_btn.action = self.menu_levels
-        exit_btn.action = sys.exit
-        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-            play_btn.draw(self.screen)
-            exit_btn.draw(self.screen)
+            menu.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -180,26 +198,23 @@ class Game:
         fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         self.screen.blit(fon, (0, 0))
         levels = []
-        self.indLevel = 0
-        for level in listdir('Data/levels'):
+        for level in self.namesLevels:
+            nameLevel = level.rstrip('.txt')
             levels.append([])
-            if path.isfile(f'Data/screenShots/{level.rstrip(".txt")}SH.png'):
-                levels[-1].append(Picture(125, 20, f'Data/screenShots/{level.rstrip(".txt")}SH.png', 450, 450))
+            levels[-1].append(Text(125, 20, (0, 0, 0), 50, nameLevel))
+            if path.isfile(f'Data/screenShots/{nameLevel}SH.png'):
+                levels[-1].append(Picture(125, 80, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
             else:
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
-            levels[-1].append(Text(125, 495, (0, 0, 0), 50, level.rstrip('.txt')))
-            levels[-1].append(ButtonLevel(450, 50, 125, 570, level, 'Play', (100, 100, 100), (150, 150, 150), self.run))
-        menu_btn = Button(60, 60, 5, 635, 'M', (100, 100, 100), (150, 150, 150), action=self.menu)
-        right_btn = Button(60, 60, 635, 245, '>', (100, 100, 100), (150, 150, 150), action=self.rightBtn)
-        left_btn = Button(60, 60, 5, 245, '<', (100, 100, 100), (150, 150, 150), action=self.leftBtn)
-        menu_btn.draw(self.screen)
-        left_btn.draw(self.screen)
-        right_btn.draw(self.screen)
-        self.indLevel %= len(levels)
-        for obj in levels[self.indLevel]:
-            obj.draw(self.screen)
-        pygame.display.flip()
-        time.sleep(0.5)
+            levels[-1].append(Button(240, 80, 230, 570, 'Play', (100, 100, 100), (150, 150, 150), level,
+                                     action=self.run, image='buttonLong.png', rows=3))
+
+        menu_btn = Button(60, 60, 5, 635, '', (100, 100, 100), (150, 150, 150), action=self.menu, image='menuBtn.png',
+                          cols=3, rows=1)
+        right_btn = Button(60, 60, 635, 275, '', (100, 100, 100), (150, 150, 150), action=self.rightBtn,
+                           image='rightBtn.png', cols=3, rows=1)
+        left_btn = Button(60, 60, 5, 275, '', (100, 100, 100), (150, 150, 150), action=self.leftBtn,
+                          image='leftBtn.png', cols=3, rows=1)
         while True:
             self.screen.fill((153, 217, 234))
             for event in pygame.event.get():
@@ -234,8 +249,6 @@ class Game:
             intro_rect.x = 10
             text_coord += intro_rect.height
             self.screen.blit(string_rendered, intro_rect)
-        pygame.display.flip()
-        time.sleep(0.5)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -249,10 +262,13 @@ class Game:
         entities = pygame.sprite.spritecollide(self.player, self.enemies_group, True)
         if entities:
             self.player.setKiller(entities[0])
+            mx.mixer.setVolume('menu', 0)
+            mx.mixer.play('hit', loops=0)
             return True
         return False
 
     def death(self):
+        mx.mixer.play('gameOver', loops=0)
         death_img = self.tile_images['deadPlayer']
         for i in self.all_sprites:
             if i != self.player:
@@ -284,6 +300,12 @@ class Game:
 
     def leftBtn(self):
         self.indLevel = self.indLevel - 1
+
+    def openMenu(self):
+        self.activeMenu = True
+
+    def closeMenu(self):
+        self.activeMenu = False
 
 
 game = Game()

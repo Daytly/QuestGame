@@ -2,7 +2,7 @@ TTTTTTTTTT...###
 TTTTTTTTTT..##.#.####
 TTTTTTTTTT.##..#.#.-#
 TTTTTTTTTT##K.$..$..#
-TTTTTTTTTT#..$@$.#..#
+TTTTTTTTTT#..$.$.#..#
 TTTTTTTTTT###.$#.#.|#
 TTTTTTTTTT.....#@..%#
 TTTTTTTTTT.##.####.##
