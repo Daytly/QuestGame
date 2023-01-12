@@ -45,8 +45,6 @@ class Game:
             'shuriken': pygame.transform.scale(functions.load_image('shuriken.png'), (96, 48)),
             'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
             "ladder": pygame.transform.scale(functions.load_image('ladder.png'), (48, 48)),
-
-            'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
             'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
             'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
         }
@@ -60,6 +58,7 @@ class Game:
         self.tiles_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         self.enemies_group = pygame.sprite.Group()
+        self.ladders_group = pygame.sprite.Group()
         level_list = functions.load_level('map.txt')
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(
             level_list,
