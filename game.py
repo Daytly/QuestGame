@@ -21,6 +21,9 @@ class Game:
         pygame.init()
         pygame.joystick.init()
         self.joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+        for i in self.joysticks:
+            i.init()
+        self.joy_available = len(self.joysticks) > 0
         self.display = pygame.display
         self.display.set_caption('Samurai Storm')
         self.display.set_icon(pygame.image.load('Data/sprites/icon.png'))
