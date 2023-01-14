@@ -13,6 +13,7 @@ class Player(DynamicGameObject):
         self.killer = None  # Тот кто убил персонажа
 
     def update(self, *args):
+        print(args[0].type)
         if args and args[0].type == pygame.JOYHATMOTION:
             x, y = self.game.joysticks[0].get_hat(0)
             if y == 1:

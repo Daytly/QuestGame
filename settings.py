@@ -30,7 +30,7 @@ class Settings:
                                        'right': self.bindsKeyBoard['right'],
                                        'left': self.bindsKeyBoard['left'],
                                        'interact': self.bindsKeyBoard['interact'],
-                                       'menu': pygame.K_ESCAPE},
+                                       'menu': self.bindsKeyBoard['menu']},
                           "joystick": {"interact": self.bindsJoystick['interact'], 'menu': self.bindsJoystick['menu']}},
                 'sound': all(mx.mixer.getVolume())}
         with open('Data/settings.json', 'w') as file:
