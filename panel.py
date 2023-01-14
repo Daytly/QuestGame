@@ -4,12 +4,12 @@ from text import Text
 
 
 class Panel:
-    def __init__(self, x, indent, width, height, image, widgets):
+    def __init__(self, x, y, width, height, image, widgets):
         self.width = width
         self.height = height
         self.image = pygame.transform.scale(pygame.image.load('Data/sprites/buttons/' + image),
                                             (self.width, self.height))
-        self.rect = self.image.get_rect().move(x, indent)
+        self.rect = self.image.get_rect().move(x, y)
         self.widgets = widgets
         if len(self.widgets) > 1:
             indent = (self.height - sum([i.height for i in self.widgets]) - 160) // (len(self.widgets) - 1)
