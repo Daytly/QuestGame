@@ -6,7 +6,7 @@ import mixer as mx
 
 
 class Button:
-    def __init__(self, width, height, x, y, massage, *args, staticColor=(0, 0, 0), activeColor=(0, 0, 0), size=30,
+    def __init__(self, x, y, width, height,  massage, *args, staticColor=(0, 0, 0), activeColor=(0, 0, 0), size=30,
                  dis=10, action=None, image='none.png', rows=1, cols=1):
         self.args = args
         self.width = width

@@ -11,6 +11,7 @@ import functions
 from missile import Missile
 from portal import Portal
 from os import listdir, path
+from optionsMenu import OptionsMenu
 import mixer as mx
 import binds
 import json
@@ -74,11 +75,15 @@ class Game:
         self.player_group = pygame.sprite.Group()
         self.enemies_group = pygame.sprite.Group()
         self.ladders_group = pygame.sprite.Group()
-        self.optionsPanel = Panel(10, 10, 680, 680, image='menuPanel.png',
-                                  widgets=[Button(1, 60, 1, 1, 'ON/OFF sounds', image='buttonLong.png',
-                                                  action=mx.mixer.volume, size=20),
-                                           Button(1, 60, 1, 1, 'Save and Back', image='buttonLong.png',
-                                                  action=self.closeOptionsMenu, size=20)])
+        self.optionsMenu = OptionsMenu(10, 10, 680, 680, image='menuPanel.png',
+                                       widgets=[[Button(1, 1, 1, 60, 'ON/OFF sounds', image='buttonLong.png',
+                                                        action=mx.mixer.volume, size=20),
+                                                 Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
+                                                        action=self.closeOptionsMenu, size=20)]])
+        self.pageSwitches = [Button(5, 330, 40, 40, '', image='leftBtn.png', action=self.optionsMenu.previousPage,
+                                    cols=3),
+                             Button(655, 330, 40, 40, '', image='rightBtn.png', action=self.optionsMenu.nextPage,
+                                    cols=3)]
         level_list = functions.load_level('map.txt')
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(
             level_list,
@@ -114,16 +119,16 @@ class Game:
             sprite.draw(self.screen)
         self.display.flip()
 
-        pause_btn = Button(80, 80, 310, 620, '', action=self.openMenu,
+        pause_btn = Button(310, 620, 80, 80, '', action=self.openMenu,
                            image='pauseBtn.png')
-        menu = Panel(100, 100, 500, 500,
+        menu = Panel(500, 100, 100, 500,
                      'menuPanel1.png',
-                     [Button(80, 80, 0, 0, 'PLAY', action=self.closeMenu,
+                     [Button(0, 0, 80, 80, 'PLAY', action=self.closeMenu,
                              image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
-                      Button(80, 80, 0, 0, 'LEVELS', action=self.menu_levels,
+                      Button(0, 0, 80, 80, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
+                      Button(0, 0, 80, 80, 'LEVELS', action=self.menu_levels,
                              image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'MENU', action=self.menu, image='buttonLong.png')])
+                      Button(0, 0, 80, 80, 'MENU', action=self.menu, image='buttonLong.png')])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -166,7 +171,9 @@ class Game:
             if self.activeMenu:
                 menu.draw(self.screen)
             if self.activeOptionsMenu:
-                self.optionsPanel.draw(self.screen)
+                self.optionsMenu.draw(self.screen)
+                for button in self.pageSwitches:
+                    button.draw(self.screen)
             self.display.flip()
 
     def start_screen(self):
@@ -206,10 +213,10 @@ class Game:
         self.screen.blit(fon, (0, 0))
         menu = Panel(100, 100, 500, 500,
                      'menuPanel1.png',
-                     [Button(80, 80, 0, 0, 'PLAY', action=self.menu_levels,
+                     [Button(0, 0, 80, 80, 'PLAY', action=self.menu_levels,
                              image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
-                      Button(80, 80, 0, 0, 'EXIT', image='buttonLong.png', action=sys.exit)])
+                      Button(0, 0, 80, 80, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
+                      Button(0, 0, 80, 80, 'EXIT', image='buttonLong.png', action=sys.exit)])
         pygame.display.flip()
         while True:
             fon = self.tile_images['fon']
@@ -219,7 +226,9 @@ class Game:
                     sys.exit()
             menu.draw(self.screen)
             if self.activeOptionsMenu:
-                self.optionsPanel.draw(self.screen)
+                self.optionsMenu.draw(self.screen)
+                for button in self.pageSwitches:
+                    button.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -238,11 +247,11 @@ class Game:
             levels[-1].append(Button(240, 80, 230, 570, 'Play', level,
                                      action=self.run, image='buttonLong.png', rows=3))
 
-        menu_btn = Button(60, 60, 5, 635, '', action=self.menu, image='menuBtn.png',
+        menu_btn = Button(5, 635, 60, 60, '', action=self.menu, image='menuBtn.png',
                           cols=3, rows=1)
-        right_btn = Button(60, 60, 635, 275, '', action=self.rightBtn,
+        right_btn = Button(635, 275, 60, 60, '', action=self.rightBtn,
                            image='rightBtn.png', cols=3, rows=1)
-        left_btn = Button(60, 60, 5, 275, '', action=self.leftBtn,
+        left_btn = Button(5, 275, 60, 60, '', action=self.leftBtn,
                           image='leftBtn.png', cols=3, rows=1)
         while True:
             self.screen.fill((153, 217, 234))
