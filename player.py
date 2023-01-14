@@ -3,6 +3,7 @@ from dynamicGameObject import DynamicGameObject
 from key import Key
 from door import Door
 from spikes import Spikes
+from binds import bindsKeyBoard, bindsJoystick
 
 
 class Player(DynamicGameObject):
@@ -37,34 +38,34 @@ class Player(DynamicGameObject):
                 self.update_sprite(2)
             self.image = self.frames[self.cur_frame]
         if args[0].type == pygame.JOYBUTTONDOWN:
-            if args[0].button == 0:
+            if args[0].button in bindsJoystick['interact']:
                 for ladder in self.game.ladders_group:
                     if ladder.coord == self.coord:
                         ladder.use()
                         break
         if args and args[0].type == pygame.KEYDOWN:
-            if args[0].key == pygame.K_UP:
+            if args[0].key in bindsKeyBoard['up']:
                 if self.check(self.coord.x, self.coord.y - 1):
                     self.rect.y -= self.game.tile_height
                     self.coord.y -= 1
                 self.update_sprite(1)
-            if args[0].key == pygame.K_DOWN:
+            if args[0].key in bindsKeyBoard['down']:
                 if self.check(self.coord.x, self.coord.y + 1):
                     self.rect.y += self.game.tile_height
                     self.coord.y += 1
                 self.update_sprite(0)
-            if args[0].key == pygame.K_RIGHT:
-                if self.check(self.coord.x + 1, self.coord.y):
-                    self.rect.x += self.game.tile_width
-                    self.coord.x += 1
-                self.update_sprite(3)
-            if args[0].key == pygame.K_LEFT:
+            if args[0].key in bindsKeyBoard['left']:
                 if self.check(self.coord.x - 1, self.coord.y):
                     self.rect.x -= self.game.tile_width
                     self.coord.x -= 1
                 self.update_sprite(2)
+            if args[0].key in bindsKeyBoard['right']:
+                if self.check(self.coord.x + 1, self.coord.y):
+                    self.rect.x += self.game.tile_width
+                    self.coord.x += 1
+                self.update_sprite(3)
             self.image = self.frames[self.cur_frame]
-            if args[0].key == pygame.K_e:
+            if args[0].key in bindsKeyBoard['interact']:
                 for ladder in self.game.ladders_group:
                     if ladder.coord == self.coord:
                         ladder.use()
