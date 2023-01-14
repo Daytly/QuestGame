@@ -3,6 +3,7 @@ import time
 import pygame
 from functions import print_text
 import mixer as mx
+from text import Text
 
 
 class Button:
@@ -11,7 +12,6 @@ class Button:
         self.args = args
         self.width = width
         self.height = height
-        self.massage = massage
         self.staticColor = pygame.Color(staticColor[0], staticColor[1], staticColor[2])
         self.activeColor = pygame.Color(activeColor[0], activeColor[1], activeColor[2])
         self.dis = dis
@@ -25,6 +25,9 @@ class Button:
         self.update_sprite(0)
         self.useImage = image != 'none.png'
         self.rect = self.image.get_rect().move(x, y)
+        self.text = Text(0, 0, (192, 203, 220), 30, massage)
+        self.text.rect.x = self.rect.x + (self.width - self.text.width) // 2
+        self.text.rect.y = self.rect.y + (self.height - self.text.height) // 2
         self.isPressed = True
         self.isClick = False
 
@@ -63,13 +66,9 @@ class Button:
             else:
                 self.image.fill(pygame.Color(self.staticColor))
         if self.isClick:
-            print_text(screen, self.rect.x + (self.width - len(self.massage) * (self.size - self.size // 3)) // 2,
-                       self.rect.y + (self.height - 20) // 2 + 2,
-                       self.size, self.massage, (192, 203, 220))
+            self.text.buttonDownDraw(screen)
         else:
-            print_text(screen, self.rect.x + (self.width - len(self.massage) * (self.size - self.size // 3)) // 2,
-                       self.rect.y + (self.height - 20) // 2,
-                       self.size, self.massage, (192, 203, 220))
+            self.text.draw(screen)
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -91,5 +90,11 @@ class Button:
         self.cut_sheet(self.sheet, cols, rows)
         self.update_sprite(0)
 
-    def updateMessage(self, message):
-        self.massage = message
+    def updateCoord(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
+        self.text.rect.x = self.rect.x + (self.width - self.text.width) // 2
+        self.text.rect.y = self.rect.y + (self.height - self.text.height) // 2
+
+
+

@@ -23,3 +23,6 @@ class Coord:
 
     def __copy__(self):
         return Coord(self.x, self.y)
+
+    def __add__(self, other):
+        return Coord(self.x + other.x, self.y + other.y)

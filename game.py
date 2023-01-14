@@ -76,10 +76,11 @@ class Game:
         self.enemies_group = pygame.sprite.Group()
         self.ladders_group = pygame.sprite.Group()
         self.optionsMenu = OptionsMenu(10, 10, 680, 680, image='menuPanel.png',
-                                       widgets=[[Button(1, 1, 1, 60, 'ON/OFF sounds', image='buttonLong.png',
+                                       panels=[[Button(1, 1, 1, 60, 'ON/OFF sounds', image='buttonLong.png',
                                                         action=mx.mixer.volume, size=20),
                                                  Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
-                                                        action=self.closeOptionsMenu, size=20)]])
+                                                        action=self.closeOptionsMenu, size=20),
+                                                 Text(0, 0, (192, 203, 220), 20, 'KeyBoardBinds')]])
         self.pageSwitches = [Button(5, 330, 40, 40, '', image='leftBtn.png', action=self.optionsMenu.previousPage,
                                     cols=3),
                              Button(655, 330, 40, 40, '', image='rightBtn.png', action=self.optionsMenu.nextPage,
