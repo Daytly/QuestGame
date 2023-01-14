@@ -14,6 +14,7 @@ from spikes import Spikes
 from darkNinja import DarkNinja
 from missile import Missile
 from portal import Portal
+import settings
 import sys
 
 
@@ -121,8 +122,3 @@ def generate_level(level, game, inHouse):
     # вернем игрока, а также размер поля в клетках
     return new_level, new_player, enemy, spikesCoord, x, y
 
-
-def print_text(screen, x, y, size, _str, color):
-    text = pygame.font.Font('Data/fonts/pixelFont.ttf', size)
-    string = text.render(str(_str), 0, color)
-    screen.blit(string, (x, y))

@@ -14,7 +14,7 @@ from os import listdir, path
 from optionsMenu import OptionsMenu
 from lineWidgets import LineWidgets
 import mixer as mx
-import binds
+from settings import Settings
 import json
 
 
@@ -36,14 +36,10 @@ class Game:
         self.tile_width = 48
         self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
+        self.settings = Settings()
         mx.mixer.play('menu', fade_ms=200)
-        with open('Data/settings.json', 'r') as file:
-            data = json.load(file)
-            self.isSound = data['sound']
-            if not data['sound']:
-                mx.mixer.volume()
-            binds.bindsKeyBoard = data['binds']['keyBoard']
-            binds.bindsJoystick = data['binds']['joystick']
+        if not self.settings.isSound:
+            mx.mixer.volume()
         self.tile_images = {
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
@@ -165,12 +161,12 @@ class Game:
             if self.player.isDead():
                 self.death()
                 self.end_screen(False)
-            if self.activeMenu:
-                menu.draw(self.screen)
             if self.activeOptionsMenu:
                 self.optionsMenu.draw(self.screen)
                 for button in self.pageSwitches:
                     button.draw(self.screen)
+            elif self.activeMenu:
+                menu.draw(self.screen)
             self.display.flip()
 
     def start_screen(self):
@@ -204,7 +200,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
-        if self.isSound:
+        if self.settings.isSound:
             mx.mixer.setVolume('menu', 1)
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
@@ -221,11 +217,12 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-            menu.draw(self.screen)
             if self.activeOptionsMenu:
                 self.optionsMenu.draw(self.screen)
                 for button in self.pageSwitches:
                     button.draw(self.screen)
+            else:
+                menu.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
@@ -357,14 +354,7 @@ class Game:
         self.activeOptionsMenu = True
 
     def closeOptionsMenu(self):
-        with open('Data/settings.json', 'r') as file:
-            data = json.load(file)
-        data['sound'] = all(mx.mixer.getVolume())
-        data['binds']['keyBoard'] = binds.bindsKeyBoard
-        data['binds']['joystick'] = binds.bindsJoystick
-        with open('Data/settings.json', 'w') as file:
-            json.dump(data, file)
-
+        self.settings.save(mx)
         self.activeOptionsMenu = False
 
     def createOptionMenu(self):
@@ -374,39 +364,60 @@ class Game:
                                     Text(0, 0, (192, 203, 220), 50, 'KeyBoard Binds'),
                                     LineWidgets(0, 0, 0, 80,
                                                 widgets=[Text(0, 0, (192, 203, 220), 30, 'UP'),
-                                                         Button(1, 1, 200, 0, '0',
+                                                         Button(1, 1, 200, 0, '0', 'up', False,
                                                                 image='buttonLong.png',
-                                                                action=mx.mixer.volume, size=20)]),
+                                                                action=self.binding, size=20)]),
                                     LineWidgets(0, 0, 0, 80,
                                                 widgets=[Text(0, 0, (192, 203, 220), 30, 'DOWN'),
-                                                         Button(1, 1, 200, 0, '0',
+                                                         Button(1, 1, 200, 0, '0', 'down', False,
                                                                 image='buttonLong.png',
-                                                                action=mx.mixer.volume, size=20)]),
+                                                                action=self.binding, size=20)]),
                                     LineWidgets(0, 0, 0, 80,
                                                 widgets=[Text(0, 0, (192, 203, 220), 30, 'RIGHT'),
-                                                         Button(1, 1, 200, 0, '0',
+                                                         Button(1, 1, 200, 0, '0', 'right', False,
                                                                 image='buttonLong.png',
-                                                                action=mx.mixer.volume, size=20)]),
+                                                                action=self.binding, size=20)]),
                                     LineWidgets(0, 0, 0, 80,
                                                 widgets=[Text(0, 0, (192, 203, 220), 30, 'LEFT'),
-                                                         Button(1, 1, 200, 0, '0',
+                                                         Button(1, 1, 200, 0, '0', 'left', False,
                                                                 image='buttonLong.png',
-                                                                action=mx.mixer.volume, size=20)]),
+                                                                action=self.binding, size=20)]),
                                     Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
                                            action=self.closeOptionsMenu, size=20)],
                                    [LineWidgets(0, 0, 0, 80,
                                                 widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
-                                                         Button(1, 1, 200, 0, '0',
+                                                         Button(1, 1, 200, 0, '0', 'interact', False,
                                                                 image='buttonLong.png',
-                                                                action=mx.mixer.volume, size=20)]),
+                                                                action=self.binding, size=20)]),
                                     Text(0, 0, (192, 203, 220), 50, 'Joystick Binds'),
                                     LineWidgets(0, 0, 0, 80,
                                                 widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
-                                                         Button(1, 1, 200, 0, '0',
+                                                         Button(1, 1, 200, 0, '0', 'interact', True,
                                                                 image='buttonLong.png',
-                                                                action=mx.mixer.volume, size=20)]),
+                                                                action=self.binding, size=20)]),
                                     Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
                                            action=self.closeOptionsMenu, size=20)]])
+
+    def binding(self, key, useJoystick):
+        isSearch = True
+        if useJoystick:
+            while isSearch:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        sys.exit()
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        self.settings.bindsJoystick[key] = event.button
+                        isSearch = False
+                        break
+        else:
+            while isSearch:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        sys.exit()
+                    if event.type == pygame.KEYDOWN:
+                        self.settings.bindsKeyBoard[key] = event.key
+                        isSearch = False
+                        break
 
 
 game = Game()

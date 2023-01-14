@@ -1,7 +1,6 @@
 import time
 
 import pygame
-from functions import print_text
 import mixer as mx
 from text import Text
 
