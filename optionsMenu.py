@@ -12,7 +12,7 @@ class OptionsMenu:
         self.pages = []
         self.indActivePage = 0
         for indPage in range(len(panels)):
-            self.pages.append(Panel(x, y, width, height, image, panels[indPage]))
+            self.pages.append(Panel(x, y, width, height, image, panels[indPage], froTheBeginning=True))
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -25,3 +25,4 @@ class OptionsMenu:
     def previousPage(self):
         self.indActivePage -= 1
         self.indActivePage %= len(self.pages)
+

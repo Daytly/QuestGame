@@ -12,6 +12,7 @@ from missile import Missile
 from portal import Portal
 from os import listdir, path
 from optionsMenu import OptionsMenu
+from lineWidgets import LineWidgets
 import mixer as mx
 import binds
 import json
@@ -75,12 +76,7 @@ class Game:
         self.player_group = pygame.sprite.Group()
         self.enemies_group = pygame.sprite.Group()
         self.ladders_group = pygame.sprite.Group()
-        self.optionsMenu = OptionsMenu(10, 10, 680, 680, image='menuPanel.png',
-                                       panels=[[Button(1, 1, 1, 60, 'ON/OFF sounds', image='buttonLong.png',
-                                                        action=mx.mixer.volume, size=20),
-                                                 Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
-                                                        action=self.closeOptionsMenu, size=20),
-                                                 Text(0, 0, (192, 203, 220), 20, 'KeyBoardBinds')]])
+        self.optionsMenu = self.createOptionMenu()
         self.pageSwitches = [Button(5, 330, 40, 40, '', image='leftBtn.png', action=self.optionsMenu.previousPage,
                                     cols=3),
                              Button(655, 330, 40, 40, '', image='rightBtn.png', action=self.optionsMenu.nextPage,
@@ -370,6 +366,47 @@ class Game:
             json.dump(data, file)
 
         self.activeOptionsMenu = False
+
+    def createOptionMenu(self):
+        return OptionsMenu(10, 10, 680, 680, image='menuPanel.png',
+                           panels=[[Button(1, 1, 1, 60, 'ON/OFF sounds', image='buttonLong.png',
+                                           action=mx.mixer.volume, size=20),
+                                    Text(0, 0, (192, 203, 220), 50, 'KeyBoard Binds'),
+                                    LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'UP'),
+                                                         Button(1, 1, 200, 0, '0',
+                                                                image='buttonLong.png',
+                                                                action=mx.mixer.volume, size=20)]),
+                                    LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'DOWN'),
+                                                         Button(1, 1, 200, 0, '0',
+                                                                image='buttonLong.png',
+                                                                action=mx.mixer.volume, size=20)]),
+                                    LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'RIGHT'),
+                                                         Button(1, 1, 200, 0, '0',
+                                                                image='buttonLong.png',
+                                                                action=mx.mixer.volume, size=20)]),
+                                    LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'LEFT'),
+                                                         Button(1, 1, 200, 0, '0',
+                                                                image='buttonLong.png',
+                                                                action=mx.mixer.volume, size=20)]),
+                                    Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
+                                           action=self.closeOptionsMenu, size=20)],
+                                   [LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
+                                                         Button(1, 1, 200, 0, '0',
+                                                                image='buttonLong.png',
+                                                                action=mx.mixer.volume, size=20)]),
+                                    Text(0, 0, (192, 203, 220), 50, 'Joystick Binds'),
+                                    LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
+                                                         Button(1, 1, 200, 0, '0',
+                                                                image='buttonLong.png',
+                                                                action=mx.mixer.volume, size=20)]),
+                                    Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
+                                           action=self.closeOptionsMenu, size=20)]])
 
 
 game = Game()

@@ -4,7 +4,7 @@ from text import Text
 
 
 class Panel:
-    def __init__(self, x, y, width, height, image, widgets):
+    def __init__(self, x, y, width, height, image, widgets, froTheBeginning=False):
         self.width = width
         self.height = height
         self.image = pygame.transform.scale(pygame.image.load('Data/sprites/buttons/' + image),
@@ -12,7 +12,10 @@ class Panel:
         self.rect = self.image.get_rect().move(x, y)
         self.widgets = widgets
         if len(self.widgets) > 1:
-            indent = (self.height - sum([i.height for i in self.widgets]) - 160) // (len(self.widgets) - 1)
+            if froTheBeginning:
+                indent = 6
+            else:
+                indent = (self.height - sum([i.height for i in self.widgets]) - 160) // (len(self.widgets) - 1)
         else:
             indent = 0
         sizeX = self.width - self.width // 3
@@ -20,11 +23,12 @@ class Panel:
             if type(self.widgets[ind]) != Text:
                 self.widgets[ind].reSize(sizeX, self.widgets[ind].height, 1, 3)
             x = self.rect.x + (self.width - sizeX) // 2
-            if ind > 0:
-                y = self.widgets[ind - 1].height + indent + \
-                                           self.widgets[ind - 1].rect.y
-            else:
+            if len(self.widgets) - 1 > ind > 0:
+                y = self.widgets[ind - 1].height + indent + self.widgets[ind - 1].rect.y
+            elif ind == 0:
                 y = self.rect.y + 80
+            else:
+                y = self.rect.y + self.height - 80 - self.widgets[ind].height
             self.widgets[ind].updateCoord(x, y)
 
     def draw(self, screen):
