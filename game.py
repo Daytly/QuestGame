@@ -245,7 +245,7 @@ class Game:
                 levels[-1].append(Picture(125, 80, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
             else:
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
-            levels[-1].append(Button(240, 80, 230, 570, 'Play', level,
+            levels[-1].append(Button(230, 570, 240, 80, 'Play', level,
                                      action=self.run, image='buttonLong.png', rows=3))
 
         menu_btn = Button(5, 635, 60, 60, '', action=self.menu, image='menuBtn.png',
