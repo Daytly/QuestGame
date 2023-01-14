@@ -32,3 +32,9 @@ class Panel:
         for button in self.widgets:
             button.draw(screen)
 
+    def __getitem__(self, item):
+        if item >= len(self.widgets):
+            raise IndexError
+        else:
+            return self.widgets[item]
+
