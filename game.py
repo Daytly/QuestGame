@@ -122,7 +122,7 @@ class Game:
 
         pause_btn = Button(310, 620, 80, 80, '', action=self.openMenu,
                            image='pauseBtn.png')
-        menu = Panel(500, 100, 100, 500,
+        menu = Panel(100, 100, 500, 500,
                      'menuPanel1.png',
                      [Button(0, 0, 80, 80, 'PLAY', action=self.closeMenu,
                              image='buttonLong.png'),
