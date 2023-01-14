@@ -103,7 +103,7 @@ class Game:
         shurikenEventType = spikesEventType + 1
         pygame.time.set_timer(enemyEventType, 500)
         pygame.time.set_timer(spikesEventType, 300)
-        pygame.time.set_timer(shurikenEventType, 150)
+        pygame.time.set_timer(shurikenEventType, 200)
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
             functions.generate_level(level_list, self, False)
         # изменяем ракурс камеры
