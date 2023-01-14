@@ -7,7 +7,7 @@ import mixer as mx
 
 class Button:
     def __init__(self, width, height, x, y, massage, *args, staticColor=(0, 0, 0), activeColor=(0, 0, 0), size=30,
-                 dis=10, action=None, image='none.png', rows=1, cols=1):
+                 dis=10, action=None, image='none.png', rows=1, cols=1, joy=None):
         self.args = args
         self.width = width
         self.height = height
@@ -93,3 +93,6 @@ class Button:
 
     def updateMessage(self, message):
         self.massage = message
+
+    def click(self):
+        pass

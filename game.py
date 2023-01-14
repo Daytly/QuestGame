@@ -115,15 +115,15 @@ class Game:
         self.display.flip()
 
         pause_btn = Button(80, 80, 310, 620, '', action=self.openMenu,
-                           image='pauseBtn.png')
+                           image='pauseBtn.png', joy=self.joysticks[0])
         menu = Panel(100, 100, 500, 500,
                      'menuPanel1.png',
                      [Button(80, 80, 0, 0, 'PLAY', action=self.closeMenu,
-                             image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
+                             image='buttonLong.png', joy=self.joysticks[0]),
+                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu, joy=self.joysticks[0]),
                       Button(80, 80, 0, 0, 'LEVELS', action=self.menu_levels,
-                             image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'MENU', action=self.menu, image='buttonLong.png')])
+                             image='buttonLong.png', joy=self.joysticks[0]),
+                      Button(80, 80, 0, 0, 'MENU', action=self.menu, image='buttonLong.png', joy=self.joysticks[0])])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -207,9 +207,9 @@ class Game:
         menu = Panel(100, 100, 500, 500,
                      'menuPanel1.png',
                      [Button(80, 80, 0, 0, 'PLAY', action=self.menu_levels,
-                             image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
-                      Button(80, 80, 0, 0, 'EXIT', image='buttonLong.png', action=sys.exit)])
+                             image='buttonLong.png', joy=self.joysticks[0]),
+                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu, joy=self.joysticks[0]),
+                      Button(80, 80, 0, 0, 'EXIT', image='buttonLong.png', action=sys.exit, joy=self.joysticks[0])])
         pygame.display.flip()
         while True:
             fon = self.tile_images['fon']
