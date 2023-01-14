@@ -9,7 +9,7 @@ from text import Text
 from panel import Panel
 import functions
 from missile import Missile
-from Portal import Portal
+from portal import Portal
 from os import listdir, path
 import mixer as mx
 import binds

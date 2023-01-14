@@ -13,7 +13,7 @@ from tree import Tree
 from spikes import Spikes
 from darkNinja import DarkNinja
 from missile import Missile
-from Portal import Portal
+from portal import Portal
 import sys
 
 
