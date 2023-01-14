@@ -11,12 +11,18 @@ class Settings:
                               'interact': pygame.K_e,
                               'menu': pygame.K_ESCAPE}
 
-        self.bindsJoystick = {'interact': 0, 'menu': 7}
+        self.bindsJoystick = {'interact': 0,
+                              'menu': 7,
+                              'up': pygame.K_UP,
+                              'down': pygame.K_DOWN,
+                              'right': pygame.K_RIGHT,
+                              'left': pygame.K_LEFT}
         with open('Data/settings.json', 'r') as file:
             data = json.load(file)
             self.isSound = data['sound']
             self.bindsKeyBoard = data['binds']['keyBoard']
             self.bindsJoystick = data['binds']['joystick']
+        print(self.bindsJoystick)
 
     def updateKey(self, key, value, isJoystick):
         if isJoystick:
@@ -31,7 +37,12 @@ class Settings:
                                        'left': self.bindsKeyBoard['left'],
                                        'interact': self.bindsKeyBoard['interact'],
                                        'menu': self.bindsKeyBoard['menu']},
-                          "joystick": {"interact": self.bindsJoystick['interact'], 'menu': self.bindsJoystick['menu']}},
+                          "joystick": {'up': self.bindsJoystick['up'],
+                                       'down': self.bindsJoystick['down'],
+                                       'right': self.bindsJoystick['right'],
+                                       'left': self.bindsJoystick['left'],
+                                       "interact": self.bindsJoystick['interact'],
+                                       'menu': self.bindsJoystick['menu']}},
                 'sound': all(mx.mixer.getVolume())}
         with open('Data/settings.json', 'w') as file:
             json.dump(data, file)

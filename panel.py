@@ -13,7 +13,7 @@ class Panel:
         self.widgets = widgets
         if len(self.widgets) > 1:
             if froTheBeginning:
-                indent = 6
+                indent = 3
             else:
                 indent = (self.height - sum([i.height for i in self.widgets]) - 160) // (len(self.widgets) - 1)
         else:
