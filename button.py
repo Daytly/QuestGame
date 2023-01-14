@@ -6,8 +6,8 @@ import mixer as mx
 
 
 class Button:
-    def __init__(self, width, height, x, y, massage, staticColor, activeColor, *args, dis=10, action=None,
-                 image='none.png', rows=1, cols=1):
+    def __init__(self, width, height, x, y, massage, *args, staticColor=(0, 0, 0), activeColor=(0, 0, 0), size=30,
+                 dis=10, action=None, image='none.png', rows=1, cols=1):
         self.args = args
         self.width = width
         self.height = height
@@ -15,6 +15,7 @@ class Button:
         self.staticColor = pygame.Color(staticColor[0], staticColor[1], staticColor[2])
         self.activeColor = pygame.Color(activeColor[0], activeColor[1], activeColor[2])
         self.dis = dis
+        self.size = size
         self.action = action
         self.sheet = pygame.image.load('Data/sprites/buttons/' + image)
         self.frames = []
@@ -41,7 +42,6 @@ class Button:
                     self.update_sprite(1)
                     screen.blit(self.image, self.rect)
                     self.isClick = True
-
                 else:
                     if self.isClick:
                         if self.action is not None and not self.isPressed:
@@ -63,13 +63,13 @@ class Button:
             else:
                 self.image.fill(pygame.Color(self.staticColor))
         if self.isClick:
-            print_text(screen, self.rect.x + (self.width - len(self.massage) * 20) // 2,
+            print_text(screen, self.rect.x + (self.width - len(self.massage) * (self.size - self.size // 3)) // 2,
                        self.rect.y + (self.height - 20) // 2 + 2,
-                       30, self.massage, (192, 203, 220))
+                       self.size, self.massage, (192, 203, 220))
         else:
-            print_text(screen, self.rect.x + (self.width - len(self.massage) * 20) // 2,
+            print_text(screen, self.rect.x + (self.width - len(self.massage) * (self.size - self.size // 3)) // 2,
                        self.rect.y + (self.height - 20) // 2,
-                       30, self.massage, (192, 203, 220))
+                       self.size, self.massage, (192, 203, 220))
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -90,3 +90,6 @@ class Button:
         self.frames = []
         self.cut_sheet(self.sheet, cols, rows)
         self.update_sprite(0)
+
+    def updateMessage(self, message):
+        self.massage = message

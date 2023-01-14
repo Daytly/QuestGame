@@ -12,6 +12,8 @@ from missile import Missile
 from Portal import Portal
 from os import listdir, path
 import mixer as mx
+import binds
+import json
 
 
 class Game:
@@ -30,6 +32,13 @@ class Game:
         self.screen = self.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         mx.mixer.play('menu', fade_ms=200)
+        with open('Data/settings.json', 'r') as file:
+            data = json.load(file)
+            self.isSound = data['sound']
+            if not data['sound']:
+                mx.mixer.volume()
+            binds.bindsKeyBoard = data['binds']['keyBoard']
+            binds.bindsJoystick = data['binds']['joystick']
         self.tile_images = {
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
@@ -46,9 +55,12 @@ class Game:
             'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
             "ladder": pygame.transform.scale(functions.load_image('ladder.png'), (48, 48)),
             'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
-            'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
+            'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height)),
+            'sliderDot': functions.load_image('sliderDot.png'),
+            'sliderLine': functions.load_image('sliderLine.png')
         }
         self.activeMenu = False
+        self.activeOptionsMenu = False
         self.enemies = []
         self.coordSpikes = []
         self.player = None
@@ -59,6 +71,11 @@ class Game:
         self.player_group = pygame.sprite.Group()
         self.enemies_group = pygame.sprite.Group()
         self.ladders_group = pygame.sprite.Group()
+        self.optionsPanel = Panel(10, 10, 680, 680, image='menuPanel.png',
+                                  widgets=[Button(1, 60, 1, 1, 'ON/OFF sounds', image='buttonLong.png',
+                                                  action=mx.mixer.volume, size=20),
+                                           Button(1, 60, 1, 1, 'Save and Back', image='buttonLong.png',
+                                                  action=self.closeOptionsMenu, size=20)])
         level_list = functions.load_level('map.txt')
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(
             level_list,
@@ -94,16 +111,16 @@ class Game:
             sprite.draw(self.screen)
         self.display.flip()
 
-        pause_btn = Button(80, 80, 310, 620, '', (100, 100, 100), (150, 150, 150), action=self.openMenu,
+        pause_btn = Button(80, 80, 310, 620, '', action=self.openMenu,
                            image='pauseBtn.png')
         menu = Panel(100, 100, 500, 500,
                      'menuPanel1.png',
-                     [Button(80, 80, 0, 0, 'PLAY', (0, 0, 0), (0, 0, 0), action=self.closeMenu,
+                     [Button(80, 80, 0, 0, 'PLAY', action=self.closeMenu,
                              image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'OPTIONS', (0, 0, 0), (0, 0, 0), image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'LEVELS', (0, 0, 0), (0, 0, 0), action=self.menu_levels,
+                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
+                      Button(80, 80, 0, 0, 'LEVELS', action=self.menu_levels,
                              image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'MENU', (0, 0, 0), (0, 0, 0), action=self.menu, image='buttonLong.png')])
+                      Button(80, 80, 0, 0, 'MENU', action=self.menu, image='buttonLong.png')])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -145,6 +162,8 @@ class Game:
                 self.end_screen(False)
             if self.activeMenu:
                 menu.draw(self.screen)
+            if self.activeOptionsMenu:
+                self.optionsPanel.draw(self.screen)
             self.display.flip()
 
     def start_screen(self):
@@ -178,26 +197,31 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
-        mx.mixer.setVolume('menu', 1)
+        if self.isSound:
+            mx.mixer.setVolume('menu', 1)
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
         menu = Panel(100, 100, 500, 500,
                      'menuPanel1.png',
-                     [Button(80, 80, 0, 0, 'PLAY', (0, 0, 0), (0, 0, 0), action=self.menu_levels,
+                     [Button(80, 80, 0, 0, 'PLAY', action=self.menu_levels,
                              image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'OPTIONS', (0, 0, 0), (0, 0, 0), image='buttonLong.png'),
-                      Button(80, 80, 0, 0, 'EXIT', (0, 0, 0), (0, 0, 0), image='buttonLong.png', action=sys.exit)])
+                      Button(80, 80, 0, 0, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
+                      Button(80, 80, 0, 0, 'EXIT', image='buttonLong.png', action=sys.exit)])
         pygame.display.flip()
         while True:
+            fon = self.tile_images['fon']
+            self.screen.blit(fon, (0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
             menu.draw(self.screen)
+            if self.activeOptionsMenu:
+                self.optionsPanel.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 
     def menu_levels(self):
-        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
+        fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
         levels = []
         for level in self.namesLevels:
@@ -208,14 +232,14 @@ class Game:
                 levels[-1].append(Picture(125, 80, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
             else:
                 levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
-            levels[-1].append(Button(240, 80, 230, 570, 'Play', (100, 100, 100), (150, 150, 150), level,
+            levels[-1].append(Button(240, 80, 230, 570, 'Play', level,
                                      action=self.run, image='buttonLong.png', rows=3))
 
-        menu_btn = Button(60, 60, 5, 635, '', (100, 100, 100), (150, 150, 150), action=self.menu, image='menuBtn.png',
+        menu_btn = Button(60, 60, 5, 635, '', action=self.menu, image='menuBtn.png',
                           cols=3, rows=1)
-        right_btn = Button(60, 60, 635, 275, '', (100, 100, 100), (150, 150, 150), action=self.rightBtn,
+        right_btn = Button(60, 60, 635, 275, '', action=self.rightBtn,
                            image='rightBtn.png', cols=3, rows=1)
-        left_btn = Button(60, 60, 5, 275, '', (100, 100, 100), (150, 150, 150), action=self.leftBtn,
+        left_btn = Button(60, 60, 5, 275, '', action=self.leftBtn,
                           image='leftBtn.png', cols=3, rows=1)
         while True:
             self.screen.fill((153, 217, 234))
@@ -319,6 +343,20 @@ class Game:
 
     def closeMenu(self):
         self.activeMenu = False
+
+    def openOptionsMenu(self):
+        self.activeOptionsMenu = True
+
+    def closeOptionsMenu(self):
+        with open('Data/settings.json', 'r') as file:
+            data = json.load(file)
+        data['sound'] = all(mx.mixer.getVolume())
+        data['binds']['keyBoard'] = binds.bindsKeyBoard
+        data['binds']['joystick'] = binds.bindsJoystick
+        with open('Data/settings.json', 'w') as file:
+            json.dump(data, file)
+
+        self.activeOptionsMenu = False
 
 
 game = Game()

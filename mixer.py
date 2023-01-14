@@ -28,5 +28,12 @@ class Mixer:
             return True
         return False
 
+    def volume(self):
+        for sound in self.sounds.values():
+            sound.set_volume(0 if sound.get_volume() else 1)
+
+    def getVolume(self):
+        return [i.get_volume() for i in self.sounds.values()]
+
 
 mixer = Mixer('Data/sounds')
