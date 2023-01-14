@@ -23,4 +23,4 @@ class Missile(DynamicGameObject):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-        self.update_sprite(self.cur_frame + 0.2)
+        self.update_sprite(self.cur_frame + 0.3)
