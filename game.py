@@ -143,7 +143,13 @@ class Game:
                 if not self.activeMenu:
                     self.player.update(event)
                 if event.type == pygame.JOYBUTTONDOWN:
-                    if event.button == 7:
+                    if event.button == self.settings.bindsJoystick['menu']:
+                        if self.activeMenu:
+                            self.closeMenu()
+                        else:
+                            self.openMenu()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == self.settings.bindsKeyBoard['menu']:
                         if self.activeMenu:
                             self.closeMenu()
                         else:
@@ -389,10 +395,20 @@ class Game:
                                                          Button(1, 1, 200, 0, '0', 'interact', False,
                                                                 image='buttonLong.png',
                                                                 action=self.binding, size=20)]),
+                                    LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'MENU'),
+                                                         Button(1, 1, 200, 0, '0', 'menu', False,
+                                                                image='buttonLong.png',
+                                                                action=self.binding, size=20)]),
                                     Text(0, 0, (192, 203, 220), 50, 'Joystick Binds'),
                                     LineWidgets(0, 0, 0, 80,
                                                 widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
                                                          Button(1, 1, 200, 0, '0', 'interact', True,
+                                                                image='buttonLong.png',
+                                                                action=self.binding, size=20)]),
+                                    LineWidgets(0, 0, 0, 80,
+                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'MENU'),
+                                                         Button(1, 1, 200, 0, '0', 'menu', True,
                                                                 image='buttonLong.png',
                                                                 action=self.binding, size=20)]),
                                     Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',

@@ -4,13 +4,14 @@ import json
 
 class Settings:
     def __init__(self):
-        self.bindsKeyBoard = {'up': [pygame.K_UP],
-                              'down': [pygame.K_DOWN],
-                              'right': [pygame.K_RIGHT],
-                              'left': [pygame.K_LEFT],
-                              'interact': [pygame.K_e]}
+        self.bindsKeyBoard = {'up': pygame.K_UP,
+                              'down': pygame.K_DOWN,
+                              'right': pygame.K_RIGHT,
+                              'left': pygame.K_LEFT,
+                              'interact': pygame.K_e,
+                              'menu': pygame.K_ESCAPE}
 
-        self.bindsJoystick = {'interact': [0, 5]}
+        self.bindsJoystick = {'interact': 0, 'menu': 7}
         with open('Data/settings.json', 'r') as file:
             data = json.load(file)
             self.isSound = data['sound']
@@ -24,12 +25,13 @@ class Settings:
             self.bindsKeyBoard[key] = value
 
     def save(self, mx):
-        data = {"binds": {"keyBoard": {"up": self.bindsKeyBoard['up'],
-                                       "down": self.bindsKeyBoard['down'],
-                                       "right": self.bindsKeyBoard['right'],
-                                       "left": self.bindsKeyBoard['left'],
-                                       "interact": self.bindsKeyBoard['interact']},
-                          "joystick": {"interact": self.bindsJoystick['interact']}},
+        data = {"binds": {"keyBoard": {'up': self.bindsKeyBoard['up'],
+                                       'down': self.bindsKeyBoard['down'],
+                                       'right': self.bindsKeyBoard['right'],
+                                       'left': self.bindsKeyBoard['left'],
+                                       'interact': self.bindsKeyBoard['interact'],
+                                       'menu': pygame.K_ESCAPE},
+                          "joystick": {"interact": self.bindsJoystick['interact'], 'menu': self.bindsJoystick['menu']}},
                 'sound': all(mx.mixer.getVolume())}
         with open('Data/settings.json', 'w') as file:
             json.dump(data, file)

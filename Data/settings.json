@@ -1,1 +1,1 @@
-{"binds": {"keyBoard": {"up": 119, "down": 115, "right": 100, "left": 97, "interact": [[[[[[[[101]]]]]]]]}, "joystick": {"interact": [[[[[[[[0]]]]]]]]}}, "sound": true}
+{"binds": {"keyBoard": {"up": 119, "down": 100, "right": 100, "left": 97, "interact": 101, "menu": 27}, "joystick": {"interact": [[[[[[[[0]]]]]]]], "menu": 7}}, "sound": true}
