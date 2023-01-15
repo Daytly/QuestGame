@@ -96,9 +96,9 @@ class Button:
         self.rect.x = x
         self.rect.y = y
         self.text.rect.x = self.rect.x + (self.width - self.text.width) // 2
-        self.text.rect.y = self.rect.y + (self.height - self.text.height) // 2
+        self.text.rect.y = self.rect.y + (self.height - 3 - self.text.height) // 2
         self.rectIcon = self.icon.get_rect().move(self.rect.x + (self.width - self.icon.get_width()) // 2,
-                                                  self.rect.y + (self.height - self.icon.get_height()) // 2 - 3)
+                                                  self.rect.y + (self.height - 3 - self.icon.get_height()) // 2)
 
     def setText(self, massage):
         self.text = self.createText(massage)
@@ -106,7 +106,7 @@ class Button:
     def createText(self, massage):
         text = Text(0, 0, (192, 203, 220), 30, massage)
         text.rect.x = self.rect.x + (self.width - text.width) // 2
-        text.rect.y = self.rect.y + (self.height - text.height) // 2
+        text.rect.y = self.rect.y + (self.height - 3 - text.height) // 2
         return text
 
     def getText(self):
