@@ -148,4 +148,6 @@ keyAndValue = {pygame.K_BACKSPACE: 'backspace',
                10: 'jR1.png',
                5: 'Ps',
                15: '#',
+               4: 'share',
+               6: 'options',
                }

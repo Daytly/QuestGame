@@ -225,6 +225,14 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if event.button == self.settings.bindsJoystick['menu']:
+                        if self.activeOptionsMenu:
+                            self.closeOptionsMenu()
+                        else:
+                            self.openOptionsMenu()
+                    elif event.button == self.settings.bindsJoystick['interact']:
+                        self.menu_levels()
             if self.activeOptionsMenu:
                 self.optionsMenu.draw(self.screen)
                 for button in self.pageSwitches:
