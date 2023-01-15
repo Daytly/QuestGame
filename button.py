@@ -24,10 +24,9 @@ class Button:
         self.update_sprite(0)
         self.useImage = image != 'none.png'
         self.rect = self.image.get_rect().move(x, y)
-        self.icon = pygame.image.load('Data/sprites/icons/' + imageIcon)
-        self.icon = pygame.transform.scale(self.icon, (self.icon.get_width() - 15, self.icon.get_height() - 15))
-        self.rectIcon = self.icon.get_rect().move(self.rect.x + (self.width - self.icon.get_width()) // 2,
-                                                  self.rect.y + (self.height - self.icon.get_height()) // 2 - 3)
+        self.icon = None
+        self.rectIcon = None
+        self.setIcon(imageIcon)
         self.text = self.createText(massage)
         self.isPressed = True
         self.isClick = False
@@ -114,7 +113,10 @@ class Button:
         return self.text.message
 
     def setIcon(self, imageIcon):
-        self.icon = pygame.image.load('Data/sprites/icons/' + imageIcon)
+        try:
+            self.icon = pygame.image.load('Data/sprites/icons/' + imageIcon)
+        except FileNotFoundError:
+            print('Файл не найден')
         self.icon = pygame.transform.scale(self.icon, (self.icon.get_width() - 15, self.icon.get_height() - 15))
         self.rectIcon = self.icon.get_rect().move(self.rect.x + (self.width - self.icon.get_width()) // 2,
                                                   self.rect.y + (self.height - self.icon.get_height()) // 2 - 3)

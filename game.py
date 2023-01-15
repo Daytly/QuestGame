@@ -462,20 +462,23 @@ class Game:
             for indWidget in range(len(self.optionsMenu[indPage])):
                 if type(self.optionsMenu[indPage][indWidget]) == RowWidgets:
                     key = self.optionsMenu[indPage][indWidget][0].getText().lower()
+                    icon = 'none.png'
                     if useJoystick:
                         try:
                             _str = keyAndValue[self.settings.bindsJoystick[key]]
-                        except IndexError:
+                        except KeyError:
                             _str = 'None'
                         if '.png' in _str:
-                            self.optionsMenu[indPage][indWidget][1].setIcon(_str)
+                            icon = _str
                             _str = ''
+                        self.optionsMenu[indPage][indWidget][1].setIcon(icon)
                         self.optionsMenu[indPage][indWidget][1].setText(_str)
                     elif useKeyBoard:
                         try:
                             _str = keyAndValue[self.settings.bindsKeyBoard[key]]
-                        except IndexError:
+                        except KeyError:
                             _str = 'None'
+                        self.optionsMenu[indPage][indWidget][1].setIcon(icon)
                         self.optionsMenu[indPage][indWidget][1].setText(keyAndValue[self.settings.bindsKeyBoard[key]])
                 elif type(self.optionsMenu[indPage][indWidget]) == Text:
                     if self.optionsMenu[indPage][indWidget].getText() == 'Joystick Binds':
