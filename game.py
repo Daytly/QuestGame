@@ -155,6 +155,7 @@ class Game:
                             self.closeMenu()
                         else:
                             self.openMenu()
+                    print(event.key)
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов
@@ -411,7 +412,7 @@ class Game:
                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'RIGHT'),
                                                         Button(1, 1, 200, 0, '0', 'right', True,
                                                                image='buttonLong.png',
-                                                               action=self.binding, size=20)]),
+                                                               action=self.binding, size=20, imageIcon='jRight.png')]),
                                     Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
                                            action=self.closeOptionsMenu, size=20)],
                                    [RowWidgets(0, 0, 0, 80,

@@ -7,7 +7,7 @@ from text import Text
 
 class Button:
     def __init__(self, x, y, width, height,  massage, *args, staticColor=(0, 0, 0), activeColor=(0, 0, 0), size=30,
-                 dis=10, action=None, image='none.png', rows=1, cols=1):
+                 dis=10, action=None, image='none.png', rows=1, cols=1, imageIcon='none.png'):
         self.args = args
         self.width = width
         self.height = height
@@ -24,6 +24,10 @@ class Button:
         self.update_sprite(0)
         self.useImage = image != 'none.png'
         self.rect = self.image.get_rect().move(x, y)
+        self.icon = pygame.image.load('Data/sprites/icons/' + imageIcon)
+        self.icon = pygame.transform.scale(self.icon, (self.icon.get_width() - 15, self.icon.get_height() - 15))
+        self.rectIcon = self.icon.get_rect().move(self.rect.x + (self.width - self.icon.get_width()) // 2,
+                                                  self.rect.y + (self.height - self.icon.get_height()) // 2 - 3)
         self.text = self.createText(massage)
         self.isPressed = True
         self.isClick = False
@@ -63,8 +67,10 @@ class Button:
             else:
                 self.image.fill(pygame.Color(self.staticColor))
         if self.isClick:
+            screen.blit(self.icon, [self.rectIcon.x, self.rectIcon.y + 2])
             self.text.buttonDownDraw(screen)
         else:
+            screen.blit(self.icon, self.rectIcon)
             self.text.draw(screen)
 
     def cut_sheet(self, sheet, columns, rows):
@@ -92,6 +98,8 @@ class Button:
         self.rect.y = y
         self.text.rect.x = self.rect.x + (self.width - self.text.width) // 2
         self.text.rect.y = self.rect.y + (self.height - self.text.height) // 2
+        self.rectIcon = self.icon.get_rect().move(self.rect.x + (self.width - self.icon.get_width()) // 2,
+                                                  self.rect.y + (self.height - self.icon.get_height()) // 2 - 3)
 
     def setText(self, massage):
         self.text = self.createText(massage)
