@@ -113,6 +113,12 @@ class Button:
     def getText(self):
         return self.text.message
 
+    def setIcon(self, imageIcon):
+        self.icon = pygame.image.load('Data/sprites/icons/' + imageIcon)
+        self.icon = pygame.transform.scale(self.icon, (self.icon.get_width() - 15, self.icon.get_height() - 15))
+        self.rectIcon = self.icon.get_rect().move(self.rect.x + (self.width - self.icon.get_width()) // 2,
+                                                  self.rect.y + (self.height - self.icon.get_height()) // 2 - 3)
+
 
 
 

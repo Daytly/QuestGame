@@ -16,6 +16,7 @@ from rowWidgets import RowWidgets
 import mixer as mx
 from settings import Settings
 import json
+from CONSTANTS import keyAndValue
 
 
 class Game:
@@ -155,7 +156,6 @@ class Game:
                             self.closeMenu()
                         else:
                             self.openMenu()
-                    print(event.key)
             # изменяем ракурс камеры
             self.camera.update(self.player)
             # обновляем положение всех спрайтов
@@ -463,9 +463,20 @@ class Game:
                 if type(self.optionsMenu[indPage][indWidget]) == RowWidgets:
                     key = self.optionsMenu[indPage][indWidget][0].getText().lower()
                     if useJoystick:
-                        self.optionsMenu[indPage][indWidget][1].setText(self.settings.bindsJoystick[key])
+                        try:
+                            _str = keyAndValue[self.settings.bindsJoystick[key]]
+                        except IndexError:
+                            _str = 'None'
+                        if '.png' in _str:
+                            self.optionsMenu[indPage][indWidget][1].setIcon(_str)
+                            _str = ''
+                        self.optionsMenu[indPage][indWidget][1].setText(_str)
                     elif useKeyBoard:
-                        self.optionsMenu[indPage][indWidget][1].setText(self.settings.bindsKeyBoard[key])
+                        try:
+                            _str = keyAndValue[self.settings.bindsKeyBoard[key]]
+                        except IndexError:
+                            _str = 'None'
+                        self.optionsMenu[indPage][indWidget][1].setText(keyAndValue[self.settings.bindsKeyBoard[key]])
                 elif type(self.optionsMenu[indPage][indWidget]) == Text:
                     if self.optionsMenu[indPage][indWidget].getText() == 'Joystick Binds':
                         useJoystick = True
