@@ -284,6 +284,10 @@ class Game:
                         self.run(self.namesLevels[self.indLevel])
                     if event.button == 7:
                         self.menu()
+                    if event.button == self.settings.bindsJoystick['right']:
+                        self.rightBtn()
+                    if event.button == self.settings.bindsJoystick['left']:
+                        self.leftBtn()
             self.indLevel %= len(levels)
             for obj in levels[self.indLevel]:
                 obj.draw(self.screen)

@@ -11,18 +11,20 @@ class Player(DynamicGameObject):
         super().__init__(sheet, pos_x, pos_y, game, 4, 1, game.player_group)
         self.rect = self.image.get_rect().move(game.tile_width * pos_x + 1, game.tile_height * pos_y + 1)
         self.key = False
-        self.coordJoystick = Coord(0, 0)
+        self.buttonDown = False
         self.killer = None  # Тот кто убил персонажа
 
     def update(self, *args):
         if args and (args[0].type == pygame.JOYHATMOTION or args[0].type == 1536):
             try:
                 x, y = self.game.joysticks[0].get_hat(0)
+                self.buttonDown = False
             except pygame.error:
                 x = round(self.game.joysticks[0].get_axis(0))
                 y = -round(self.game.joysticks[0].get_axis(1))
-            if self.coordJoystick != Coord(x, y):
-                self.coordJoystick = Coord(x, y)
+            if x == y == 0:
+                self.buttonDown = False
+            elif not self.buttonDown:
                 if y == 1:
                     if self.check(self.coord.x, self.coord.y - 1):
                         self.rect.y -= self.game.tile_height
@@ -44,6 +46,7 @@ class Player(DynamicGameObject):
                         self.coord.x -= 1
                     self.update_sprite(2)
                 self.image = self.frames[self.cur_frame]
+                self.buttonDown = True
         if args[0].type == pygame.JOYBUTTONDOWN:
             if args[0].button == self.game.settings.bindsJoystick['up']:
                 if self.check(self.coord.x, self.coord.y - 1):
