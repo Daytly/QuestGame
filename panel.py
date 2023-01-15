@@ -41,3 +41,6 @@ class Panel:
             raise IndexError
         else:
             return self.widgets[item]
+
+    def __len__(self):
+        return len(self.widgets)

@@ -25,3 +25,12 @@ class OptionsMenu:
     def previousPage(self):
         self.indActivePage -= 1
         self.indActivePage %= len(self.pages)
+
+    def __getitem__(self, item):
+        if item >= len(self.pages):
+            raise IndexError
+        else:
+            return self.pages[item]
+
+    def __len__(self):
+        return len(self.pages)

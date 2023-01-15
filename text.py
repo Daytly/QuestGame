@@ -5,9 +5,9 @@ from coord import Coord
 class Text:
     def __init__(self, x, y, color, size, text):
         font = pygame.font.Font('Data/fonts/pixelFont.ttf', size)
-        self.text = font.render(text, 0, color)
-        self.width, self.height = font.size(text)
-        self.message = text
+        self.text = font.render(str(text), 0, color)
+        self.width, self.height = font.size(str(text))
+        self.message = str(text)
         self.color = color
         self.rect = Coord(x, y)
 
@@ -21,3 +21,6 @@ class Text:
     def buttonDownDraw(self, screen):
         coord = self.rect + Coord(0, 2)
         screen.blit(self.text, coord.get())
+
+    def getText(self):
+        return self.message

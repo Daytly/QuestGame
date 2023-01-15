@@ -22,7 +22,6 @@ class Settings:
             self.isSound = data['sound']
             self.bindsKeyBoard = data['binds']['keyBoard']
             self.bindsJoystick = data['binds']['joystick']
-        print(self.bindsJoystick)
 
     def updateKey(self, key, value, isJoystick):
         if isJoystick:

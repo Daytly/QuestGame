@@ -12,7 +12,7 @@ from missile import Missile
 from portal import Portal
 from os import listdir, path
 from optionsMenu import OptionsMenu
-from rowWidgets import LineWidgets
+from rowWidgets import RowWidgets
 import mixer as mx
 from settings import Settings
 import json
@@ -73,6 +73,7 @@ class Game:
         self.enemies_group = pygame.sprite.Group()
         self.ladders_group = pygame.sprite.Group()
         self.optionsMenu = self.createOptionMenu()
+        self.updateBindButtonText()
         self.pageSwitches = [Button(5, 330, 40, 40, '', image='leftBtn.png', action=self.optionsMenu.previousPage,
                                     cols=3),
                              Button(655, 330, 40, 40, '', image='rightBtn.png', action=self.optionsMenu.nextPage,
@@ -363,71 +364,71 @@ class Game:
                            panels=[[Button(1, 1, 1, 60, 'ON/OFF sounds', image='buttonLong.png',
                                            action=mx.mixer.volume, size=20),
                                     Text(0, 0, (192, 203, 220), 50, 'KeyBoard Binds'),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'UP'),
-                                                         Button(1, 1, 200, 0, '0', 'up', False,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'DOWN'),
-                                                         Button(1, 1, 200, 0, '0', 'down', False,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'RIGHT'),
-                                                         Button(1, 1, 200, 0, '0', 'right', False,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'LEFT'),
-                                                         Button(1, 1, 200, 0, '0', 'left', False,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'UP'),
+                                                        Button(1, 1, 200, 0, '0', 'up', False,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'DOWN'),
+                                                        Button(1, 1, 200, 0, '0', 'down', False,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'RIGHT'),
+                                                        Button(1, 1, 200, 0, '0', 'right', False,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'LEFT'),
+                                                        Button(1, 1, 200, 0, '0', 'left', False,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
                                     Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
                                            action=self.closeOptionsMenu, size=20)],
-                                   [LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
-                                                         Button(1, 1, 200, 0, '0', 'interact', False,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'MENU'),
-                                                         Button(1, 1, 200, 0, '0', 'menu', False,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
+                                   [RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
+                                                        Button(1, 1, 200, 0, '0', 'interact', False,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'MENU'),
+                                                        Button(1, 1, 200, 0, '0', 'menu', False,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
                                     Text(0, 0, (192, 203, 220), 50, 'Joystick Binds'),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'UP'),
-                                                         Button(1, 1, 200, 0, '0', 'up', True,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'DOWN'),
-                                                         Button(1, 1, 200, 0, '0', 'down', True,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'RIGHT'),
-                                                         Button(1, 1, 200, 0, '0', 'right', True,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                   Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
-                                          action=self.closeOptionsMenu, size=20)],
-                                   [LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'LEFT'),
-                                                         Button(1, 1, 200, 0, '0', 'left', True,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
-                                                         Button(1, 1, 200, 0, '0', 'interact', True,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
-                                    LineWidgets(0, 0, 0, 80,
-                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'MENU'),
-                                                         Button(1, 1, 200, 0, '0', 'menu', True,
-                                                                image='buttonLong.png',
-                                                                action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'UP'),
+                                                        Button(1, 1, 200, 0, '0', 'up', True,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'DOWN'),
+                                                        Button(1, 1, 200, 0, '0', 'down', True,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'RIGHT'),
+                                                        Button(1, 1, 200, 0, '0', 'right', True,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
+                                           action=self.closeOptionsMenu, size=20)],
+                                   [RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'LEFT'),
+                                                        Button(1, 1, 200, 0, '0', 'left', True,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'INTERACT'),
+                                                        Button(1, 1, 200, 0, '0', 'interact', True,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'MENU'),
+                                                        Button(1, 1, 200, 0, '0', 'menu', True,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=20)]),
                                     Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
                                            action=self.closeOptionsMenu, size=20)]])
 
@@ -451,6 +452,26 @@ class Game:
                         self.settings.bindsKeyBoard[key] = event.key
                         isSearch = False
                         break
+        self.updateBindButtonText()
+
+    def updateBindButtonText(self):
+        useJoystick = False
+        useKeyBoard = False
+        for indPage in range(len(self.optionsMenu)):
+            for indWidget in range(len(self.optionsMenu[indPage])):
+                if type(self.optionsMenu[indPage][indWidget]) == RowWidgets:
+                    key = self.optionsMenu[indPage][indWidget][0].getText().lower()
+                    if useJoystick:
+                        self.optionsMenu[indPage][indWidget][1].setText(self.settings.bindsJoystick[key])
+                    elif useKeyBoard:
+                        self.optionsMenu[indPage][indWidget][1].setText(self.settings.bindsKeyBoard[key])
+                elif type(self.optionsMenu[indPage][indWidget]) == Text:
+                    if self.optionsMenu[indPage][indWidget].getText() == 'Joystick Binds':
+                        useJoystick = True
+                        useKeyBoard = False
+                    elif self.optionsMenu[indPage][indWidget].getText() == 'KeyBoard Binds':
+                        useKeyBoard = True
+                        useJoystick = False
 
 
 game = Game()

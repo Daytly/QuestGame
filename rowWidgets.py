@@ -3,7 +3,7 @@ from coord import Coord
 from text import Text
 
 
-class LineWidgets:
+class RowWidgets:
     def __init__(self, x, y, width, height, widgets):
         self.width = width
         self.height = height
@@ -37,3 +37,9 @@ class LineWidgets:
             x = self.widgets[ind - 1].width + indent + self.widgets[ind - 1].rect.x
             y = self.rect.y + (self.height - self.widgets[ind].height) // 2
             self.widgets[ind].updateCoord(x, y)
+
+    def __getitem__(self, item):
+        if item >= len(self.widgets):
+            raise IndexError
+        else:
+            return self.widgets[item]

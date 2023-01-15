@@ -24,9 +24,7 @@ class Button:
         self.update_sprite(0)
         self.useImage = image != 'none.png'
         self.rect = self.image.get_rect().move(x, y)
-        self.text = Text(0, 0, (192, 203, 220), 30, massage)
-        self.text.rect.x = self.rect.x + (self.width - self.text.width) // 2
-        self.text.rect.y = self.rect.y + (self.height - self.text.height) // 2
+        self.text = self.createText(massage)
         self.isPressed = True
         self.isClick = False
 
@@ -94,6 +92,19 @@ class Button:
         self.rect.y = y
         self.text.rect.x = self.rect.x + (self.width - self.text.width) // 2
         self.text.rect.y = self.rect.y + (self.height - self.text.height) // 2
+
+    def setText(self, massage):
+        self.text = self.createText(massage)
+
+    def createText(self, massage):
+        text = Text(0, 0, (192, 203, 220), 30, massage)
+        text.rect.x = self.rect.x + (self.width - text.width) // 2
+        text.rect.y = self.rect.y + (self.height - text.height) // 2
+        return text
+
+    def getText(self):
+        return self.text.message
+
 
 
 
