@@ -121,4 +121,3 @@ def generate_level(level, game, inHouse):
 
     # вернем игрока, а также размер поля в клетках
     return new_level, new_player, enemy, spikesCoord, x, y
-

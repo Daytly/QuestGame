@@ -25,4 +25,3 @@ class OptionsMenu:
     def previousPage(self):
         self.indActivePage -= 1
         self.indActivePage %= len(self.pages)
-

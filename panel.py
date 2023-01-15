@@ -41,4 +41,3 @@ class Panel:
             raise IndexError
         else:
             return self.widgets[item]
-

@@ -12,7 +12,7 @@ from missile import Missile
 from portal import Portal
 from os import listdir, path
 from optionsMenu import OptionsMenu
-from lineWidgets import LineWidgets
+from rowWidgets import LineWidgets
 import mixer as mx
 from settings import Settings
 import json
@@ -284,26 +284,21 @@ class Game:
             self.clock.tick(self.fps)
 
     def end_screen(self, win):
-        intro_text = ["Ты победил" if win else "Ты проиграл"]
-
-        fon = pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height))
-        self.screen.blit(fon, (0, 0))
-        font = pygame.font.Font(None, 30)
-        text_coord = 50
-        for line in intro_text:
-            string_rendered = font.render(line, 1, pygame.Color('white'))
-            intro_rect = string_rendered.get_rect()
-            text_coord += 10
-            intro_rect.top = text_coord
-            intro_rect.x = 10
-            text_coord += intro_rect.height
-            self.screen.blit(string_rendered, intro_rect)
+        intro_text = "YOU'RE A WINNER" if win else "YOU'RE A LOSER"
+        fon = self.tile_images['fon']
+        color = (0, 180, 0) if win else (255, 60, 60)
+        text = Text(0, 0, color, 60, intro_text)
+        text.updateCoord((700 - text.width) // 2, (700 - text.height) // 2)
         while True:
+            self.screen.blit(fon, (0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == pygame.KEYDOWN or \
+                        event.type == pygame.MOUSEBUTTONDOWN or \
+                        event.type == pygame.JOYBUTTONDOWN:
                     return self.menu()
+            text.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
 

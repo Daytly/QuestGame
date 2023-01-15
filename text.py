@@ -21,5 +21,3 @@ class Text:
     def buttonDownDraw(self, screen):
         coord = self.rect + Coord(0, 2)
         screen.blit(self.text, coord.get())
-
-
