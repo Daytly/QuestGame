@@ -1,6 +1,5 @@
 import pygame
 import sys
-import time
 from camera import Camera
 from floor import Floor
 from button import Button
@@ -64,28 +63,26 @@ class Game:
         }
         self.activeMenu = False
         self.activeOptionsMenu = False
-        self.enemies = []
-        self.coordSpikes = []
+        self.enemies = None
+        self.coordSpikes = None
         self.player = None
-        self.camera = Camera(self)
+        self.camera = None
         # группы спрайтов
-        self.all_sprites = pygame.sprite.Group()
-        self.tiles_group = pygame.sprite.Group()
-        self.player_group = pygame.sprite.Group()
-        self.enemies_group = pygame.sprite.Group()
-        self.ladders_group = pygame.sprite.Group()
+        self.all_sprites = None
+        self.tiles_group = None
+        self.player_group = None
+        self.enemies_group = None
+        self.ladders_group = None
+        self.moneyCounter = None
         self.optionsMenu = self.createOptionMenu()
         self.updateBindButtonText()
         self.pageSwitches = [Button(5, 330, 40, 40, '', image='leftBtn.png', action=self.optionsMenu.previousPage,
                                     cols=3),
                              Button(655, 330, 40, 40, '', image='rightBtn.png', action=self.optionsMenu.nextPage,
                                     cols=3)]
-        level_list = functions.load_level('map.txt')
-        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = functions.generate_level(
-            level_list,
-            self,
-            False)
-        self.namesLevels = listdir('Data/levels')
+        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = [None, None, None,
+                                                                                               None, None, None]
+        self.dirLevels = listdir('Data/levels')
         self.indLevel = 0
 
     def run(self, name_level):
@@ -122,9 +119,11 @@ class Game:
                      [Button(0, 0, 80, 80, 'PLAY', action=self.closeMenu,
                              image='buttonLong.png'),
                       Button(0, 0, 80, 80, 'OPTIONS', image='buttonLong.png', action=self.openOptionsMenu),
+                      Button(0, 0, 80, 80, 'RESET', name_level, action=self.run, image='buttonLong.png'),
                       Button(0, 0, 80, 80, 'LEVELS', action=self.menu_levels,
-                             image='buttonLong.png'),
-                      Button(0, 0, 80, 80, 'MENU', action=self.menu, image='buttonLong.png')])
+                             image='buttonLong.png')])
+        self.moneyCounter = RowWidgets(5, 0, 65, 50, [Picture(0, 0, 'Data/sprites/coinUI.png', 30, 30),
+                                                      Text(0, 0, (0, 0, 0), 30, '0')])
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -166,6 +165,7 @@ class Game:
                 self.camera.apply(sprite)
                 sprite.draw(self.screen)
             pause_btn.draw(self.screen)
+            self.moneyCounter.draw(self.screen)
             if self.check_intersection():
                 self.death()
                 self.end_screen(False)
@@ -251,7 +251,7 @@ class Game:
         fon = self.tile_images['fon']
         self.screen.blit(fon, (0, 0))
         levels = []
-        for level in self.namesLevels:
+        for level in self.dirLevels:
             nameLevel = level.rstrip('.txt')
             levels.append([])
             levels[-1].append(Text(125, 20, (0, 0, 0), 50, nameLevel))
@@ -286,7 +286,7 @@ class Game:
                         self.leftBtn()
                 if event.type == pygame.JOYBUTTONDOWN:
                     if event.button == 0:
-                        self.run(self.namesLevels[self.indLevel])
+                        self.run(self.dirLevels[self.indLevel])
                     if event.button == 7:
                         self.menu()
                     if event.button == self.settings.bindsJoystick['right']:
@@ -511,6 +511,9 @@ class Game:
                     elif self.optionsMenu[indPage][indWidget].getText() == 'KeyBoard Binds':
                         useKeyBoard = True
                         useJoystick = False
+
+    def updateMoneyCounter(self, count):
+        self.moneyCounter[1].setText(count)
 
 
 game = Game()

@@ -56,7 +56,7 @@ def generate_level(level, game, inHouse):
     spikesCoord = []
     closed = False
     tilesFloor = 'empty' if inHouse else 'grass'
-    level = ['T' * 18] * 8 + level + ['T' * 18] * 8
+    level = ['T' * (18 + len(level[0]))] * 8 + level + ['T' * (18 + len(level[-1]))] * 8
     for y in range(len(level)):
         level[y] = 'T' * 9 + level[y] + 'T' * 9
         for x in range(len(level[y])):
