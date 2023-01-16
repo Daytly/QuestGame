@@ -11,6 +11,7 @@ class Player(DynamicGameObject):
         super().__init__(sheet, pos_x, pos_y, game, 4, 1, game.player_group)
         self.rect = self.image.get_rect().move(game.tile_width * pos_x + 1, game.tile_height * pos_y + 1)
         self.key = False
+        self.starCounter = 0
         self.buttonDown = False
         self.killer = None  # Тот кто убил персонажа
 

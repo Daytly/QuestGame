@@ -8,9 +8,6 @@ class Door(StaticGameObject):
         self.solid = True
         self.lock = lock
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
-
     def unLock(self):
         self.lock = False
 

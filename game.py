@@ -150,6 +150,8 @@ class Game:
                             self.closeMenu()
                         else:
                             self.openMenu()
+                    if event.button == self.settings.bindsJoystick['exit'] and self.activeMenu:
+                        self.menu()
                 if event.type == pygame.KEYDOWN:
                     if event.key == self.settings.bindsKeyBoard['menu']:
                         if self.activeMenu:
@@ -231,8 +233,10 @@ class Game:
                             self.closeOptionsMenu()
                         else:
                             self.openOptionsMenu()
-                    elif event.button == self.settings.bindsJoystick['interact']:
+                    if event.button == self.settings.bindsJoystick['interact']:
                         self.menu_levels()
+                    if event.button == self.settings.bindsJoystick['exit']:
+                        sys.exit()
             if self.activeOptionsMenu:
                 self.optionsMenu.draw(self.screen)
                 for button in self.pageSwitches:
@@ -288,6 +292,8 @@ class Game:
                         self.rightBtn()
                     if event.button == self.settings.bindsJoystick['left']:
                         self.leftBtn()
+                    if event.button == self.settings.bindsJoystick['exit']:
+                        self.menu()
             self.indLevel %= len(levels)
             for obj in levels[self.indLevel]:
                 obj.draw(self.screen)
@@ -440,6 +446,11 @@ class Game:
                                     RowWidgets(0, 0, 0, 80,
                                                widgets=[Text(0, 0, (192, 203, 220), 30, 'MENU'),
                                                         Button(1, 1, 200, 0, '0', 'menu', True,
+                                                               image='buttonLong.png',
+                                                               action=self.binding, size=15)]),
+                                    RowWidgets(0, 0, 0, 80,
+                                               widgets=[Text(0, 0, (192, 203, 220), 30, 'EXIT'),
+                                                        Button(1, 1, 200, 0, '0', 'exit', True,
                                                                image='buttonLong.png',
                                                                action=self.binding, size=15)]),
                                     Button(1, 1, 1, 60, 'Save and Back', image='buttonLong.png',
