@@ -6,5 +6,5 @@ TTTTTTTTTT#..$.$.#..#
 TTTTTTTTTT###.$#.#.|#
 TTTTTTTTTT.....#@..%#
 TTTTTTTTTT.##.####.##
-TTTTTTTTTT.#>......#
-TTTTTTTTTT.#.^..^##
+TTTTTTTTTT.#...CCC.#
+TTTTTTTTTT.#.....##

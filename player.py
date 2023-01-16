@@ -4,6 +4,7 @@ from key import Key
 from door import Door
 from spikes import Spikes
 from coord import Coord
+from coin import Coin
 
 
 class Player(DynamicGameObject):
@@ -115,6 +116,10 @@ class Player(DynamicGameObject):
             elif _type == Spikes:
                 if self.game.level[y][x].isActive():
                     self.killer = self.game.level[y][x]
+            elif _type == Coin:
+                if self.game.level[y][x].isActive():
+                    self.starCounter += 1
+                print(self.starCounter)
             return self.game.level[y][x].stepOn(self)
         except IndexError:
             return False

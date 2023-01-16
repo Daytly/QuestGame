@@ -59,7 +59,8 @@ class Game:
             'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
             'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height)),
             'sliderDot': functions.load_image('sliderDot.png'),
-            'sliderLine': functions.load_image('sliderLine.png')
+            'sliderLine': functions.load_image('sliderLine.png'),
+            'coin': pygame.transform.scale(functions.load_image('coin.png'), (128, 32))
         }
         self.activeMenu = False
         self.activeOptionsMenu = False

@@ -14,6 +14,7 @@ from spikes import Spikes
 from darkNinja import DarkNinja
 from missile import Missile
 from portal import Portal
+from coin import Coin
 import settings
 import sys
 
@@ -102,6 +103,8 @@ def generate_level(level, game, inHouse):
             elif level[y][x] == 'L':
                 new_level[y][x] = Portal('ladder', x, y, game, 1, 1)
                 game.ladders_group.add(new_level[y][x])
+            elif level[y][x] == 'C':
+                new_level[y][x] = Coin('coin', x, y, game, 4, 1)
     # Генерация врагов
     for y in range(len(level)):
         for x in range(len(level[y])):
