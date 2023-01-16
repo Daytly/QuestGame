@@ -36,12 +36,13 @@ class Portal(StaticGameObject):
                 self.game.clock.tick(60)
 
             self.game.player.rect.center = self.other_ladder.rect.center
-            self.game.player.rect.y = self.game.player.rect.y + 48
+            self.game.player.rect.y = self.game.player.rect.y
             self.game.player.coord = self.other_ladder.coord.__copy__()
-            self.game.player.coord += (0, 1)
             self.game.camera.move(self.game.player)
             for i in self.game.all_sprites:
                 self.game.camera.apply(i)
+
+            self.game.player.update_sprite(0)
 
             while tick <= 50:
                 tick += 1
@@ -53,4 +54,7 @@ class Portal(StaticGameObject):
                 s_rect.x += 40
                 self.game.display.flip()
                 self.game.clock.tick(60)
+
+            self.game.player.coord += (0, 1)
+            self.game.player.rect.y += 48
 
