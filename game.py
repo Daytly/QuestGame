@@ -298,7 +298,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def end_screen(self, win):
-        intro_text = "YOU'RE A WINNER" if win else "YOU'RE A LOSER"
+        intro_text = "YOU'RE A WINNER" if win else "SKILL ISSUE"
         fon = self.tile_images['fon']
         color = (0, 180, 0) if win else (255, 60, 60)
         text = Text(0, 0, color, 60, intro_text)
