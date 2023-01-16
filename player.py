@@ -3,6 +3,7 @@ from dynamicGameObject import DynamicGameObject
 from key import Key
 from door import Door
 from spikes import Spikes
+from portal import Portal
 from coord import Coord
 
 
@@ -102,6 +103,8 @@ class Player(DynamicGameObject):
                         ladder.use()
                         break
         self.check(self.coord.x, self.coord.y)
+        if self.game.level[self.coord.y][self.coord.x].__class__ == Portal:
+            self.game.level[self.coord.y][self.coord.x].tap()
 
     def check(self, x, y):
         try:

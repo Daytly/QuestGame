@@ -18,7 +18,7 @@ class Portal(StaticGameObject):
             Portal.ol.other_ladder = self
             Portal.ol = None
 
-    def use(self):
+    def tap(self):
         if self.other_ladder:
             tick = 0
             surface = pygame.Surface((1000, 700))
@@ -36,7 +36,9 @@ class Portal(StaticGameObject):
                 self.game.clock.tick(60)
 
             self.game.player.rect.center = self.other_ladder.rect.center
+            self.game.player.rect.y = self.game.player.rect.y + 48
             self.game.player.coord = self.other_ladder.coord.__copy__()
+            self.game.player.coord += (0, 1)
             self.game.camera.move(self.game.player)
             for i in self.game.all_sprites:
                 self.game.camera.apply(i)
