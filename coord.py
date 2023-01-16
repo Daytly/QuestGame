@@ -25,4 +25,7 @@ class Coord:
         return Coord(self.x, self.y)
 
     def __add__(self, other):
-        return Coord(self.x + other.x, self.y + other.y)
+        if other.__class__ == Coord:
+            return Coord(self.x + other.x, self.y + other.y)
+        if other.__class__ == tuple:
+            return Coord(self.x + other[0], self.y + other[1])

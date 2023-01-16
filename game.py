@@ -55,7 +55,7 @@ class Game:
             'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48)),
             'shuriken': pygame.transform.scale(functions.load_image('shuriken.png'), (96, 48)),
             'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
-            "ladder": pygame.transform.scale(functions.load_image('ladder.png'), (48, 48)),
+            "ladder": pygame.transform.scale(functions.load_image('portals.png'), (48, 48)),
             'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
             'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height)),
             'sliderDot': functions.load_image('sliderDot.png'),
@@ -305,7 +305,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def end_screen(self, win):
-        intro_text = "YOU'RE A WINNER" if win else "YOU'RE A LOSER"
+        intro_text = "YOU'RE A WINNER" if win else "SKILL ISSUE"
         fon = self.tile_images['fon']
         color = (0, 180, 0) if win else (255, 60, 60)
         text = Text(0, 0, color, 60, intro_text)
