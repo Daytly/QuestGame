@@ -74,14 +74,16 @@ class Game:
         self.enemies_group = None
         self.ladders_group = None
         self.moneyCounter = None
+        self.maxMoney = 0
         self.optionsMenu = self.createOptionMenu()
         self.updateBindButtonText()
         self.pageSwitches = [Button(5, 330, 40, 40, '', image='leftBtn.png', action=self.optionsMenu.previousPage,
                                     cols=3),
                              Button(655, 330, 40, 40, '', image='rightBtn.png', action=self.optionsMenu.nextPage,
                                     cols=3)]
-        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = [None, None, None,
-                                                                                               None, None, None]
+        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
+            [None, None, None,
+             None, None, None]
         self.dirLevels = listdir('Data/levels')
         self.indLevel = 0
 
@@ -102,7 +104,7 @@ class Game:
         pygame.time.set_timer(enemyEventType, 500)
         pygame.time.set_timer(spikesEventType, 300)
         pygame.time.set_timer(shurikenEventType, 100)  # Что тебе не нравиться?
-        self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
+        self.level, self.player, self.enemies, self.coordSpikes, self.maxMoney, self.level_x, self.level_y = \
             functions.generate_level(level_list, self, False)
         # изменяем ракурс камеры
         self.camera.move(self.player)
@@ -309,7 +311,11 @@ class Game:
         fon = self.tile_images['fon']
         color = (0, 180, 0) if win else (255, 60, 60)
         text = Text(0, 0, color, 60, intro_text)
-        text.updateCoord((700 - text.width) // 2, (700 - text.height) // 2)
+        text.updateCoord((700 - text.width) // 2, (700 - text.height * 2) // 2)
+        finalMoneyCounter = RowWidgets((700 - 80 - self.moneyCounter[1].width*3 - 5) // 2, 350, 170, 150,
+                                       [Picture(0, 0, 'Data/sprites/coinUI.png', 80, 80),
+                                        Text(0, 0, (0, 0, 0), 80, '0')])
+        finalMoneyCounter[1].setText(self.moneyCounter[1].getText())
         while True:
             self.screen.blit(fon, (0, 0))
             for event in pygame.event.get():
@@ -319,6 +325,8 @@ class Game:
                         event.type == pygame.MOUSEBUTTONDOWN or \
                         event.type == pygame.JOYBUTTONDOWN:
                     return self.menu()
+            if win:
+                finalMoneyCounter.draw(self.screen)
             text.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.fps)
@@ -513,7 +521,7 @@ class Game:
                         useJoystick = False
 
     def updateMoneyCounter(self, count):
-        self.moneyCounter[1].setText(count)
+        self.moneyCounter[1].setText(f'{count}/{self.maxMoney}')
 
 
 game = Game()
