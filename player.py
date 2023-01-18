@@ -103,8 +103,6 @@ class Player(DynamicGameObject):
                         ladder.use()
                         break
         self.check(self.coord.x, self.coord.y)
-        if self.game.level[self.coord.y][self.coord.x].__class__ == Portal:
-            self.game.level[self.coord.y][self.coord.x].tap()
 
     def check(self, x, y):
         try:

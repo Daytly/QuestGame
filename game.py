@@ -55,7 +55,7 @@ class Game:
             'spikes': pygame.transform.scale(functions.load_image('spikes.png'), (480, 48)),
             'shuriken': pygame.transform.scale(functions.load_image('shuriken.png'), (96, 48)),
             'darkNinja': pygame.transform.scale((functions.load_image('darkNinja.png')), (192, 96)),
-            "ladder": pygame.transform.scale(functions.load_image('portals.png'), (48, 48)),
+            "ladder": pygame.transform.scale(functions.load_image('portal.png'), (48, 48)),
             'startScreen': pygame.transform.scale(functions.load_image('startScreen.png'), (self.width, self.height)),
             'fon': pygame.transform.scale(functions.load_image('fon.png'), (self.width, self.height)),
             'sliderDot': functions.load_image('sliderDot.png'),
