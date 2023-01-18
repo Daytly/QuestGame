@@ -9,6 +9,7 @@ class Text:
         self.width, self.height = font.size(str(text))
         self.message = str(text)
         self.color = color
+        self.size = size
         self.rect = Coord(x, y)
 
     def updateCoord(self, x, y):
@@ -24,3 +25,9 @@ class Text:
 
     def getText(self):
         return self.message
+
+    def setText(self, text):
+        font = pygame.font.Font('Data/fonts/pixelFont.ttf', self.size)
+        self.text = font.render(str(text), 0, self.color)
+        self.width, self.height = font.size(str(text))
+        self.message = str(text)

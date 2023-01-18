@@ -1,6 +1,7 @@
 import pygame
 from coord import Coord
 
+
 class GameObject(pygame.sprite.Sprite):
     def __init__(self, sheet, pos_x, pos_y, game, cols, rows, groups):
         super().__init__(game.all_sprites, groups)

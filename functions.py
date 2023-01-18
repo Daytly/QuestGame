@@ -14,6 +14,7 @@ from spikes import Spikes
 from darkNinja import DarkNinja
 from missile import Missile
 from portal import Portal
+from coin import Coin
 import settings
 import sys
 
@@ -55,12 +56,13 @@ def generate_level(level, game, inHouse):
     spikesCoord = []
     closed = False
     tilesFloor = 'empty' if inHouse else 'grass'
-    level = ['T' * 18] * 8 + level + ['T' * 18] * 8
+    level = ['T' * (18 + len(level[0]))] * 8 + level + ['T' * (18 + len(level[-1]))] * 8
     for y in range(len(level)):
         level[y] = 'T' * 9 + level[y] + 'T' * 9
         for x in range(len(level[y])):
             if level[y][x] == 'K':
                 closed = True
+    countCoins = 0
     for y in range(len(level)):
         new_level.append([])
         new_level[-1] = [0] * len(level[y])
@@ -102,6 +104,9 @@ def generate_level(level, game, inHouse):
             elif level[y][x] == 'L':
                 new_level[y][x] = Portal('ladder', x, y, game, 1, 1)
                 game.ladders_group.add(new_level[y][x])
+            elif level[y][x] == 'C':
+                new_level[y][x] = Coin('coin', x, y, game, 4, 1)
+                countCoins += 1
     # Генерация врагов
     for y in range(len(level)):
         for x in range(len(level[y])):
@@ -120,4 +125,4 @@ def generate_level(level, game, inHouse):
                 new_player = Player('player', x, y, game)
 
     # вернем игрока, а также размер поля в клетках
-    return new_level, new_player, enemy, spikesCoord, x, y
+    return new_level, new_player, enemy, spikesCoord, countCoins, x, y

@@ -5,6 +5,7 @@ from door import Door
 from spikes import Spikes
 from portal import Portal
 from coord import Coord
+from coin import Coin
 
 
 class Player(DynamicGameObject):
@@ -12,6 +13,7 @@ class Player(DynamicGameObject):
         super().__init__(sheet, pos_x, pos_y, game, 4, 1, game.player_group)
         self.rect = self.image.get_rect().move(game.tile_width * pos_x + 1, game.tile_height * pos_y + 1)
         self.key = False
+        self.moneyCounter = 0
         self.buttonDown = False
         self.killer = None  # Тот кто убил персонажа
 
@@ -115,6 +117,10 @@ class Player(DynamicGameObject):
             elif _type == Spikes:
                 if self.game.level[y][x].isActive():
                     self.killer = self.game.level[y][x]
+            elif _type == Coin:
+                if self.game.level[y][x].isActive():
+                    self.moneyCounter += 1
+                    self.game.updateMoneyCounter(self.moneyCounter)
             return self.game.level[y][x].stepOn(self)
         except IndexError:
             return False
@@ -130,3 +136,6 @@ class Player(DynamicGameObject):
 
     def setKiller(self, killer):
         self.killer = killer
+
+    def getCountMoney(self):
+        return self.moneyCounter
