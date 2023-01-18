@@ -15,6 +15,7 @@ class Key(StaticGameObject):
 
     def stepOn(self, entity):
         if self.isActive:
+            mx.mixer.play('coin', loops=0)
             self.game.player.pick_up_key()
             self.isActive = False
             self.kill()

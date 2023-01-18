@@ -277,10 +277,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RIGHT:
+                    if event.key == self.settings.bindsKeyBoard['right']:
                         self.rightBtn()
-                    if event.key == pygame.K_LEFT:
+                    if event.key == self.settings.bindsKeyBoard['left']:
                         self.leftBtn()
+                    if event.key == self.settings.bindsKeyBoard['interact']:
+                        levels[self.indLevel][-1].click()
                 if event.type == pygame.JOYHATMOTION:
                     x, y = self.joysticks[0].get_hat(0)
                     if x == 1:

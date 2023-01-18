@@ -1,5 +1,6 @@
 import pygame
 from staticGameObject import StaticGameObject
+import mixer as mx
 
 
 class Coin(StaticGameObject):
@@ -11,6 +12,7 @@ class Coin(StaticGameObject):
 
     def stepOn(self, entity):
         if self.active:
+            mx.mixer.play('coin', loops=0)
             self.active = False
             self.kill()
         self.active = False

@@ -47,10 +47,8 @@ class Button:
                     self.isClick = True
                 else:
                     if self.isClick:
-                        if self.action is not None and not self.isPressed:
-                            mx.mixer.play('button', loops=0)
-                            self.action(*self.args) if self.args else self.action()
-                            self.isPressed = True
+                        if not self.isPressed:
+                            self.click()
                     self.isClick = False
                     self.isPressed = False
             else:
@@ -120,6 +118,12 @@ class Button:
         self.icon = pygame.transform.scale(self.icon, (self.icon.get_width() - 15, self.icon.get_height() - 15))
         self.rectIcon = self.icon.get_rect().move(self.rect.x + (self.width - self.icon.get_width()) // 2,
                                                   self.rect.y + (self.height - self.icon.get_height()) // 2 - 3)
+
+    def click(self):
+        if self.action:
+            mx.mixer.play('button', loops=0)
+            self.action(*self.args) if self.args else self.action()
+            self.isPressed = True
 
 
 
