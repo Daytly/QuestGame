@@ -1,5 +1,6 @@
 import pygame
 from staticGameObject import StaticGameObject
+import mixer as mx
 
 
 class Door(StaticGameObject):
@@ -11,8 +12,11 @@ class Door(StaticGameObject):
     def unLock(self):
         self.lock = False
 
-    def stepOn(self, entity):
-        if not self.lock:
+    def use(self):
+        if self.lock:
+            if self.game.player.has_key:
+                self.unLock()
+                mx.mixer.play('openDoor', loops=0)
+                return
+        else:
             self.game.end_screen(True)
-            return self.solid
-        return True

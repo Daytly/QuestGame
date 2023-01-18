@@ -12,7 +12,7 @@ class Coin(StaticGameObject):
     def stepOn(self, entity):
         if self.active:
             self.active = False
-            self.game.all_sprites.remove(self)
+            self.kill()
         self.active = False
         return self.solid
 

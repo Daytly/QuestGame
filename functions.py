@@ -95,7 +95,7 @@ def generate_level(level, game, inHouse):
             elif level[y][x] == '%':
                 new_level[y][x] = Door('door', x, y, game, closed, 1, 1)
             elif level[y][x] == 'K':
-                new_level[y][x] = Key('key', x, y, game, 2, 1)
+                new_level[y][x] = Key('key_test', x, y, game, 1, 1)
             elif level[y][x] == 'T':
                 new_level[y][x] = Tree('tree', x, y, game, 1, 1)
             elif level[y][x] == '$':

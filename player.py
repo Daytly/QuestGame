@@ -16,6 +16,7 @@ class Player(DynamicGameObject):
         self.moneyCounter = 0
         self.buttonDown = False
         self.killer = None  # Тот кто убил персонажа
+        self.has_key = False
 
     def update(self, *args):
         if args and (args[0].type == pygame.JOYHATMOTION or args[0].type == 1536):
@@ -100,21 +101,23 @@ class Player(DynamicGameObject):
                 self.update_sprite(3)
             self.image = self.frames[self.cur_frame]
             if args[0].key == self.game.settings.bindsKeyBoard['interact']:
-                for ladder in self.game.ladders_group:
+                self.game.level[self.coord.y][self.coord.x].use()
+                '''for ladder in self.game.ladders_group:
                     if ladder.coord == self.coord:
                         ladder.use()
-                        break
+                        break'''
         self.check(self.coord.x, self.coord.y)
 
     def check(self, x, y):
         try:
             _type = type(self.game.level[y][x])
+            '''
             if _type == Key and not self.key:
                 self.key = True
             elif _type == Door and self.key:
                 self.game.level[y][x].unLock()
-                self.key = False
-            elif _type == Spikes:
+                self.key = False'''
+            if _type == Spikes:
                 if self.game.level[y][x].isActive():
                     self.killer = self.game.level[y][x]
             elif _type == Coin:
@@ -124,6 +127,9 @@ class Player(DynamicGameObject):
             return self.game.level[y][x].stepOn(self)
         except IndexError:
             return False
+
+    def pick_up_key(self):
+        self.has_key = True
 
     def isDead(self):
         return self.killer
