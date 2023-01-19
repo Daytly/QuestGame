@@ -12,7 +12,6 @@ class Player(DynamicGameObject):
     def __init__(self, sheet, pos_x, pos_y, game):
         super().__init__(sheet, pos_x, pos_y, game, 4, 1, game.player_group)
         self.rect = self.image.get_rect().move(game.tile_width * pos_x + 1, game.tile_height * pos_y + 1)
-        self.key = False
         self.moneyCounter = 0
         self.buttonDown = False
         self.killer = None  # Тот кто убил персонажа
@@ -145,3 +144,9 @@ class Player(DynamicGameObject):
 
     def getCountMoney(self):
         return self.moneyCounter
+
+    def openDoor(self):
+        if self.has_key:
+            self.has_key = False
+            return True
+        return False

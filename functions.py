@@ -93,7 +93,7 @@ def generate_level(level, game, inHouse):
             elif level[y][x] == '#':
                 new_level[y][x] = Wall('wall', x, y, game, 2, 1, random.randrange(2))
             elif level[y][x] == '%':
-                new_level[y][x] = Door('door', x, y, game, closed, 1, 1)
+                new_level[y][x] = Door('door', x, y, game, 2, 1, closed)
             elif level[y][x] == 'K':
                 new_level[y][x] = Key('key_test', x, y, game, 1, 1)
             elif level[y][x] == 'T':
@@ -116,7 +116,7 @@ def generate_level(level, game, inHouse):
                 enemy.append(Slime('slime', x, y, game, False, 4, 1))
             elif level[y][x] == '^':
                 enemy.append(DarkNinja('darkNinja', x, y, game, 4, 2, True))
-            elif level[y][x] == '>':
+            elif level[y][x] == '>' or level[y][x] == '<':
                 enemy.append(DarkNinja('darkNinja', x, y, game, 4, 2, False))
     # Генерация игрока
     for y in range(len(level)):

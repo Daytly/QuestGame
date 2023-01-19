@@ -124,7 +124,3 @@ class Button:
             mx.mixer.play('button', loops=0)
             self.action(*self.args) if self.args else self.action()
             self.isPressed = True
-
-
-
-

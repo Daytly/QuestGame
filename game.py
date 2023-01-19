@@ -43,7 +43,7 @@ class Game:
         self.tile_images = {
             'wall': pygame.transform.scale(functions.load_image('barrier.png'), (96, 48)),
             'empty': pygame.transform.scale(functions.load_image('floor.png'), (144, 144)),
-            'door': pygame.transform.scale(functions.load_image('door.png'), (48, 48)),
+            'door': pygame.transform.scale(functions.load_image('door.png'), (96, 48)),
             'player': pygame.transform.scale(functions.load_image('spriteSheet.png'), (188, 47)),
             'slime': pygame.transform.scale(functions.load_image('slime.png'), (192, 48)),
             'key': pygame.transform.scale(functions.load_image('key.png'), (96, 48)),
@@ -126,7 +126,8 @@ class Game:
                       Button(0, 0, 80, 80, 'LEVELS', action=self.menu_levels,
                              image='buttonLong.png')])
         self.moneyCounter = RowWidgets(5, 0, 65, 50, [Picture(0, 0, 'Data/sprites/coinUI.png', 30, 30),
-                                                      Text(0, 0, (0, 0, 0), 30, '0')])
+                                                      Text(0, 0, (0, 0, 0), 30, f'0')])
+        self.moneyCounter[1].setText(f'0/{self.maxMoney}')
         pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
@@ -261,7 +262,7 @@ class Game:
             if path.isfile(f'Data/screenShots/{nameLevel}SH.png'):
                 levels[-1].append(Picture(125, 80, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
             else:
-                levels[-1].append(Picture(125, 20, f'Data/screenShots/none.png', 450, 450))
+                levels[-1].append(Picture(125, 80, f'Data/screenShots/none.png', 450, 450))
             levels[-1].append(Button(230, 570, 240, 80, 'Play', level,
                                      action=self.run, image='buttonLong.png', rows=3))
 
