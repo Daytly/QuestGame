@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from camera import Camera
 from floor import Floor
 from button import Button
@@ -28,7 +29,7 @@ class Game:
         self.joy_available = len(self.joysticks) > 0
         self.display = pygame.display
         self.display.set_caption('Samurai Storm')
-        self.display.set_icon(pygame.image.load('Data/sprites/icon.png'))
+        self.display.set_icon(pygame.image.load(f'{os.getcwd()}/Data/sprites/icon.png'))
         self.width = 700
         self.height = 700
         self.fps = 60
@@ -85,7 +86,7 @@ class Game:
         self.level, self.player, self.enemies, self.coordSpikes, self.level_x, self.level_y = \
             [None, None, None,
              None, None, None]
-        self.dirLevels = listdir('Data/levels')
+        self.dirLevels = listdir(f'{os.getcwd()}/Data/levels')
         self.indLevel = 0
 
     def run(self, name_level):
@@ -125,10 +126,10 @@ class Game:
                       Button(0, 0, 80, 80, 'RESET', name_level, action=self.run, image='buttonLong.png'),
                       Button(0, 0, 80, 80, 'LEVELS', action=self.menu_levels,
                              image='buttonLong.png')])
-        self.moneyCounter = RowWidgets(5, 0, 65, 50, [Picture(0, 0, 'Data/sprites/coinUI.png', 30, 30),
+        self.moneyCounter = RowWidgets(5, 0, 65, 50, [Picture(0, 0, f'{os.getcwd()}/Data/sprites/coinUI.png', 30, 30),
                                                       Text(0, 0, (0, 0, 0), 30, f'0')])
         self.moneyCounter[1].setText(f'0/{self.maxMoney}')
-        pygame.image.save(self.screen, f'Data/screenShots/{name_level.rstrip(".txt")}SH.png')
+        pygame.image.save(self.screen, f'{os.getcwd()}/Data/screenShots/{name_level.rstrip(".txt")}SH.png')
         while True:
             self.screen.fill(pygame.Color('white'))
             self.clock.tick(self.fps)
@@ -259,10 +260,10 @@ class Game:
             nameLevel = level.rstrip('.txt')
             levels.append([])
             levels[-1].append(Text(125, 20, (0, 0, 0), 50, nameLevel))
-            if path.isfile(f'Data/screenShots/{nameLevel}SH.png'):
-                levels[-1].append(Picture(125, 80, f'Data/screenShots/{nameLevel}SH.png', 450, 450))
+            if path.isfile(f'{os.getcwd()}/Data/screenShots/{nameLevel}SH.png'):
+                levels[-1].append(Picture(125, 80, f'{os.getcwd()}/Data/screenShots/{nameLevel}SH.png', 450, 450))
             else:
-                levels[-1].append(Picture(125, 80, f'Data/screenShots/none.png', 450, 450))
+                levels[-1].append(Picture(125, 80, f'{os.getcwd()}/Data/screenShots/none.png', 450, 450))
             levels[-1].append(Button(230, 570, 240, 80, 'Play', level,
                                      action=self.run, image='buttonLong.png', rows=3))
 
@@ -317,7 +318,7 @@ class Game:
         text = Text(0, 0, color, 60, intro_text)
         text.updateCoord((700 - text.width) // 2, (700 - text.height * 2) // 2)
         finalMoneyCounter = RowWidgets((700 - 80 - self.moneyCounter[1].width*3 - 5) // 2, 350, 170, 150,
-                                       [Picture(0, 0, 'Data/sprites/coinUI.png', 80, 80),
+                                       [Picture(0, 0, f'{os.getcwd()}/Data/sprites/coinUI.png', 80, 80),
                                         Text(0, 0, (0, 0, 0), 80, '0')])
         finalMoneyCounter[1].setText(self.moneyCounter[1].getText())
         while True:

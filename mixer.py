@@ -36,4 +36,4 @@ class Mixer:
         return [i.get_volume() for i in self.sounds.values()]
 
 
-mixer = Mixer('Data/sounds')
+mixer = Mixer(f'{os.getcwd()}/Data/sounds')

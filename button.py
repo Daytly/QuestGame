@@ -3,6 +3,7 @@ import time
 import pygame
 import mixer as mx
 from text import Text
+import os
 
 
 class Button:
@@ -16,7 +17,7 @@ class Button:
         self.dis = dis
         self.size = size
         self.action = action
-        self.sheet = pygame.image.load('Data/sprites/buttons/' + image)
+        self.sheet = pygame.image.load(f'{os.getcwd()}/Data/sprites/buttons/{image}')
         self.frames = []
         self.cut_sheet(self.sheet, cols, rows)
         self.cur_frame = 0

@@ -1,5 +1,6 @@
 import pygame
 import json
+import os
 
 
 class Settings:
@@ -18,7 +19,7 @@ class Settings:
                               'right': pygame.K_RIGHT,
                               'left': pygame.K_LEFT,
                               'exit': 5}
-        with open('Data/settings.json', 'r') as file:
+        with open(f'{os.getcwd()}/Data/settings.json', 'r') as file:
             data = json.load(file)
             self.isSound = data['sound']
             for key in data['binds']['keyBoard'].keys():
@@ -47,5 +48,5 @@ class Settings:
                                        'menu': self.bindsJoystick['menu'],
                                        'exit': self.bindsJoystick['exit']}},
                 'sound': all(mx.mixer.getVolume())}
-        with open('Data/settings.json', 'w') as file:
+        with open(f'{os.getcwd()}/Data/settings.json', 'w') as file:
             json.dump(data, file)
