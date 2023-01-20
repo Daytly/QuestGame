@@ -25,4 +25,3 @@ class Coin(StaticGameObject):
         screen.blit(self.image, self.rect)
         if self.isActive():
             self.update_sprite(self.cur_frame + 0.2)
-

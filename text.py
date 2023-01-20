@@ -1,11 +1,10 @@
 import pygame
 from coord import Coord
-import os
 
 
 class Text:
     def __init__(self, x, y, color, size, text):
-        font = pygame.font.Font(f'{os.getcwd()}/Data/fonts/pixelFont.ttf', size)
+        font = pygame.font.Font('Data/fonts/pixelFont.ttf', size)
         self.text = font.render(str(text), 0, color)
         self.width, self.height = font.size(str(text))
         self.message = str(text)

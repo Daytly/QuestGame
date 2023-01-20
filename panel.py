@@ -1,14 +1,13 @@
 import pygame
 from button import Button
 from text import Text
-import os
 
 
 class Panel:
     def __init__(self, x, y, width, height, image, widgets, froTheBeginning=False):
         self.width = width
         self.height = height
-        self.image = pygame.transform.scale(pygame.image.load(f'{os.getcwd()}/Data/sprites/buttons/{image}'),
+        self.image = pygame.transform.scale(pygame.image.load('Data/sprites/buttons/' + image),
                                             (self.width, self.height))
         self.rect = self.image.get_rect().move(x, y)
         self.widgets = widgets

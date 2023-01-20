@@ -37,7 +37,7 @@ def load_image(name, colorKey=None):
 
 
 def load_level(filename):
-    filename = f"{os.getcwd()}/Data/levels/{filename}"
+    filename = "Data/levels/" + filename
     # читаем уровень, убирая символы перевода строки
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
