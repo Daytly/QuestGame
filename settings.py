@@ -47,5 +47,6 @@ class Settings:
                                        'menu': self.bindsJoystick['menu'],
                                        'exit': self.bindsJoystick['exit']}},
                 'sound': all(mx.mixer.getVolume())}
+        self.isSound = data['sound']
         with open('Data/settings.json', 'w') as file:
             json.dump(data, file)

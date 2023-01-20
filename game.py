@@ -215,6 +215,7 @@ class Game:
             self.clock.tick(self.fps)
 
     def menu(self):
+        print(self.settings.isSound)
         if self.settings.isSound:
             mx.mixer.setVolume('menu', 1)
         fon = self.tile_images['fon']
